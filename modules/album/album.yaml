@@ -1,11 +1,10 @@
-code			: 
-name			: 
-description		: 
-folder_name		: 
-global_model	: 
+code			: 24000
+name			: Article
+description		: Article
+folder_name		: article
 version			: 0.1.0
 created_date	: 
-author			: Putra Sudaryanto [putra@sudaryanto.me]
+author			: Putra Sudaryanto [putra@sudaryanto.id]
 
 db_table_name	: 
  
