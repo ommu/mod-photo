@@ -94,7 +94,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex() 
 	{
-		$setting = Albums::model()->findByPk(1,array(
+		$setting = AlbumSetting::model()->findByPk(1,array(
 			'select' => 'meta_description, meta_keyword',
 		));
 
@@ -126,7 +126,7 @@ class SiteController extends Controller
 	 */
 	public function actionView($id) 
 	{
-		$setting = VideoSetting::model()->findByPk(1,array(
+		$setting = AlbumSetting::model()->findByPk(1,array(
 			'select' => 'meta_keyword',
 		));
 
@@ -141,6 +141,7 @@ class SiteController extends Controller
 			'order' => 'media_id DESC',
 		));
 
+		$this->pageTitleShow = true;
 		$this->pageTitle = $model->title;
 		$this->pageDescription = Utility::shortText(Utility::hardDecode($model->body),300);
 		$this->pageMeta = $setting->meta_keyword;
