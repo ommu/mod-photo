@@ -26,6 +26,8 @@
  * @property string $meta_description
  * @property integer $photo_limit
  * @property integer $headline
+ * @property string $modified_date
+ * @property string $modified_id
  */
 class AlbumSetting extends CActiveRecord
 {
@@ -59,11 +61,11 @@ class AlbumSetting extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('license, permission, meta_keyword, meta_description, photo_limit, headline', 'required'),
-			array('permission, photo_limit, headline', 'numerical', 'integerOnly'=>true),
+			array('permission, photo_limit, headline, modified_id', 'numerical', 'integerOnly'=>true),
 			array('license', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, license, permission, meta_keyword, meta_description, photo_limit, headline', 'safe', 'on'=>'search'),
+			array('id, license, permission, meta_keyword, meta_description, photo_limit, headline, modified_date, modified_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -91,6 +93,8 @@ class AlbumSetting extends CActiveRecord
 			'meta_description' => Phrase::trans(24023,1),
 			'photo_limit' => Phrase::trans(24024,1),
 			'headline' => 'Headline',
+			'modified_date' => 'Modified Date',
+			'modified_id' => 'Modified ID',
 		);
 	}
 
@@ -119,6 +123,9 @@ class AlbumSetting extends CActiveRecord
 		$criteria->compare('t.meta_description',$this->meta_description,true);
 		$criteria->compare('t.photo_limit',$this->photo_limit);
 		$criteria->compare('t.headline',$this->headline);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
+			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+		$criteria->compare('t.modified_id',$this->modified_id);
 
 		if(!isset($_GET['AlbumSetting_sort']))
 			$criteria->order = 'id DESC';
@@ -156,6 +163,8 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'meta_description';
 			$this->defaultColumns[] = 'photo_limit';
 			$this->defaultColumns[] = 'headline';
+			$this->defaultColumns[] = 'modified_date';
+			$this->defaultColumns[] = 'modified_id';
 		}
 
 		return $this->defaultColumns;
@@ -176,6 +185,8 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'meta_description';
 			$this->defaultColumns[] = 'photo_limit';
 			$this->defaultColumns[] = 'headline';
+			$this->defaultColumns[] = 'modified_date';
+			$this->defaultColumns[] = 'modified_id';
 		}
 		parent::afterConstruct();
 	}
@@ -206,7 +217,8 @@ class AlbumSetting extends CActiveRecord
 		if(parent::beforeValidate()) {
 			if($this->photo_limit <= 1)
 				$this->addError('photo_limit', 'Photo Limit lebih besar dari 1');
-				
+			
+			$this->modified_id = Yii::app()->user->id;
 		}
 		return true;
 	}

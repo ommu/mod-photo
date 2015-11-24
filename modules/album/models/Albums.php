@@ -78,12 +78,12 @@ class Albums extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title', 'required'),
-			array('publish, headline, comment_code, photos, comment, view, likes', 'numerical', 'integerOnly'=>true),
+			array('publish, headline, comment_code, photos, comment, view, likes, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('user_id, media_id', 'length', 'max'=>11),
 			array('title,
 				media, old_media', 'length', 'max'=>128),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
-			array('media_id, title, body, quote, creation_date, creation_id, modified_date, modified_id,
+			array('media_id, title, body, quote,
 				media, old_media', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -182,8 +182,10 @@ class Albums extends CActiveRecord
 		$criteria->compare('t.likes',$this->likes);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
+		$criteria->compare('t.creation_id',$this->creation_id);
 		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+		$criteria->compare('t.modified_id',$this->modified_id);
 		
 		// Custom Search
 		$criteria->with = array(
@@ -237,7 +239,9 @@ class Albums extends CActiveRecord
 			$this->defaultColumns[] = 'view';
 			$this->defaultColumns[] = 'likes';
 			$this->defaultColumns[] = 'creation_date';
+			$this->defaultColumns[] = 'creation_id';
 			$this->defaultColumns[] = 'modified_date';
+			$this->defaultColumns[] = 'modified_id';
 		}
 
 		return $this->defaultColumns;
@@ -352,15 +356,13 @@ class Albums extends CActiveRecord
 	 */
 	protected function beforeValidate() {
 		if(parent::beforeValidate()) {
-			if($this->isNewRecord) {
+			if($this->isNewRecord)
 				$this->user_id = Yii::app()->user->id;
-				$this->creation_id = Yii::app()->user->id;	
-			} else {				
-				$this->modified_id = Yii::app()->user->id;	
-			}
-			if($this->headline == 1 && $this->publish == 0) {
+			else		
+				$this->modified_id = Yii::app()->user->id;
+			
+			if($this->headline == 1 && $this->publish == 0)
 				$this->addError('publish', Phrase::trans(340,0));
-			}
 			
 			$media = CUploadedFile::getInstance($this, 'media');
 			if($media->name != '') {

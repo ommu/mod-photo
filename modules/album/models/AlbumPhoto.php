@@ -27,6 +27,7 @@
  * @property string $media
  * @property string $desc
  * @property string $creation_date
+ * @property string $creation_id
  *
  * The followings are the available model relations:
  * @property OmmuAlbums $album
@@ -67,7 +68,7 @@ class AlbumPhoto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('album_id', 'required'),
-			array('publish, orders, cover', 'numerical', 'integerOnly'=>true),
+			array('publish, orders, cover, creation_id', 'numerical', 'integerOnly'=>true),
 			array('album_id', 'length', 'max'=>11),
 			array('media,
 				old_media', 'length', 'max'=>128),
@@ -107,6 +108,7 @@ class AlbumPhoto extends CActiveRecord
 			'media' => 'Photo',
 			'desc' => 'Desc',
 			'creation_date' => 'Creation Date',
+			'creation_id' => 'Creation ID',
 			'album_search' => 'Album Search',
 			'old_media' => 'Old Photo',
 		);
@@ -152,6 +154,7 @@ class AlbumPhoto extends CActiveRecord
 		$criteria->compare('t.desc',$this->desc,true);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
+		$criteria->compare('t.creation_id',$this->creation_id);
 		
 		// Custom Search
 		$criteria->with = array(
@@ -199,6 +202,7 @@ class AlbumPhoto extends CActiveRecord
 			$this->defaultColumns[] = 'media';
 			$this->defaultColumns[] = 'desc';
 			$this->defaultColumns[] = 'creation_date';
+			$this->defaultColumns[] = 'creation_id';
 		}
 
 		return $this->defaultColumns;
@@ -323,6 +327,9 @@ class AlbumPhoto extends CActiveRecord
 				if(!in_array($extension, array('bmp','gif','jpg','png')))
 					$this->addError('media', 'The file "'.$media->name.'" cannot be uploaded. Only files with these extensions are allowed: bmp, gif, jpg, png.');
 			}
+			
+			if($this->isNewRecord)
+				$this->creation_id = Yii::app()->user->id;
 		}
 		return true;
 	}
