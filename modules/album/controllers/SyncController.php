@@ -2,8 +2,8 @@
 /**
 * SyncController
 * Handle SyncController
-* Copyright (c) 2013, Ommu Platform (ommu.co). All rights reserved.
-* version: 2.5.0
+* Copyright (c) 2014, Ommu Platform (ommu.co). All rights reserved.
+* version: 0.0.1
 * Reference start
 *
 * TOC :
@@ -13,7 +13,7 @@
 *
 * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
 * @copyright Copyright (c) 2012 Ommu Platform (ommu.co)
-* @link http://company.ommu.co
+* @link https://github.com/oMMu/Ommu-Photo-Albums
 * @contact (+62)856-299-4114
 *
 *----------------------------------------------------------------------------------------------------------

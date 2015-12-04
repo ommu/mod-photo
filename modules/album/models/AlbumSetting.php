@@ -1,8 +1,9 @@
 <?php
 /**
- * AlbumSetting * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
+ * AlbumSetting
+ * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
  * @copyright Copyright (c) 2014 Ommu Platform (ommu.co)
- * @link http://company.ommu.co
+ * @link https://github.com/oMMu/Ommu-Photo-Albums
  * @contact (+62)856-299-4114
  *
  * This is the template for generating the model class of a specified table.
@@ -201,7 +202,7 @@ class AlbumSetting extends CActiveRecord
 				'select' => $column
 			));
 			return $model;
-		
+
 		} else {
 			$model = self::model()->findByPk(1,array(
 				'select' => $column
@@ -217,7 +218,7 @@ class AlbumSetting extends CActiveRecord
 		if(parent::beforeValidate()) {
 			if($this->photo_limit <= 1)
 				$this->addError('photo_limit', 'Photo Limit lebih besar dari 1');
-			
+
 			$this->modified_id = Yii::app()->user->id;
 		}
 		return true;
