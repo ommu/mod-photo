@@ -1,23 +1,22 @@
 <?php
 /**
-* SyncController
-* Handle SyncController
-* Copyright (c) 2014, Ommu Platform (ommu.co). All rights reserved.
-* version: 0.0.1
-* Reference start
-*
-* TOC :
-*	Index
-*	IndexFile
-*	IndexImage
-*
-* @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
-* @copyright Copyright (c) 2012 Ommu Platform (ommu.co)
-* @link https://github.com/oMMu/Ommu-Photo-Albums
-* @contact (+62)856-299-4114
-*
-*----------------------------------------------------------------------------------------------------------
-*/
+ * SyncController
+ * @var $this SyncController
+ * version: 0.0.1
+ * Reference start
+ *
+ * TOC :
+ *	Index
+ *	IndexFile
+ *	IndexImage
+ *
+ * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
+ * @copyright Copyright (c) 2012 Ommu Platform (ommu.co)
+ * @link https://github.com/oMMu/Ommu-Photo-Albums
+ * @contact (+62)856-299-4114
+ *
+ *----------------------------------------------------------------------------------------------------------
+ */
 
 class SyncController extends Controller
 {

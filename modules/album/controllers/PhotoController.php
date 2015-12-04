@@ -4,7 +4,6 @@
  * @var $this PhotoController
  * @var $model AlbumPhoto
  * @var $form CActiveForm
- * Copyright (c) 2014, Ommu Platform (ommu.co). All rights reserved.
  * version: 0.0.1
  * Reference start
  *
