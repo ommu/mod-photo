@@ -40,6 +40,7 @@ class AlbumPhoto extends CActiveRecord
 	
 	// Variable Search
 	public $album_search;
+	public $creation_search;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -79,7 +80,7 @@ class AlbumPhoto extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('media_id, publish, album_id, orders, cover, media, desc, creation_date,
-				album_search', 'safe', 'on'=>'search'),
+				album_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -92,6 +93,7 @@ class AlbumPhoto extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'album' => array(self::BELONGS_TO, 'Albums', 'album_id'),
+			'creation_relation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 		);
 	}
 
@@ -109,9 +111,10 @@ class AlbumPhoto extends CActiveRecord
 			'media' => 'Photo',
 			'desc' => 'Desc',
 			'creation_date' => 'Creation Date',
-			'creation_id' => 'Creation ID',
-			'album_search' => 'Album Search',
+			'creation_id' => 'Creation',
 			'old_media' => 'Old Photo',
+			'album_search' => 'Album',
+			'creation_search' => 'Creation',
 		);
 	}
 
@@ -144,11 +147,10 @@ class AlbumPhoto extends CActiveRecord
 			$criteria->addInCondition('t.publish',array(0,1));
 			$criteria->compare('t.publish',$this->publish);
 		}
-		if(isset($_GET['album'])) {
+		if(isset($_GET['album']))
 			$criteria->compare('t.album_id',$_GET['album']);
-		} else {
+		else
 			$criteria->compare('t.album_id',$this->album_id);
-		}
 		$criteria->compare('t.orders',$this->orders);
 		$criteria->compare('t.cover',$this->cover);
 		$criteria->compare('t.media',$this->media,true);
@@ -163,11 +165,16 @@ class AlbumPhoto extends CActiveRecord
 				'alias'=>'album',
 				'select'=>'title'
 			),
+			'creation_relation' => array(
+				'alias'=>'creation_relation',
+				'select'=>'displayname'
+			),
 		);
 		$criteria->compare('album.title',strtolower($this->album_search), true);
+		$criteria->compare('creation_relation.displayname',strtolower($this->creation_search), true);
 
-		if(!isset($_GET['AlbumPhoto_sort']))
-			//$criteria->order = 'media_id DESC';
+		if(isset($_GET['AlbumPhoto_sort']))
+			$criteria->order = 'media_id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -227,18 +234,10 @@ class AlbumPhoto extends CActiveRecord
 					),
 					'type' => 'raw',
 				);
-			}		
+			}
 			$this->defaultColumns[] = array(
-				'name' => 'cover',
-				'value' => '$data->cover == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
-				'htmlOptions' => array(
-					'class' => 'center',
-				),
-				'filter'=>array(
-					1=>Phrase::trans(588,0),
-					0=>Phrase::trans(589,0),
-				),
-				'type' => 'raw',
+				'name' => 'creation_search',
+				'value' => '$data->creation_relation->displayname',
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_date',
@@ -265,6 +264,18 @@ class AlbumPhoto extends CActiveRecord
 						'showButtonPanel' => true,
 					),
 				), true),
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'cover',
+				'value' => '$data->cover == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'filter'=>array(
+					1=>Phrase::trans(588,0),
+					0=>Phrase::trans(589,0),
+				),
+				'type' => 'raw',
 			);
 		}
 		parent::afterConstruct();

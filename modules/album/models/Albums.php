@@ -49,6 +49,8 @@ class Albums extends CActiveRecord
 	
 	// Variable Search
 	public $user_search;
+	public $creation_search;
+	public $modified_search;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -88,7 +90,7 @@ class Albums extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('album_id, publish, user_id, media_id, headline, comment_code, title, body, quote, photos, comment, view, likes, creation_date, creation_id, modified_date, modified_id,
-				user_search', 'safe', 'on'=>'search'),
+				user_search, creation_search, modified_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -100,10 +102,12 @@ class Albums extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'likes' => array(self::HAS_MANY, 'AlbumLikes', 'album_id'),
-			'photo' => array(self::HAS_MANY, 'AlbumPhoto', 'album_id'),
 			'cover' => array(self::BELONGS_TO, 'AlbumPhoto', 'media_id'),
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'creation_relation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
+			'modified_relation' => array(self::BELONGS_TO, 'Users', 'modified_id'),
+			'likes' => array(self::HAS_MANY, 'AlbumLikes', 'album_id'),
+			'photo' => array(self::HAS_MANY, 'AlbumPhoto', 'album_id'),
 		);
 	}
 
@@ -131,6 +135,8 @@ class Albums extends CActiveRecord
 			'modified_date' => 'Modified Date',
 			'modified_id' => 'Modified ID',
 			'user_search' => 'User',
+			'creation_search' => 'Creation',
+			'modified_search' => 'Modified',
 			'media' => 'Photo',
 			'old_media' => 'Old Photo',
 		);
@@ -165,11 +171,10 @@ class Albums extends CActiveRecord
 			$criteria->addInCondition('t.publish',array(0,1));
 			$criteria->compare('t.publish',$this->publish);
 		}
-		if(isset($_GET['user'])) {
+		if(isset($_GET['user']))
 			$criteria->compare('t.user_id',$_GET['user']);
-		} else {
+		else
 			$criteria->compare('t.user_id',$this->user_id);
-		}
 		$criteria->compare('t.media_id',$this->media_id);
 		$criteria->compare('t.headline',$this->headline);
 		$criteria->compare('t.comment_code',$this->comment_code);
@@ -193,8 +198,18 @@ class Albums extends CActiveRecord
 				'alias'=>'user',
 				'select'=>'displayname'
 			),
+			'creation_relation' => array(
+				'alias'=>'creation_relation',
+				'select'=>'displayname'
+			),
+			'modified_relation' => array(
+				'alias'=>'modified_relation',
+				'select'=>'displayname'
+			),
 		);
 		$criteria->compare('user.displayname',strtolower($this->user_search), true);
+		$criteria->compare('creation_relation.displayname',strtolower($this->creation_search), true);
+		$criteria->compare('modified_relation.displayname',strtolower($this->modified_search), true);
 
 		if(!isset($_GET['Albums_sort']))
 			$criteria->order = 'album_id DESC';
@@ -273,8 +288,8 @@ class Albums extends CActiveRecord
 				'type' => 'raw',
 			);
 			$this->defaultColumns[] = array(
-				'name' => 'user_search',
-				'value' => '$data->user->displayname',
+				'name' => 'creation_search',
+				'value' => '$data->creation_relation->displayname',
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_date',

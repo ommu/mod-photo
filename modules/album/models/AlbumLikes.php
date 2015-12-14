@@ -122,16 +122,14 @@ class AlbumLikes extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('t.like_id',$this->like_id,true);
-		if(isset($_GET['album'])) {
+		if(isset($_GET['album']))
 			$criteria->compare('t.album_id',$_GET['album']);
-		} else {
+		else
 			$criteria->compare('t.album_id',$this->album_id);
-		}
-		if(isset($_GET['user'])) {
+		if(isset($_GET['user']))
 			$criteria->compare('t.user_id',$_GET['user']);
-		} else {
+		else
 			$criteria->compare('t.user_id',$this->user_id);
-		}
 		if($this->likes_date != null && !in_array($this->likes_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.likes_date)',date('Y-m-d', strtotime($this->likes_date)));
 		$criteria->compare('t.likes_ip',$this->likes_ip,true);
