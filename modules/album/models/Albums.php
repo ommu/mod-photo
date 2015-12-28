@@ -82,8 +82,7 @@ class Albums extends CActiveRecord
 			array('title', 'required'),
 			array('publish, headline, comment_code, photos, comment, view, likes, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('user_id, media_id', 'length', 'max'=>11),
-			array('title,
-				media, old_media', 'length', 'max'=>128),
+			array('title', 'length', 'max'=>128),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
 			array('media_id, title, body, quote,
 				media, old_media', 'safe'),
@@ -350,7 +349,7 @@ class Albums extends CActiveRecord
 	}
 
 	/**
-	 * User get information
+	 * Albums get information
 	 */
 	public static function getInfo($id, $column=null)
 	{
@@ -382,7 +381,7 @@ class Albums extends CActiveRecord
 			$media = CUploadedFile::getInstance($this, 'media');
 			if($media->name != '') {
 				$extension = pathinfo($media->name, PATHINFO_EXTENSION);
-				if(!in_array($extension, array('bmp','gif','jpg','png')))
+				if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
 					$this->addError('media', 'The file "'.$media->name.'" cannot be uploaded. Only files with these extensions are allowed: bmp, gif, jpg, png.');
 			}
 		}
@@ -407,7 +406,7 @@ class Albums extends CActiveRecord
 
 			$this->media = CUploadedFile::getInstance($this, 'media');
 			if($this->media instanceOf CUploadedFile) {
-				$fileName = time().'_'.$this->album_id.'.'.strtolower($this->media->extensionName);
+				$fileName = time().'_'.$this->album_id.'_'.Utility::getUrlTitle($this->title).'.'.strtolower($this->media->extensionName);
 				if($this->media->saveAs($album_path.'/'.$fileName)) {
 					$images = new AlbumPhoto;
 					$images->album_id = $this->album_id;

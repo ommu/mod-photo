@@ -184,7 +184,7 @@ class PhotoController extends Controller
 		
 		$albumPhoto = CUploadedFile::getInstanceByName('namaFile');
 		$album_path = "public/album/".$id;
-		$fileName	= time().'_'.$id.'.'.strtolower($albumPhoto->extensionName);
+		$fileName	= time().'_'.$id.'_'.Utility::getUrlTitle(Albums::getInfo($id, 'title')).'.'.strtolower($albumPhoto->extensionName);
 		if($albumPhoto->saveAs($album_path.'/'.$fileName)) {
 			$model = new AlbumPhoto;
 			$model->album_id = $id;

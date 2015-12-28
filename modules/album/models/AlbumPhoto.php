@@ -72,8 +72,6 @@ class AlbumPhoto extends CActiveRecord
 			array('album_id', 'required'),
 			array('publish, orders, cover, creation_id', 'numerical', 'integerOnly'=>true),
 			array('album_id', 'length', 'max'=>11),
-			array('media,
-				old_media', 'length', 'max'=>128),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
 			array('cover, media, desc, creation_date,
 				old_media', 'safe'),
@@ -336,7 +334,7 @@ class AlbumPhoto extends CActiveRecord
 			$media = CUploadedFile::getInstance($this, 'media');
 			if($currentAction != 'photo/ajaxadd' && $media->name != '') {
 				$extension = pathinfo($media->name, PATHINFO_EXTENSION);
-				if(!in_array($extension, array('bmp','gif','jpg','png')))
+				if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
 					$this->addError('media', 'The file "'.$media->name.'" cannot be uploaded. Only files with these extensions are allowed: bmp, gif, jpg, png.');
 			}
 			
@@ -359,7 +357,7 @@ class AlbumPhoto extends CActiveRecord
 				
 				$this->media = CUploadedFile::getInstance($this, 'media');
 				if($this->media instanceOf CUploadedFile) {
-					$fileName = time().'_'.$this->album_id.'.'.strtolower($this->media->extensionName);
+					$fileName = time().'_'.$this->album_id.'_'.Utility::getUrlTitle($this->album->title).'.'.strtolower($this->media->extensionName);
 					if($this->media->saveAs($album_path.'/'.$fileName)) {
 						if($this->old_media != '')
 							rename($album_path.'/'.$this->old_media, 'public/album/verwijderen/'.$this->album_id.'_'.$this->old_media);
