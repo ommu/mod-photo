@@ -39,12 +39,16 @@ class LikesController extends Controller
 	 */
 	public function init() 
 	{
-		if(AlbumSetting::getInfo('permission') == 1) {
-			$arrThemes = Utility::getCurrentTemplate('public');
-			Yii::app()->theme = $arrThemes['folder'];
-			$this->layout = $arrThemes['layout'];
+		if(!Yii::app()->user->isGuest) {
+			if(in_array(Yii::app()->user->level, array(1,2))) {
+				$arrThemes = Utility::getCurrentTemplate('admin');
+				Yii::app()->theme = $arrThemes['folder'];
+				$this->layout = $arrThemes['layout'];
+			} else {
+				$this->redirect(Yii::app()->createUrl('site/login'));
+			}
 		} else {
-			$this->redirect(Yii::app()->createUrl('site/index'));
+			$this->redirect(Yii::app()->createUrl('site/login'));
 		}
 	}
 
@@ -77,6 +81,11 @@ class LikesController extends Controller
 				'expression'=>'isset(Yii::app()->user->level)',
 				//'expression'=>'isset(Yii::app()->user->level) && (Yii::app()->user->level != 1)',
 			),
+			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('manage','delete'),
+				'users'=>array('@'),
+				'expression'=>'isset(Yii::app()->user->level) && in_array(Yii::app()->user->level, array(1,2))',
+			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array(),
 				'users'=>array('admin'),
@@ -94,37 +103,68 @@ class LikesController extends Controller
 	{
 		$this->redirect(array('manage'));
 	}
-	
+
 	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * Manages all models.
 	 */
-	public function actionUp($id=null) 
+	public function actionManage() 
 	{
-		if($id == null) {
-			$this->redirect(array('site/index'));
-		} else {
-			$model=new AlbumLikes;
-			$model->album_id = $id;
-			if($model->save()) {
-				$this->redirect(array('site/view','id'=>$model->album_id,'t'=>Utility::getUrlTitle($model->album->title)));
-			}	
+		$model=new AlbumLikes('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['AlbumLikes'])) {
+			$model->attributes=$_GET['AlbumLikes'];
 		}
+
+		$columnTemp = array();
+		if(isset($_GET['GridColumn'])) {
+			foreach($_GET['GridColumn'] as $key => $val) {
+				if($_GET['GridColumn'][$key] == 1) {
+					$columnTemp[] = $key;
+				}
+			}
+		}
+		$columns = $model->getGridColumn($columnTemp);
+
+		$this->pageTitle = 'Album Likes Manage';
+		$this->pageDescription = '';
+		$this->pageMeta = '';
+		$this->render('admin_manage',array(
+			'model'=>$model,
+			'columns' => $columns,
+		));
 	}
-	
+
 	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * Deletes a particular model.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDown($id=null) 
+	public function actionDelete($id) 
 	{
-		if($id == null) {
-			$this->redirect(array('site/index'));
+		$model=$this->loadModel($id);
+		
+		if(Yii::app()->request->isPostRequest) {
+			// we only allow deletion via POST request
+			if(isset($id)) {
+				if($model->delete()) {
+					echo CJSON::encode(array(
+						'type' => 5,
+						'get' => Yii::app()->controller->createUrl('manage'),
+						'id' => 'partial-album-likes',
+						'msg' => '<div class="errorSummary success"><strong>AlbumLikes success deleted.</strong></div>',
+					));
+				}
+			}
+
 		} else {
-			$model=$this->loadModel($id);
-			if($model->delete()) {
-				$this->redirect(array('site/view','id'=>$model->album_id,'t'=>Utility::getUrlTitle($model->album->title)));
-			}	
+			$this->dialogDetail = true;
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogWidth = 350;
+
+			$this->pageTitle = 'AlbumLikes Delete.';
+			$this->pageDescription = '';
+			$this->pageMeta = '';
+			$this->render('admin_delete');
 		}
 	}
 

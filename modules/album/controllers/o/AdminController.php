@@ -9,7 +9,6 @@
  *
  * TOC :
  *	Index
- *	View
  *	Manage
  *	Add
  *	Edit

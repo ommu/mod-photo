@@ -13,6 +13,9 @@
 *	AjaxAdd
 *	AjaxEdit
 *	AjaxDelete
+ *	Manage
+ *	Edit
+ *	Delete
  *
  *	LoadModel
  *	performAjaxValidation
@@ -39,12 +42,22 @@ class PhotoController extends Controller
 	 */
 	public function init() 
 	{
-		if(ArticleSetting::getInfo('permission') == 1) {
-			$arrThemes = Utility::getCurrentTemplate('public');
-			Yii::app()->theme = $arrThemes['folder'];
-			$this->layout = $arrThemes['layout'];
+		if(!Yii::app()->user->isGuest) {
+			if(in_array(Yii::app()->user->level, array(1,2))) {
+				$arrThemes = Utility::getCurrentTemplate('admin');
+				Yii::app()->theme = $arrThemes['folder'];
+				$this->layout = $arrThemes['layout'];
+			} else {
+				$this->redirect(Yii::app()->createUrl('site/login'));
+			}
 		} else {
-			$this->redirect(Yii::app()->createUrl('site/login'));
+			if(ArticleSetting::getInfo('permission') == 1) {
+				$arrThemes = Utility::getCurrentTemplate('public');
+				Yii::app()->theme = $arrThemes['folder'];
+				$this->layout = $arrThemes['layout'];
+			} else {
+				$this->redirect(Yii::app()->createUrl('site/login'));
+			}
 		}
 	}
 
@@ -114,8 +127,8 @@ class PhotoController extends Controller
 		if($model != null) {			
 			foreach($model as $key => $val) {
 				$image = Yii::app()->request->baseUrl.'/public/album/'.$val->album_id.'/'.$val->media;
-				$url = Yii::app()->controller->createUrl('ajaxdelete', array('id'=>$val->media_id));
-				$urlCover = Yii::app()->controller->createUrl('ajaxcover', array('id'=>$val->media_id));
+				$url = Yii::app()->controller->createUrl('ajaxdelete', array('id'=>$val->media_id,'type'=>'admin'));
+				$urlCover = Yii::app()->controller->createUrl('ajaxcover', array('id'=>$val->media_id,'type'=>'admin'));
 				$data .= '<li>';
 				if($val->cover == 0) {
 					$data .= '<a id="set-cover" href="'.$urlCover.'" title="'.Phrase::trans(26108,1).'">'.Phrase::trans(26108,1).'</a>';
@@ -128,7 +141,7 @@ class PhotoController extends Controller
 		if(isset($_GET['replace'])) {
 			// begin.Upload Button
 			$class = (count($model) == $setting->photo_limit) ? 'class="hide"' : '';
-			$url = Yii::app()->controller->createUrl('ajaxadd', array('id'=>$id));
+			$url = Yii::app()->controller->createUrl('ajaxadd', array('id'=>$id,'type'=>'admin'));
 			$data .= '<li id="upload" '.$class.'>';
 			$data .= '<a id="upload-gallery" href="'.$url.'" title="'.Phrase::trans(26054,1).'">'.Phrase::trans(26054,1).'</a>';
 			$data .= '<img src="'.Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_default.png', 320, 250, 1).'" alt="" />';
@@ -155,7 +168,7 @@ class PhotoController extends Controller
 			$model->album_id = $id;
 			$model->media = $fileName;
 			if($model->save()) {
-				$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id));
+				$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'type'=>'admin','replace'=>'true'));
 				echo CJSON::encode(array(
 					'id' => 'media-render',
 					'get' => $url,
@@ -171,13 +184,6 @@ class PhotoController extends Controller
 	 */
 	public function actionAjaxCover($id) 
 	{
-		if(!isset($_GET['type'])) {
-			$arrThemes = Utility::getCurrentTemplate('public');
-			Yii::app()->theme = $arrThemes['folder'];
-			$this->layout = $arrThemes['layout'];
-			Utility::applyCurrentTheme($this->module);
-		}
-		
 		$model = $this->loadModel($id);
 		
 		if(Yii::app()->request->isPostRequest) {
@@ -186,7 +192,7 @@ class PhotoController extends Controller
 				$model->cover = 1;
 				
 				if($model->update()) {
-						$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'replace'=>'true'));
+					$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'type'=>'admin','replace'=>'true'));
 					echo CJSON::encode(array(
 						'type' => 2,
 						'id' => 'media-render',
@@ -203,7 +209,101 @@ class PhotoController extends Controller
 			$this->pageTitle = Phrase::trans(26105,1);
 			$this->pageDescription = '';
 			$this->pageMeta = '';
-			$this->render('front_cover');
+			$this->render('admin_cover');
+		}
+	}
+
+
+	/**
+	 * Manages all models.
+	 */
+	public function actionManage() 
+	{
+		$model=new AlbumPhoto('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['AlbumPhoto'])) {
+			$model->attributes=$_GET['AlbumPhoto'];
+		}
+
+		$columnTemp = array();
+		if(isset($_GET['GridColumn'])) {
+			foreach($_GET['GridColumn'] as $key => $val) {
+				if($_GET['GridColumn'][$key] == 1) {
+					$columnTemp[] = $key;
+				}
+			}
+		}
+		$columns = $model->getGridColumn($columnTemp);
+
+		$this->pageTitle = 'Album Photos Manage';
+		$this->pageDescription = '';
+		$this->pageMeta = '';
+		$this->render('admin_manage',array(
+			'model'=>$model,
+			'columns' => $columns,
+		));
+	}
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionEdit($id) 
+	{
+		$model=$this->loadModel($id);
+
+		// Uncomment the following line if AJAX validation is needed
+		$this->performAjaxValidation($model);
+
+		if(isset($_POST['AlbumPhoto'])) {
+			$model->attributes=$_POST['AlbumPhoto'];
+			
+			if($model->save()) {
+				Yii::app()->user->setFlash('success', 'AlbumPhoto success updated.');
+				$this->redirect(array('manage'));
+			}
+		}
+
+		$this->pageTitle = 'Update Album Photos';
+		$this->pageDescription = '';
+		$this->pageMeta = '';
+		$this->render('admin_edit',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Deletes a particular model.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @param integer $id the ID of the model to be deleted
+	 */
+	public function actionDelete($id) 
+	{
+		$model=$this->loadModel($id);
+		
+		if(Yii::app()->request->isPostRequest) {
+			// we only allow deletion via POST request
+			if(isset($id)) {
+				if($model->delete()) {
+					echo CJSON::encode(array(
+						'type' => 5,
+						'get' => Yii::app()->controller->createUrl('manage'),
+						'id' => 'partial-album-photo',
+						'msg' => '<div class="errorSummary success"><strong>AlbumPhoto success deleted.</strong></div>',
+					));
+				}
+			}
+
+		} else {
+			$this->dialogDetail = true;
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogWidth = 350;
+
+			$this->pageTitle = Phrase::trans(24012,1);
+			$this->pageDescription = '';
+			$this->pageMeta = '';
+			$this->render('admin_delete');
 		}
 	}
 
