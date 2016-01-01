@@ -39,7 +39,7 @@ class PhotoController extends Controller
 	 */
 	public function init() 
 	{
-		if(ArticleSetting::getInfo('permission') == 1) {
+		if(AlbumSetting::getInfo('permission') == 1) {
 			$arrThemes = Utility::getCurrentTemplate('public');
 			Yii::app()->theme = $arrThemes['folder'];
 			$this->layout = $arrThemes['layout'];

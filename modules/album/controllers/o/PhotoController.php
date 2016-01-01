@@ -51,13 +51,7 @@ class PhotoController extends Controller
 				$this->redirect(Yii::app()->createUrl('site/login'));
 			}
 		} else {
-			if(ArticleSetting::getInfo('permission') == 1) {
-				$arrThemes = Utility::getCurrentTemplate('public');
-				Yii::app()->theme = $arrThemes['folder'];
-				$this->layout = $arrThemes['layout'];
-			} else {
-				$this->redirect(Yii::app()->createUrl('site/login'));
-			}
+			$this->redirect(Yii::app()->createUrl('site/login'));
 		}
 	}
 
@@ -203,7 +197,7 @@ class PhotoController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('admin/edit', array('id'=>$model->album_id));
+			$this->dialogGroundUrl = Yii::app()->controller->createUrl('o/admin/edit', array('id'=>$model->album_id));
 			$this->dialogWidth = 350;
 
 			$this->pageTitle = Phrase::trans(26105,1);
