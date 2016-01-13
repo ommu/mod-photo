@@ -144,6 +144,9 @@ class AdminController extends Controller
 	public function actionAdd() 
 	{
 		$model=new Albums;
+		$setting = AlbumSetting::model()->findByPk(1,array(
+			'select' => 'meta_keyword, type_active',
+		));
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
@@ -162,6 +165,7 @@ class AdminController extends Controller
 		$this->pageMeta = '';
 		$this->render('admin_add',array(
 			'model'=>$model,
+			'setting'=>$setting,
 		));
 	}
 
@@ -175,7 +179,13 @@ class AdminController extends Controller
 		$model=$this->loadModel($id);
 
 		$setting = AlbumSetting::model()->findByPk(1,array(
-			'select' => 'photo_limit',
+			'select' => 'photo_limit, meta_keyword',
+		));
+		$tag = AlbumTag::model()->findAll(array(
+			'condition' => 'album_id = :id',
+			'params' => array(
+				':id' => $model->album_id,
+			),
 		));
 
 		// Uncomment the following line if AJAX validation is needed
@@ -220,6 +230,7 @@ class AdminController extends Controller
 			$this->render('admin_edit',array(
 				'model'=>$model,
 				'setting'=>$setting,
+				'tag'=>$tag,
 			));
 		}
 	}

@@ -46,6 +46,7 @@ class Albums extends CActiveRecord
 	public $defaultColumns = array();
 	public $media;
 	public $old_media;
+	public $keyword;
 	
 	// Variable Search
 	public $user_search;
@@ -82,10 +83,12 @@ class Albums extends CActiveRecord
 			array('title', 'required'),
 			array('publish, headline, comment_code, photos, comment, view, likes, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('user_id, media_id', 'length', 'max'=>11),
+			array('
+				keyword', 'length', 'max'=>32),
 			array('title', 'length', 'max'=>128),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
 			array('media_id, title, body, quote,
-				media, old_media', 'safe'),
+				media, old_media, keyword', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('album_id, publish, user_id, media_id, headline, comment_code, title, body, quote, photos, comment, view, likes, creation_date, creation_id, modified_date, modified_id,
@@ -138,6 +141,7 @@ class Albums extends CActiveRecord
 			'modified_search' => 'Modified',
 			'media' => 'Photo',
 			'old_media' => 'Old Photo',
+			'keyword' => 'Tags',
 		);
 	}
 
@@ -415,6 +419,31 @@ class Albums extends CActiveRecord
 					$images->save();
 				}
 			}
+		}
+		
+		// Add Tags
+		if(!$this->isNewRecord) {
+			if($this->keyword != '') {
+				$model = OmmuTags::model()->find(array(
+					'select' => 'tag_id, body',
+					'condition' => 'publish = 1 AND body = :body',
+					'params' => array(
+						':body' => $this->keyword,
+					),
+				));
+				$tag = new AlbumTag;
+				$tag->album_id = $this->album_id;
+				if($model != null) {
+					$tag->tag_id = $model->tag_id;
+				} else {
+					$data = new OmmuTags;
+					$data->body = $this->keyword;
+					if($data->save()) {
+						$tag->tag_id = $data->tag_id;
+					}
+				}
+				$tag->save();
+			}			
 		}
 		
 		if(AlbumSetting::getInfo('headline') == 1) {
