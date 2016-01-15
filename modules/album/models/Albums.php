@@ -110,6 +110,8 @@ class Albums extends CActiveRecord
 			'modified_relation' => array(self::BELONGS_TO, 'Users', 'modified_id'),
 			'likes' => array(self::HAS_MANY, 'AlbumLikes', 'album_id'),
 			'photo' => array(self::HAS_MANY, 'AlbumPhoto', 'album_id'),
+			'tag_MANY' => array(self::HAS_MANY, 'AlbumTag', 'album_id'),
+			'tag_ONE' => array(self::HAS_ONE, 'AlbumTag', 'album_id'),
 		);
 	}
 
@@ -419,10 +421,9 @@ class Albums extends CActiveRecord
 					$images->save();
 				}
 			}
-		}
-		
-		// Add Tags
-		if(!$this->isNewRecord) {
+			
+		} else {
+			// Add Tags
 			if($this->keyword != '') {
 				$model = OmmuTags::model()->find(array(
 					'select' => 'tag_id, body',

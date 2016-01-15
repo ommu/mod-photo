@@ -83,8 +83,8 @@ class AlbumTag extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'album_relation' => array(self::BELONGS_TO, 'OmmuAlbums', 'album_id'),
-			'tag_relation' => array(self::BELONGS_TO, 'OmmuTags', 'tag_id'),
+			'album_relation' => array(self::BELONGS_TO, 'Albums', 'album_id'),
+			'tag_TO' => array(self::BELONGS_TO, 'OmmuTags', 'tag_id'),
 			'creation_relation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 		);
 	}
@@ -143,8 +143,8 @@ class AlbumTag extends CActiveRecord
 				'alias'=>'album_relation',
 				'select'=>'title'
 			),
-			'tag_relation' => array(
-				'alias'=>'tag_relation',
+			'tag_TO' => array(
+				'alias'=>'tag_TO',
 				'select'=>'body'
 			),
 			'creation_relation' => array(
@@ -153,7 +153,7 @@ class AlbumTag extends CActiveRecord
 			),
 		);
 		$criteria->compare('album_relation.title',strtolower($this->album_search), true);
-		$criteria->compare('tag_relation.body',strtolower($this->tag_search), true);
+		$criteria->compare('tag_TO.body',strtolower($this->tag_search), true);
 		$criteria->compare('creation_relation.displayname',strtolower($this->creation_search), true);
 
 		if(!isset($_GET['AlbumTag_sort']))
@@ -285,7 +285,7 @@ class AlbumTag extends CActiveRecord
 		$tag = '';
 		if($model != null) {
 			foreach($model as $val) {
-				$tag .= ','.$val->tag_relation->body;
+				$tag .= ','.$val->tag_TO->body;
 			}
 		}
 		

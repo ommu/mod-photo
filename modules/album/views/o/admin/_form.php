@@ -63,15 +63,12 @@
 							'options'=>array(
 								//'lang'=>'fi',
 								'buttons'=>array(
-									'html', 'formatting', '|', 
+									'html', '|', 
 									'bold', 'italic', 'deleted', '|',
-									'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-									'link', '|',
 								),
 							),
 							'plugins' => array(
 								'fontcolor' => array('js' => array('fontcolor.js')),
-								'table' => array('js' => array('table.js')),
 								'fullscreen' => array('js' => array('fullscreen.js')),
 							),
 						)); ?>
@@ -155,7 +152,7 @@
 							if(!$model->isNewRecord) {
 								if($tag != null) {
 									foreach($tag as $key => $val) {?>
-									<div><?php echo $val->tag_relation->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/tag/delete',array('id'=>$val->id,'type'=>'album'));?>" title="<?php echo Phrase::trans(173,0);?>"><?php echo Phrase::trans(173,0);?></a></div>
+									<div><?php echo $val->tag_TO->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/tag/delete',array('id'=>$val->id,'type'=>'album'));?>" title="<?php echo Phrase::trans(173,0);?>"><?php echo Phrase::trans(173,0);?></a></div>
 								<?php }
 								}
 							}?>

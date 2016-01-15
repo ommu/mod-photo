@@ -145,7 +145,7 @@ class AdminController extends Controller
 	{
 		$model=new Albums;
 		$setting = AlbumSetting::model()->findByPk(1,array(
-			'select' => 'meta_keyword, type_active',
+			'select' => 'meta_keyword',
 		));
 
 		// Uncomment the following line if AJAX validation is needed
