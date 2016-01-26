@@ -359,7 +359,7 @@ class AlbumPhoto extends CActiveRecord
 				if($this->media instanceOf CUploadedFile) {
 					$fileName = time().'_'.$this->album_id.'_'.Utility::getUrlTitle($this->album->title).'.'.strtolower($this->media->extensionName);
 					if($this->media->saveAs($album_path.'/'.$fileName)) {
-						if($this->old_media != '')
+						if($this->old_media != '' && file_exists($album_path.'/'.$this->old_media))
 							rename($album_path.'/'.$this->old_media, 'public/album/verwijderen/'.$this->album_id.'_'.$this->old_media);
 						$this->media = $fileName;
 					}
@@ -422,7 +422,7 @@ class AlbumPhoto extends CActiveRecord
 		parent::afterDelete();
 		//delete album image
 		$album_path = "public/album/".$this->album_id;
-		if($this->media != '')
+		if($this->media != '' && file_exists($album_path.'/'.$this->media))
 			rename($album_path.'/'.$this->media, 'public/album/verwijderen/'.$this->album_id.'_'.$this->media);
 
 		//reset cover in album

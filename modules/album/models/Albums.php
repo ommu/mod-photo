@@ -469,7 +469,7 @@ class Albums extends CActiveRecord
 			//delete media photos
 			$album_photo = AlbumPhoto::getPhoto($this->album_id);
 			foreach($album_photo as $val) {
-				if($val->media != '')
+				if($val->media != '' && file_exists($album_path.'/'.$val->media))
 					rename($album_path.'/'.$val->media, 'public/album/verwijderen/'.$val->album_id.'_'.$val->media);
 			}
 		}
