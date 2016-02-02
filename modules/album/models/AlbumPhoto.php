@@ -171,8 +171,8 @@ class AlbumPhoto extends CActiveRecord
 		$criteria->compare('album.title',strtolower($this->album_search), true);
 		$criteria->compare('creation_relation.displayname',strtolower($this->creation_search), true);
 
-		if(isset($_GET['AlbumPhoto_sort']))
-			$criteria->order = 'media_id DESC';
+		if(!isset($_GET['AlbumPhoto_sort']))
+			$criteria->order = 't.media_id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

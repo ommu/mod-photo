@@ -217,7 +217,7 @@ class Albums extends CActiveRecord
 		$criteria->compare('modified_relation.displayname',strtolower($this->modified_search), true);
 
 		if(!isset($_GET['Albums_sort']))
-			$criteria->order = 'album_id DESC';
+			$criteria->order = 't.album_id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

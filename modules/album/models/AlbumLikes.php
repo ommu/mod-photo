@@ -149,7 +149,7 @@ class AlbumLikes extends CActiveRecord
 		$criteria->compare('user.displayname',strtolower($this->user_search), true);
 
 		if(!isset($_GET['AlbumLikes_sort']))
-			$criteria->order = 'like_id DESC';
+			$criteria->order = 't.like_id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
