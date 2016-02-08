@@ -93,7 +93,7 @@ class SyncController extends Controller
 	 */
 	public function actionIndex() 
 	{
-		$this->redirect(array('admin/manage'));
+		$this->redirect(array('o/admin/manage'));
 	}
 
 	/**

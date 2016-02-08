@@ -20,7 +20,7 @@ content_menu	:
 		urlRules: {album, o/admin, add,edit, siteType: 0,1, userLevel: 1,2}
 		urlPath: {url: manage, attr: -, icon: -}
 		
-# controller o/admin
+# controller o/photo
 
 	- urlTitle: Back to album manage
 		urlRules: {album, o/photo, manage, siteType: 0,1, userLevel: 1,2}

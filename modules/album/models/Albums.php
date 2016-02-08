@@ -378,7 +378,7 @@ class Albums extends CActiveRecord
 		if(parent::beforeValidate()) {
 			if($this->isNewRecord)
 				$this->user_id = Yii::app()->user->id;
-			else		
+			else
 				$this->modified_id = Yii::app()->user->id;
 			
 			if($this->headline == 1 && $this->publish == 0)
