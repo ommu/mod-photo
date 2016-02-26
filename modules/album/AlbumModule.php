@@ -35,7 +35,7 @@ class AlbumModule extends CWebModule
 				'photo',
 				'search',
 				'site',
-				'user',
+				'sync',
 			);
 			
 			// pake ini untuk set theme per action di controller..
