@@ -372,6 +372,38 @@ class Albums extends CActiveRecord
 	}
 
 	/**
+	 * Albums get information
+	 */
+	public function searchIndexing($index)
+	{
+		Yii::import('application.modules.album.models.*');
+		
+		$criteria=new CDbCriteria;
+		$criteria->compare('t.publish', 1);
+		$criteria->order = 'album_id DESC';
+		//$criteria->limit = 10;
+		$model = Albums::model()->findAll($criteria);
+		foreach($model as $key => $item) {
+			if($item->media_id != 0)
+				$images = Yii::app()->request->baseUrl.'/public/album/'.$item->album_id.'/'.$item->cover->media;
+			else
+				$images = '';
+				
+			$doc = new Zend_Search_Lucene_Document();
+			$doc->addField(Zend_Search_Lucene_Field::UnIndexed('id', CHtml::encode($item->album_id), 'utf-8')); 
+			$doc->addField(Zend_Search_Lucene_Field::Text('media', CHtml::encode($images), 'utf-8'));
+			$doc->addField(Zend_Search_Lucene_Field::Text('title', CHtml::encode($item->title), 'utf-8'));
+			$doc->addField(Zend_Search_Lucene_Field::Text('body', CHtml::encode(Utility::hardDecode(Utility::softDecode($item->body))), 'utf-8'));
+			$doc->addField(Zend_Search_Lucene_Field::Text('url', CHtml::encode(Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->createUrl('album/site/view', array('id'=>$item->album_id,'t'=>Utility::getUrlTitle($item->title)))), 'utf-8'));
+			$doc->addField(Zend_Search_Lucene_Field::UnIndexed('date', CHtml::encode(Utility::dateFormat($item->creation_date, true).' WIB'), 'utf-8'));
+			$doc->addField(Zend_Search_Lucene_Field::UnIndexed('creation', CHtml::encode($item->user->displayname), 'utf-8'));
+			$index->addDocument($doc);		
+		}
+		
+		return true;
+	}
+
+	/**
 	 * before validate attributes
 	 */
 	protected function beforeValidate() {
