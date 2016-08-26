@@ -19,6 +19,9 @@ plugin_menu		:
 		urlRules: {siteType: 0,1, userLevel: 1}
 		urlPath: {url: o/setting/index, attr: -, icon: -}
 		submenu :
+			- urlTitle: Categories
+				urlRules: {siteType: 0,1, userLevel: 1,2}
+				urlPath: {url: o/category/manage, attr: -, icon: -}
 			- urlTitle: Photos
 				urlRules: {siteType: 0,1, userLevel: 1,2}
 				urlPath: {url: o/photo/manage, attr: -, icon: -}
@@ -37,6 +40,15 @@ content_menu	:
 		
 	- urlTitle: Back to manage
 		urlRules: {album, o/admin, add,edit, siteType: 0,1, userLevel: 1,2}
+		urlPath: {url: manage, attr: -, icon: -}
+		
+# controller o/category
+	- urlTitle: Add Category
+		urlRules: {album, o/category, manage, siteType: 0,1, userLevel: 1,2}
+		urlPath: {url: add, attr: -, icon: -}
+		
+	- urlTitle: Back to manage
+		urlRules: {album, o/category, add,edit, siteType: 0,1, userLevel: 1,2}
 		urlPath: {url: manage, attr: -, icon: -}
 		
 # controller o/photo
