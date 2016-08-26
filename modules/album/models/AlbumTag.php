@@ -1,8 +1,10 @@
 <?php
 /**
  * AlbumTag
- * @author Putra Sudaryanto <putra@sudaryanto.id>
- * @copyright Copyright (c) 2016 Ommu Platform (ommu.co)
+ * version: 0.0.1
+ *
+ * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
+ * @copyright Copyright (c) 2014 Ommu Platform (ommu.co)
  * @link https://github.com/oMMu/Ommu-Photo-Albums
  * @contact (+62)856-299-4114
  *
@@ -95,14 +97,14 @@ class AlbumTag extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'album_id' => 'Album',
-			'tag_id' => 'Tag',
-			'creation_date' => 'Creation Date',
-			'creation_id' => 'Creation',
-			'album_search' => 'Album',
-			'tag_search' => 'Tag',
-			'creation_search' => 'Creation',
+			'id' => Yii::t('attribute', 'ID'),
+			'album_id' => Yii::t('attribute', 'Album'),
+			'tag_id' => Yii::t('attribute', 'Tag'),
+			'creation_date' => Yii::t('attribute', 'Creation Date'),
+			'creation_id' => Yii::t('attribute', 'Creation'),
+			'album_search' => Yii::t('attribute', 'Album'),
+			'tag_search' => Yii::t('attribute', 'Tag'),
+			'creation_search' => Yii::t('attribute', 'Creation'),
 		);
 	}
 

@@ -64,11 +64,6 @@
 		</li>
 
 		<li>
-			<?php echo $model->getAttributeLabel('photos'); ?><br/>
-			<?php echo $form->textField($model,'photos'); ?>
-		</li>
-
-		<li>
 			<?php echo $model->getAttributeLabel('comment'); ?><br/>
 			<?php echo $form->textField($model,'comment'); ?>
 		</li>

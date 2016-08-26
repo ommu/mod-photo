@@ -1,7 +1,9 @@
 <?php
 /**
  * AlbumPhoto
- * @author Putra Sudaryanto <putra@sudaryanto.id>
+ * version: 0.0.1
+ *
+ * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
  * @copyright Copyright (c) 2014 Ommu Platform (ommu.co)
  * @link https://github.com/oMMu/Ommu-Photo-Albums
  * @contact (+62)856-299-4114
@@ -101,18 +103,18 @@ class AlbumPhoto extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'media_id' => 'Media',
-			'publish' => 'Publish',
-			'album_id' => 'Album',
-			'orders' => 'Orders',
-			'cover' => 'Cover',
-			'media' => 'Photo',
-			'desc' => 'Desc',
-			'creation_date' => 'Creation Date',
-			'creation_id' => 'Creation',
-			'old_media' => 'Old Photo',
-			'album_search' => 'Album',
-			'creation_search' => 'Creation',
+			'media_id' => Yii::t('attribute', 'Media'),
+			'publish' => Yii::t('attribute', 'Publish'),
+			'album_id' => Yii::t('attribute', 'Album'),
+			'orders' => Yii::t('attribute', 'Orders'),
+			'cover' => Yii::t('attribute', 'Cover'),
+			'media' => Yii::t('attribute', 'Photo'),
+			'desc' => Yii::t('attribute', 'Desc'),
+			'creation_date' => Yii::t('attribute', 'Creation Date'),
+			'creation_id' => Yii::t('attribute', 'Creation'),
+			'old_media' => Yii::t('attribute', 'Old Photo'),
+			'album_search' => Yii::t('attribute', 'Album'),
+			'creation_search' => Yii::t('attribute', 'Creation'),
 		);
 	}
 
@@ -234,8 +236,13 @@ class AlbumPhoto extends CActiveRecord
 				);
 			}
 			$this->defaultColumns[] = array(
+				'name' => 'media',
+				'value' => 'CHtml::link($data->media, Yii::app()->request->baseUrl.\'/public/album/\'.$data->album_id.\'/\'.$data->media, array(\'target\' => \'_blank\'))',
+				'type' => 'raw',
+			);
+			$this->defaultColumns[] = array(
 				'name' => 'creation_search',
-				'value' => '$data->creation_relation->displayname',
+				'value' => '$data->creation_id != 0 ? $data->creation_relation->displayname : "-"',
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_date',

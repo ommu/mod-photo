@@ -1,7 +1,9 @@
 <?php
 /**
  * AlbumSetting
- * @author Putra Sudaryanto <putra@sudaryanto.id>
+ * version: 0.0.1
+ *
+ * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
  * @copyright Copyright (c) 2014 Ommu Platform (ommu.co)
  * @link https://github.com/oMMu/Ommu-Photo-Albums
  * @contact (+62)856-299-4114
@@ -25,9 +27,11 @@
  * @property integer $permission
  * @property string $meta_keyword
  * @property string $meta_description
- * @property integer $photo_limit
  * @property integer $headline
- * @property string $modified_date
+ * @property integer $photo_limit 
+ * @property integer $photo_resize 
+ * @property string $photo_resize_size
+ * @property string $photo_view_size
  * @property string $modified_id
  */
 class AlbumSetting extends CActiveRecord
@@ -64,12 +68,13 @@ class AlbumSetting extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('license, permission, meta_keyword, meta_description, photo_limit, headline', 'required'),
-			array('permission, photo_limit, headline, modified_id', 'numerical', 'integerOnly'=>true),
+			array('license, permission, meta_keyword, meta_description, headline, photo_limit, photo_resize', 'required'),
+			array('permission, headline, photo_limit, photo_resize, modified_id', 'numerical', 'integerOnly'=>true),
 			array('license', 'length', 'max'=>32),
+			array('photo_resize_size, photo_view_size', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, license, permission, meta_keyword, meta_description, photo_limit, headline, modified_date, modified_id,
+			array('id, license, permission, meta_keyword, meta_description, headline, photo_limit, photo_resize, photo_resize_size, photo_view_size, modified_date, modified_id,
 				modified_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -92,16 +97,19 @@ class AlbumSetting extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'license' => Phrase::trans(24015,1),
-			'permission' => Phrase::trans(24018,1),
-			'meta_keyword' => Phrase::trans(24022,1),
-			'meta_description' => Phrase::trans(24023,1),
-			'photo_limit' => Phrase::trans(24024,1),
-			'headline' => 'Headline',
-			'modified_date' => 'Modified Date',
-			'modified_id' => 'Modified',
-			'modified_search' => 'Modified',
+			'id' => Yii::t('attribute', 'ID'),
+			'license' => Yii::t('attribute', 'License Key'),
+			'permission' => Yii::t('attribute', 'Public Permission Defaults'),
+			'meta_keyword' => Yii::t('attribute', 'Meta Keyword'),
+			'meta_description' => Yii::t('attribute', 'Meta Description'),
+			'headline' => Yii::t('attribute', 'Headline'),
+			'photo_limit' => Yii::t('attribute', 'Photo Limit'),
+			'modified_date' => Yii::t('attribute', 'Modified Date'),
+			'modified_id' => Yii::t('attribute', 'Modified'),
+			'photo_resize' => Yii::t('attribute', 'Photo Resize'),
+			'photo_resize_size' => Yii::t('attribute', 'Photo Resize Size'),
+			'photo_view_size' => Yii::t('attribute', 'Photo View Size'),
+			'modified_search' => Yii::t('attribute', 'Modified'),
 		);
 	}
 
@@ -128,8 +136,11 @@ class AlbumSetting extends CActiveRecord
 		$criteria->compare('t.permission',$this->permission);
 		$criteria->compare('t.meta_keyword',$this->meta_keyword,true);
 		$criteria->compare('t.meta_description',$this->meta_description,true);
-		$criteria->compare('t.photo_limit',$this->photo_limit);
 		$criteria->compare('t.headline',$this->headline);
+		$criteria->compare('t.photo_limit',$this->photo_limit);
+		$criteria->compare('t.photo_resize',$this->photo_resize);
+		$criteria->compare('t.photo_resize_size',$this->photo_resize_size);
+		$criteria->compare('t.photo_view_size',$this->photo_view_size);
 		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
 		$criteria->compare('t.modified_id',$this->modified_id);
@@ -177,8 +188,11 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'permission';
 			$this->defaultColumns[] = 'meta_keyword';
 			$this->defaultColumns[] = 'meta_description';
-			$this->defaultColumns[] = 'photo_limit';
 			$this->defaultColumns[] = 'headline';
+			$this->defaultColumns[] = 'photo_limit';
+			$this->defaultColumns[] = 'photo_resize';
+			$this->defaultColumns[] = 'photo_resize_size';
+			$this->defaultColumns[] = 'photo_view_size';
 			$this->defaultColumns[] = 'modified_date';
 			$this->defaultColumns[] = 'modified_id';
 		}
@@ -199,8 +213,11 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'permission';
 			$this->defaultColumns[] = 'meta_keyword';
 			$this->defaultColumns[] = 'meta_description';
-			$this->defaultColumns[] = 'photo_limit';
 			$this->defaultColumns[] = 'headline';
+			$this->defaultColumns[] = 'photo_limit';
+			$this->defaultColumns[] = 'photo_resize';
+			$this->defaultColumns[] = 'photo_resize_size';
+			$this->defaultColumns[] = 'photo_view_size';
 			$this->defaultColumns[] = 'modified_date';
 			$this->defaultColumns[] = 'modified_id';
 			$this->defaultColumns[] = array(
@@ -235,10 +252,34 @@ class AlbumSetting extends CActiveRecord
 	 */
 	protected function beforeValidate() {
 		if(parent::beforeValidate()) {
-			if($this->photo_limit <= 1)
-				$this->addError('photo_limit', 'Photo Limit lebih besar dari 1');
-
+			if($this->photo_limit != '' && $this->photo_limit <= 1)
+				$this->addError('photo_limit', Yii::t('phrase', 'Photo Limit lebih besar dari 1'));
+			
+			if($this->photo_resize == 1 && ($this->photo_resize_size['width'] == '' || $this->photo_resize_size['height'] == ''))
+				$this->addError('photo_resize_size', Yii::t('phrase', 'Photo Resize cannot be blank.'));
+			
+			if($this->photo_view_size['large']['width'] == '' || $this->photo_view_size['large']['height'] == '')
+				$this->addError('photo_view_size[large]', Yii::t('phrase', 'Large Size cannot be blank.'));
+			
+			if($this->photo_view_size['medium']['width'] == '' || $this->photo_view_size['medium']['height'] == '')
+				$this->addError('photo_view_size[medium]', Yii::t('phrase', 'Medium Size cannot be blank.'));
+			
+			if($this->photo_view_size['small']['width'] == '' || $this->photo_view_size['small']['height'] == '')
+				$this->addError('photo_view_size[small]', Yii::t('phrase', 'Small Size cannot be blank.'));
+			
 			$this->modified_id = Yii::app()->user->id;
+		}
+		return true;
+	}
+	
+	/**
+	 * before save attributes
+	 */
+	protected function beforeSave() {
+		$controller = strtolower(Yii::app()->controller->id);
+		if(parent::beforeSave()) {
+			$this->photo_resize_size = serialize($this->photo_resize_size);
+			$this->photo_view_size = serialize($this->photo_view_size);
 		}
 		return true;
 	}
