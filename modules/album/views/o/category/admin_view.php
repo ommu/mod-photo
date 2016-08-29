@@ -3,7 +3,7 @@
  * Album Categories (album-category)
  * @var $this CategoryController
  * @var $model AlbumCategory
- * version: 0.0.1
+ * version: 0.1.4
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2016 Ommu Platform (ommu.co)

@@ -4,7 +4,7 @@
  * @var $this TagController
  * @var $model AlbumTag
  * @var $form CActiveForm
- * version: 0.0.1
+ * version: 0.1.4
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2015 Ommu Platform (ommu.co)
