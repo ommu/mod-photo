@@ -3,6 +3,7 @@
  * Album Likes (album-likes)
  * @var $this LikesController
  * @var $model AlbumLikes
+ * version: 0.0.1
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2014 Ommu Platform (ommu.co)

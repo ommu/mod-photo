@@ -3,6 +3,7 @@
  * Album Photos (album-photo)
  * @var $this PhotoController
  * @var $model AlbumPhoto
+ * version: 0.0.1
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2014 Ommu Platform (ommu.co)

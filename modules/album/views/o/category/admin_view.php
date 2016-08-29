@@ -5,10 +5,10 @@
  * @var $model AlbumCategory
  * version: 0.0.1
  *
- * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
+ * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2016 Ommu Platform (ommu.co)
  * @created date 26 August 2016, 23:10 WIB
- * @link http://company.ommu.co
+ * @link https://github.com/oMMu/Ommu-Photo-Albums
  * @contect (+62)856-299-4114
  *
  */
