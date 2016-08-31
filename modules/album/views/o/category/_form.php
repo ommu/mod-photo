@@ -77,7 +77,7 @@ EOP;
 		<div class="desc">
 			<?php echo $form->checkBox($model,'default_setting'); ?>
 			<?php echo $form->error($model,'default_setting'); ?>
-			<?php /*<div class="small-px silent"></div>*/?>
+			<div class="small-px silent pt-10"><?php echo Yii::t('phrase', 'Check jika ingin menggunakan pengaturan standar');?></div>
 		</div>
 	</div>
 
@@ -126,6 +126,15 @@ EOP;
 				<?php echo Yii::t('phrase', 'Height').': ';?><?php echo $form->textField($model,'photo_view_size[small][height]',array('maxlength'=>3,'class'=>'span-2')); ?>
 				<?php echo $form->error($model,'photo_view_size[small]'); ?>	
 			</div>
+		</div>
+	</div>
+
+	<div class="clearfix">
+		<?php echo $form->labelEx($model,'default'); ?>
+		<div class="desc">
+			<?php echo $form->checkBox($model,'default'); ?>
+			<?php echo $form->error($model,'default'); ?>
+			<?php /*<div class="small-px silent"></div>*/?>
 		</div>
 	</div>
 

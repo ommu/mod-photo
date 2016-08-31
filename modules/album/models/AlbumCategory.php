@@ -26,6 +26,7 @@
  * @property integer $publish
  * @property string $name
  * @property string $desc
+ * @property integer $default
  * @property integer $default_setting
  * @property integer $photo_limit
  * @property integer $photo_resize
@@ -73,9 +74,9 @@ class AlbumCategory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('default_setting,
+			array('default, default_setting,
 				title, description', 'required'),
-			array('publish, default_setting, photo_limit, photo_resize', 'numerical', 'integerOnly'=>true),
+			array('publish, default, default_setting, photo_limit, photo_resize', 'numerical', 'integerOnly'=>true),
 			array('name, desc, creation_id, modified_id', 'length', 'max'=>11),
 			array('
 				title', 'length', 'max'=>32),
@@ -84,7 +85,7 @@ class AlbumCategory extends CActiveRecord
 			array('photo_resize_size, photo_view_size', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('cat_id, publish, name, desc, default_setting, photo_limit, photo_resize, photo_resize_size, photo_view_size, creation_date, creation_id, modified_date, modified_id,
+			array('cat_id, publish, name, desc, default, default_setting, photo_limit, photo_resize, photo_resize_size, photo_view_size, creation_date, creation_id, modified_date, modified_id,
 				title, description, creation_search, modified_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -112,7 +113,8 @@ class AlbumCategory extends CActiveRecord
 			'publish' => Yii::t('attribute', 'Publish'),
 			'name' => Yii::t('attribute', 'Title'),
 			'desc' => Yii::t('attribute', 'Description'),
-			'default_setting' => Yii::t('attribute', 'Default Setting'),
+			'default' => Yii::t('attribute', 'Default'),
+			'default_setting' => Yii::t('attribute', 'Setting'),
 			'photo_limit' => Yii::t('attribute', 'Photo Limit'),
 			'photo_resize' => Yii::t('attribute', 'Photo Resize'),
 			'photo_resize_size' => Yii::t('attribute', 'Photo Resize Size'),
@@ -175,6 +177,7 @@ class AlbumCategory extends CActiveRecord
 		}
 		$criteria->compare('t.name',strtolower($this->name),true);
 		$criteria->compare('t.desc',strtolower($this->desc),true);
+		$criteria->compare('t.default',$this->default);
 		$criteria->compare('t.default_setting',$this->default_setting);
 		$criteria->compare('t.photo_limit',$this->photo_limit);
 		$criteria->compare('t.photo_resize',$this->photo_resize);
@@ -240,6 +243,7 @@ class AlbumCategory extends CActiveRecord
 			$this->defaultColumns[] = 'publish';
 			$this->defaultColumns[] = 'name';
 			$this->defaultColumns[] = 'desc';
+			$this->defaultColumns[] = 'default';
 			$this->defaultColumns[] = 'default_setting';
 			$this->defaultColumns[] = 'photo_limit';
 			$this->defaultColumns[] = 'photo_resize';
@@ -312,7 +316,21 @@ class AlbumCategory extends CActiveRecord
 			if(!isset($_GET['type'])) {
 				$this->defaultColumns[] = array(
 					'name' => 'default_setting',
-					'value' => '$data->default_setting == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',					
+					'value' => '$data->default_setting == 1 ? Yii::t("phrase", "Default") : Yii::t("phrase", "Custom")',					
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'filter'=>array(
+						1=>Yii::t('phrase', 'Default'),
+						0=>Yii::t('phrase', 'Custom'),
+					),
+					'type' => 'raw',
+				);
+			}
+			if(!isset($_GET['type'])) {
+				$this->defaultColumns[] = array(
+					'name' => 'default',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("default",array("id"=>$data->cat_id)), $data->default, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -322,8 +340,6 @@ class AlbumCategory extends CActiveRecord
 					),
 					'type' => 'raw',
 				);
-			}
-			if(!isset($_GET['type'])) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
 					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->cat_id)), $data->publish, 1)',
@@ -459,6 +475,14 @@ class AlbumCategory extends CActiveRecord
 				$desc = OmmuSystemPhrase::model()->findByPk($this->desc);
 				$desc->en_us = $this->description;
 				$desc->save();
+				
+				// category set to default
+				if ($this->default == 1) {
+					self::model()->updateAll(array(
+						'default' => 0,	
+					));
+					$this->default = 1;
+				}
 			}
 			
 			$this->photo_resize_size = serialize($this->photo_resize_size);
