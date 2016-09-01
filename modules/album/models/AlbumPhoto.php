@@ -390,6 +390,8 @@ class AlbumPhoto extends CActiveRecord
 			
 			if($this->isNewRecord)
 				$this->creation_id = Yii::app()->user->id;
+			else
+				$this->modified_id = Yii::app()->user->id;
 		}
 		return true;
 	}

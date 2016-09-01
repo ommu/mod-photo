@@ -354,21 +354,23 @@ class Albums extends CActiveRecord
 				), true),
 			);
 			if(!isset($_GET['type'])) {
+				if(OmmuSettings::getInfo('site_headline') == 1) {
+					$this->defaultColumns[] = array(
+						'name' => 'headline',
+						'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("headline",array("id"=>$data->album_id)), $data->headline, 1)',
+						'htmlOptions' => array(
+							'class' => 'center',
+						),
+						'filter'=>array(
+							1=>Yii::t('phrase', 'Yes'),
+							0=>Yii::t('phrase', 'No'),
+						),
+						'type' => 'raw',
+					);
+				}
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
 					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->album_id)), $data->publish, 1)',
-					'htmlOptions' => array(
-						'class' => 'center',
-					),
-					'filter'=>array(
-						1=>Yii::t('phrase', 'Yes'),
-						0=>Yii::t('phrase', 'No'),
-					),
-					'type' => 'raw',
-				);
-				$this->defaultColumns[] = array(
-					'name' => 'headline',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("headline",array("id"=>$data->album_id)), $data->headline, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
