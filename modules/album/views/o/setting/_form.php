@@ -82,6 +82,14 @@ EOP;
 		</div>
 
 		<div class="clearfix">
+			<?php echo $form->labelEx($model,'headline'); ?>
+			<div class="desc">
+				<?php echo $form->textField($model,'headline', array('maxlength'=>1, 'class'=>'span-2')); ?>
+				<?php echo $form->error($model,'headline'); ?>
+			</div>
+		</div>
+
+		<div class="clearfix">
 			<?php echo $form->labelEx($model,'photo_limit'); ?>
 			<div class="desc">
 				<?php echo $form->textField($model,'photo_limit', array('class'=>'span-2')); ?>

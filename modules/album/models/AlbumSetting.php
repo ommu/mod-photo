@@ -102,7 +102,7 @@ class AlbumSetting extends CActiveRecord
 			'permission' => Yii::t('attribute', 'Public Permission Defaults'),
 			'meta_keyword' => Yii::t('attribute', 'Meta Keyword'),
 			'meta_description' => Yii::t('attribute', 'Meta Description'),
-			'headline' => Yii::t('attribute', 'Headline'),
+			'headline' => Yii::t('attribute', 'Headline Limit'),
 			'photo_limit' => Yii::t('attribute', 'Photo Limit'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
