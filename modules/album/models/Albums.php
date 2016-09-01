@@ -84,7 +84,7 @@ class Albums extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title', 'required'),
+			array('cat_id, title', 'required'),
 			array('publish, headline, comment_code, comment, view, likes, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('cat_id', 'length', 'max'=>5),
 			array('user_id, media_id', 'length', 'max'=>11),
@@ -92,7 +92,7 @@ class Albums extends CActiveRecord
 				keyword', 'length', 'max'=>32),
 			array('title', 'length', 'max'=>128),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
-			array('media_id, title, body, quote,
+			array('media_id, body, quote,
 				media, old_media, keyword', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

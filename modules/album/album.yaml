@@ -69,3 +69,15 @@ content_menu	:
 	- urlTitle: Back to album manage
 		urlRules: {album, o/like, manage, siteType: 1, userLevel: 1,2}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
+
+# controller o/tag
+
+	- urlTitle: Back to album manage
+		urlRules: {album, o/tag, manage, siteType: 0,1, userLevel: 1,2}
+		urlPath: {url: o/admin/manage, attr: -, icon: -}
+		
+# controller o/phototag
+
+	- urlTitle: Back to album manage
+		urlRules: {album, o/phototag, manage, siteType: 0,1, userLevel: 1,2}
+		urlPath: {url: o/admin/manage, attr: -, icon: -}

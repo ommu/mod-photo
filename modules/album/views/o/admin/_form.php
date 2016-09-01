@@ -44,6 +44,20 @@
 				<div class="shadow"></div>
 
 				<div class="clearfix">
+					<?php echo $form->labelEx($model,'cat_id'); ?>
+					<div class="desc">
+						<?php
+						$category = AlbumCategory::getCategory();
+
+						if($category != null)
+							echo $form->dropDownList($model,'cat_id', $category, array('prompt'=>Yii::t('phrase', 'Select Category')));
+						else
+							echo $form->dropDownList($model,'cat_id', array('prompt'=>Yii::t('phrase', 'No Parent')));?>
+						<?php echo $form->error($model,'cat_id'); ?>
+					</div>
+				</div>
+
+				<div class="clearfix">
 					<?php echo $form->labelEx($model,'title'); ?>
 					<div class="desc">
 						<?php echo $form->textField($model,'title',array('maxlength'=>128, 'class'=>'span-8')); ?>
