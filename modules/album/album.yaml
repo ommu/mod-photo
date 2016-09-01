@@ -28,9 +28,12 @@ plugin_menu		:
 			- urlTitle: Likes
 				urlRules: {siteType: 1, userLevel: 1,2}
 				urlPath: {url: o/likes/manage, attr: -, icon: -}
-			- urlTitle: Tags
+			- urlTitle: Album Tags
 				urlRules: {siteType: 0,1, userLevel: 1}
 				urlPath: {url: o/tag/manage, attr: -, icon: -}
+			- urlTitle: Photo Tags
+				urlRules: {siteType: 0,1, userLevel: 1}
+				urlPath: {url: o/phototag/manage, attr: -, icon: -}
 
 content_menu	:
 # controller o/admin
