@@ -36,7 +36,7 @@
 
 <?php //begin.Search ?>
 <div class="search-form">
-<?php $this->renderPartial('_search',array(
+<?php $this->renderPartial('/o/photo_tag/_search',array(
 	'model'=>$model,
 )); ?>
 </div>
@@ -44,7 +44,7 @@
 
 <?php //begin.Grid Option ?>
 <div class="grid-form">
-<?php $this->renderPartial('_option_form',array(
+<?php $this->renderPartial('/o/photo_tag/_option_form',array(
 	'model'=>$model,
 )); ?>
 </div>
@@ -74,8 +74,6 @@
 						'label' => 'view',
 						'options' => array(							
 							'class' => 'view',
-							'off_address' => '',
-							'target' => '_blank',
 						),
 						'url' => 'Yii::app()->controller->createUrl("site/view",array("id"=>$data->primaryKey))'),
 					'update' => array(
@@ -91,7 +89,7 @@
 						),
 						'url' => 'Yii::app()->controller->createUrl("delete",array("id"=>$data->primaryKey))')
 				),
-				'template' => '{view}|{update}|{delete}',
+				'template' => '{delete}',
 			));
 
 			$this->widget('application.components.system.OGridView', array(

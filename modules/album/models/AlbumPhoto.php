@@ -41,6 +41,7 @@
 class AlbumPhoto extends CActiveRecord
 {
 	public $defaultColumns = array();
+	public $tag;
 	public $old_media;
 	
 	// Variable Search
@@ -82,7 +83,7 @@ class AlbumPhoto extends CActiveRecord
 			array('album_id, creation_id, modified_id', 'length', 'max'=>11),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
 			array('cover, media, title, description,
-				old_media', 'safe'),
+				tag, old_media', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('media_id, publish, album_id, orders, cover, media, title, description, creation_date, creation_id, modified_date, modified_id,
@@ -123,6 +124,7 @@ class AlbumPhoto extends CActiveRecord
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
+			'tag' => Yii::t('attribute', 'Tag'),
 			'old_media' => Yii::t('attribute', 'Old Photo'),
 			'album_search' => Yii::t('attribute', 'Album'),
 			'photo_info_search' => Yii::t('attribute', 'Photo Info'),

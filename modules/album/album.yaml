@@ -23,16 +23,16 @@ plugin_menu		:
 				urlRules: {siteType: 0,1, userLevel: 1,2}
 				urlPath: {url: o/category/manage, attr: -, icon: -}
 			- urlTitle: Photos
-				urlRules: {siteType: 0,1, userLevel: 1}
+				urlRules: {siteType: 0,1, userLevel: 1,2}
 				urlPath: {url: o/photo/manage, attr: -, icon: -}
 			- urlTitle: Likes
 				urlRules: {siteType: 1, userLevel: 1,2}
 				urlPath: {url: o/likes/manage, attr: -, icon: -}
 			- urlTitle: Album Tags
-				urlRules: {siteType: 0,1, userLevel: 1}
+				urlRules: {siteType: 0,1, userLevel: 1,2}
 				urlPath: {url: o/tag/manage, attr: -, icon: -}
 			- urlTitle: Photo Tags
-				urlRules: {siteType: 0,1, userLevel: 1}
+				urlRules: {siteType: 0,1, userLevel: 1,2}
 				urlPath: {url: o/phototag/manage, attr: -, icon: -}
 
 content_menu	:

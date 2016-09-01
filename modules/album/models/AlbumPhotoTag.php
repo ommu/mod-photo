@@ -35,6 +35,12 @@
 class AlbumPhotoTag extends CActiveRecord
 {
 	public $defaultColumns = array();
+	public $body;
+	
+	// Variable Search
+	public $photo_search;
+	public $tag_search;
+	public $creation_search;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -63,11 +69,12 @@ class AlbumPhotoTag extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('media_id, tag_id, creation_date, creation_id', 'required'),
+			array('media_id, tag_id', 'required'),
 			array('media_id, tag_id, creation_id', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, media_id, tag_id, creation_date, creation_id', 'safe', 'on'=>'search'),
+			array('id, media_id, tag_id, creation_date, creation_id,
+				photo_search, tag_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,7 +86,9 @@ class AlbumPhotoTag extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'media_relation' => array(self::BELONGS_TO, 'OmmuAlbumPhoto', 'media_id'),
+			'photo' => array(self::BELONGS_TO, 'AlbumPhoto', 'media_id'),
+			'tag' => array(self::BELONGS_TO, 'OmmuTags', 'tag_id'),
+			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 		);
 	}
 
@@ -90,10 +99,13 @@ class AlbumPhotoTag extends CActiveRecord
 	{
 		return array(
 			'id' => Yii::t('attribute', 'ID'),
-			'media_id' => Yii::t('attribute', 'Media'),
+			'media_id' => Yii::t('attribute', 'Photo'),
 			'tag_id' => Yii::t('attribute', 'Tag'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
+			'photo_search' => Yii::t('attribute', 'Photo'),
+			'tag_search' => Yii::t('attribute', 'Tag'),
+			'creation_search' => Yii::t('attribute', 'Creation'),
 		);
 		/*
 			'ID' => 'ID',
@@ -135,6 +147,25 @@ class AlbumPhotoTag extends CActiveRecord
 			$criteria->compare('t.creation_id',$_GET['creation']);
 		else
 			$criteria->compare('t.creation_id',$this->creation_id);
+		
+		// Custom Search
+		$criteria->with = array(
+			'photo' => array(
+				'alias'=>'photo',
+				'select'=>'media'
+			),
+			'tag' => array(
+				'alias'=>'tag',
+				'select'=>'body'
+			),
+			'creation' => array(
+				'alias'=>'creation',
+				'select'=>'displayname'
+			),
+		);
+		$criteria->compare('photo.media',strtolower($this->photo_search), true);
+		$criteria->compare('tag.body',strtolower($this->tag_search), true);
+		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 
 		if(!isset($_GET['AlbumPhotoTag_sort']))
 			$criteria->order = 't.id DESC';
@@ -192,8 +223,20 @@ class AlbumPhotoTag extends CActiveRecord
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			$this->defaultColumns[] = 'media_id';
-			$this->defaultColumns[] = 'tag_id';
+			if(!isset($_GET['photo'])) {
+				$this->defaultColumns[] = array(
+					'name' => 'photo_search',
+					'value' => '$data->photo->media',
+				);
+			}
+			$this->defaultColumns[] = array(
+				'name' => 'tag_search',
+				'value' => '$data->tag->body',
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'creation_search',
+				'value' => '$data->creation->displayname',
+			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_date',
 				'value' => 'Utility::dateFormat($data->creation_date)',
@@ -220,7 +263,6 @@ class AlbumPhotoTag extends CActiveRecord
 					),
 				), true),
 			);
-			$this->defaultColumns[] = 'creation_id';
 		}
 		parent::afterConstruct();
 	}
@@ -241,72 +283,33 @@ class AlbumPhotoTag extends CActiveRecord
 			return $model;			
 		}
 	}
-
-	/**
-	 * before validate attributes
-	 */
-	/*
-	protected function beforeValidate() {
-		if(parent::beforeValidate()) {
-			// Create action
-		}
-		return true;
-	}
-	*/
-
-	/**
-	 * after validate attributes
-	 */
-	/*
-	protected function afterValidate()
-	{
-		parent::afterValidate();
-			// Create action
-		return true;
-	}
-	*/
 	
 	/**
 	 * before save attributes
 	 */
-	/*
 	protected function beforeSave() {
 		if(parent::beforeSave()) {
-		}
-		return true;	
-	}
-	*/
-	
-	/**
-	 * After save attributes
-	 */
-	/*
-	protected function afterSave() {
-		parent::afterSave();
-		// Create action
-	}
-	*/
-
-	/**
-	 * Before delete attributes
-	 */
-	/*
-	protected function beforeDelete() {
-		if(parent::beforeDelete()) {
-			// Create action
+			if($this->isNewRecord) {
+				if($this->tag_id == 0) {
+					$tag = OmmuTags::model()->find(array(
+						'select' => 'tag_id, body',
+						'condition' => 'publish = 1 AND body = :body',
+						'params' => array(
+							':body' => $this->body,
+						),
+					));
+					if($tag != null)
+						$this->tag_id = $tag->tag_id;
+					else {
+						$data = new OmmuTags;
+						$data->body = $this->body;
+						if($data->save())
+							$this->tag_id = $data->tag_id;
+					}					
+				}
+			}
+			$this->creation_id = Yii::app()->user->id;
 		}
 		return true;
 	}
-	*/
-
-	/**
-	 * After delete attributes
-	 */
-	/*
-	protected function afterDelete() {
-		parent::afterDelete();
-		// Create action
-	}
-	*/
-
 }

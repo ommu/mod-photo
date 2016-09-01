@@ -67,6 +67,57 @@
 		</div>
 	</div>
 	
+	<?php if(!$model->isNewRecord) {?>
+	<div class="clearfix">
+		<?php echo $form->labelEx($model,'tag'); ?>
+		<div class="desc">
+			<?php 
+			if(!$model->isNewRecord) {
+				//echo $form->textField($model,'keyword',array('maxlength'=>32,'class'=>'span-6'));
+				$url = Yii::app()->controller->createUrl('o/phototag/add', array('type'=>'photo'));
+				$photo = $model->media_id;
+				$tagId = 'AlbumPhoto_tag';
+				$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+					'model' => $model,
+					'attribute' => 'tag',
+					'source' => Yii::app()->createUrl('globaltag/suggest'),
+					'options' => array(
+						//'delay '=> 50,
+						'minLength' => 1,
+						'showAnim' => 'fold',
+						'select' => "js:function(event, ui) {
+							$.ajax({
+								type: 'post',
+								url: '$url',
+								data: { media_id: '$photo', tag_id: ui.item.id, tag: ui.item.value },
+								dataType: 'json',
+								success: function(response) {
+									$('form #$tagId').val('');
+									$('form #tag-suggest').append(response.data);
+								}
+							});
+
+						}"
+					),
+					'htmlOptions' => array(
+						'class'	=> 'span-4',
+					),
+				));
+				echo $form->error($model,'keyword');
+			}?>
+			<div id="tag-suggest" class="suggest clearfix">
+				<?php if(!$model->isNewRecord) {
+					if($tag != null) {
+						foreach($tag as $key => $val) {?>
+						<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/phototag/delete',array('id'=>$val->id,'type'=>'photo'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
+					<?php }
+					}
+				}?>
+			</div>
+		</div>
+	</div>
+	<?php }?>
+	
 	<div class="clearfix">
 		<?php echo $form->labelEx($model,'cover'); ?>
 		<div class="desc">
