@@ -48,7 +48,7 @@ EOP;
 		<ul id="media-render">
 			<li id="upload" <?php echo (count(AlbumPhoto::getPhoto($model->album_id)) == $setting->photo_limit) ? 'class="hide"' : '' ?>>
 				<a id="upload-gallery" href="<?php echo Yii::app()->controller->createUrl('o/photo/ajaxadd', array('id'=>$model->album_id,'type'=>'admin'));?>" title="<?php echo Phrase::trans(26054,1); ?>"><?php echo Phrase::trans(26054,1); ?></a>
-				<img src="<?php echo Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_default.png', 320, 250, 1);?>" alt="" />
+				<img src="<?php echo Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_plus.png', 320, 250, 1);?>" alt="" />
 			</li>
 		</ul>
 	</div>

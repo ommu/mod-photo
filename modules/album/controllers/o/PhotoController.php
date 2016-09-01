@@ -138,7 +138,7 @@ class PhotoController extends Controller
 			$url = Yii::app()->controller->createUrl('ajaxadd', array('id'=>$id,'type'=>'admin'));
 			$data .= '<li id="upload" '.$class.'>';
 			$data .= '<a id="upload-gallery" href="'.$url.'" title="'.Phrase::trans(26054,1).'">'.Phrase::trans(26054,1).'</a>';
-			$data .= '<img src="'.Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_default.png', 320, 250, 1).'" alt="" />';
+			$data .= '<img src="'.Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_plus.png', 320, 250, 1).'" alt="" />';
 			$data .= '</li>';
 			// end.Upload Button
 		}

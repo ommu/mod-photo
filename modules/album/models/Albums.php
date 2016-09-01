@@ -513,8 +513,11 @@ class Albums extends CActiveRecord
 				self::model()->updateAll(array(
 					'headline' => 0,	
 				), array(
-					'condition'=> 'album_id != :id',
-					'params'=>array(':id'=>$this->album_id),
+					'condition'=> 'album_id != :id AND cat_id = :cat',
+					'params'=>array(
+						':id'=>$this->album_id,
+						':cat'=>$this->cat_id,
+					),
 				));
 			}
 		}
