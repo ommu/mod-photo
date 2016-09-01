@@ -48,11 +48,11 @@ EOP;
 </div>
 
 <div class="boxed mt-15">
-	<h3><?php echo Phrase::trans(24013,1); ?></h3>
+	<h3><?php echo Yii::t('phrase', 'Album Photo'); ?></h3>
 	<div class="clearfix horizontal-data" name="four">
 		<ul id="media-render">
 			<li id="upload" <?php echo (count(AlbumPhoto::getPhoto($model->album_id)) == $photo_limit) ? 'class="hide"' : '' ?>>
-				<a id="upload-gallery" href="<?php echo Yii::app()->controller->createUrl('o/photo/ajaxadd', array('id'=>$model->album_id,'type'=>'admin'));?>" title="<?php echo Phrase::trans(26054,1); ?>"><?php echo Phrase::trans(26054,1); ?></a>
+				<a id="upload-gallery" href="<?php echo Yii::app()->controller->createUrl('o/photo/ajaxadd', array('id'=>$model->album_id,'type'=>'admin'));?>" title="<?php echo Yii::t('phrase', 'Upload Photo'); ?>"><?php echo Yii::t('phrase', 'Upload Photo'); ?></a>
 				<img src="<?php echo Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_plus.png', 320, 250, 1);?>" alt="" />
 			</li>
 		</ul>

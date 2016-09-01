@@ -37,7 +37,7 @@
 	</div>
 	<?php //begin.Messages ?>
 
-	<h3><?php echo Phrase::trans(24008,1); ?></h3>
+	<h3><?php echo Yii::t('phrase', 'Album Information'); ?></h3>
 	<fieldset class="clearfix">
 		<div class="clear">
 			<div class="left">

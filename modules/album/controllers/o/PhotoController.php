@@ -125,9 +125,9 @@ class PhotoController extends Controller
 				$urlCover = Yii::app()->controller->createUrl('cover', array('id'=>$val->media_id,'type'=>'admin'));
 				$data .= '<li>';
 				if($val->cover == 0) {
-					$data .= '<a id="set-cover" href="'.$urlCover.'" title="'.Phrase::trans(26108,1).'">'.Phrase::trans(26108,1).'</a>';
+					$data .= '<a id="set-cover" href="'.$urlCover.'" title="'.Yii::t('phrase', 'Set Cover').'">'.Yii::t('phrase', 'Set Cover').'</a>';
 				}
-				$data .= '<a id="set-delete" href="'.$url.'" title="'.Phrase::trans(24012,1).'">'.Phrase::trans(24012,1).'</a>';
+				$data .= '<a id="set-delete" href="'.$url.'" title="'.Yii::t('phrase', 'Delete Photo').'">'.Yii::t('phrase', 'Delete Photo').'</a>';
 				$data .= '<img src="'.Utility::getTimThumb($image, 320, 250, 1).'" alt="'.$val->album->title.'" />';
 				$data .= '</li>';
 			}
@@ -143,7 +143,7 @@ class PhotoController extends Controller
 			$class = (count($model) == $photo_limit) ? 'class="hide"' : '';
 			$url = Yii::app()->controller->createUrl('ajaxadd', array('id'=>$id,'type'=>'admin'));
 			$data .= '<li id="upload" '.$class.'>';
-			$data .= '<a id="upload-gallery" href="'.$url.'" title="'.Phrase::trans(26054,1).'">'.Phrase::trans(26054,1).'</a>';
+			$data .= '<a id="upload-gallery" href="'.$url.'" title="'.Yii::t('phrase', 'Upload Photo').'">'.Yii::t('phrase', 'Upload Photo').'</a>';
 			$data .= '<img src="'.Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_plus.png', 320, 250, 1).'" alt="" />';
 			$data .= '</li>';
 			// end.Upload Button
@@ -272,7 +272,7 @@ class PhotoController extends Controller
 			$this->dialogGroundUrl = isset($_GET['type']) && $_GET['type'] == 'admin' ? Yii::app()->controller->createUrl('o/admin/edit', array('id'=>$model->album_id)) : Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Phrase::trans(24012,1);
+			$this->pageTitle = Yii::t('phrase', 'Delete Photo');
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -317,7 +317,7 @@ class PhotoController extends Controller
 			$this->dialogGroundUrl = isset($_GET['type']) && $_GET['type'] == 'admin' ? Yii::app()->controller->createUrl('o/admin/edit', array('id'=>$model->album_id)) : Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Phrase::trans(26105,1);
+			$this->pageTitle = Yii::t('phrase', 'Cover Photo');
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_cover');

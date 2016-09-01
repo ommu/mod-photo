@@ -128,7 +128,7 @@ class AdminController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Phrase::trans(24001,1);
+		$this->pageTitle = Yii::t('phrase', 'Manage Album');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -155,12 +155,12 @@ class AdminController extends Controller
 			$model->attributes=$_POST['Albums'];
 			
 			if($model->save()) {
-				Yii::app()->user->setFlash('success', Phrase::trans(24003,1));
+				Yii::app()->user->setFlash('success', Yii::t('phrase', 'Album success created.'));
 				$this->redirect(array('edit','id'=>$model->album_id));
 			}
 		}
 
-		$this->pageTitle = Phrase::trans(24002,1);
+		$this->pageTitle = Yii::t('phrase', 'Create Album');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_add',array(
@@ -214,7 +214,7 @@ class AdminController extends Controller
 					if($model->save()) {
 						echo CJSON::encode(array(
 							'type' => 0,
-							'msg' => '<div class="errorSummary success"><strong>'.Phrase::trans(24005,1).'</strong></div>',
+							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album success updated.').'</strong></div>',
 						));
 					} else {
 						print_r($model->getErrors());
@@ -224,7 +224,7 @@ class AdminController extends Controller
 			Yii::app()->end();
 			
 		} else {
-			$this->pageTitle = Phrase::trans(24004,1).': '.$model->title;
+			$this->pageTitle = Yii::t('phrase', 'Update Album').': '.$model->title;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_edit',array(
@@ -288,7 +288,7 @@ class AdminController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-albums',
-						'msg' => '<div class="errorSummary success"><strong>'.Phrase::trans(24007,1).'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album success deleted.').'</strong></div>',
 					));
 				}
 			}
@@ -298,7 +298,7 @@ class AdminController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Phrase::trans(24006,1);
+			$this->pageTitle = Yii::t('phrase', 'Delete Album');
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -333,7 +333,7 @@ class AdminController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-albums',
-						'msg' => '<div class="errorSummary success"><strong>'.Phrase::trans(24005,1).'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album success updated.').'</strong></div>',
 					));
 				}
 			}
@@ -374,7 +374,7 @@ class AdminController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-albums',
-						'msg' => '<div class="errorSummary success"><strong>'.Phrase::trans(24005,1).'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album success updated.').'</strong></div>',
 					));
 				}
 			}

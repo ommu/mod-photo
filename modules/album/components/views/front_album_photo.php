@@ -1,6 +1,6 @@
 <?php if($model != null) {?>
 <div class="boxed">
-	<h3><?php echo Phrase::trans(24027,1);?></h3>
+	<h3><?php echo Yii::t('phrase', 'Recent Photo');?></h3>
 	<ul class="photo clearfix">
 	<?php foreach($model as $key => $val) {
 		$images = Yii::app()->request->baseUrl.'/public/album/'.$val->album_id.'/'.$val->media;
