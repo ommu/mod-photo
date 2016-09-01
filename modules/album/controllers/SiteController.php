@@ -4,7 +4,7 @@
  * @var $this SiteController
  * @var $model Albums
  * @var $form CActiveForm
- * version: 0.0.1
+ * version: 0.1.4
  * Reference start
  *
  * TOC :

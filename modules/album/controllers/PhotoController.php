@@ -4,15 +4,15 @@
  * @var $this PhotoController
  * @var $model AlbumPhoto
  * @var $form CActiveForm
- * version: 0.0.1
+ * version: 0.1.4
  * Reference start
  *
  * TOC :
  *	Index
-*	AjaxManage
-*	AjaxAdd
-*	AjaxEdit
-*	AjaxDelete
+ *	AjaxManage
+ *	AjaxAdd
+ *	AjaxEdit
+ *	AjaxDelete
  *
  *	LoadModel
  *	performAjaxValidation
@@ -131,7 +131,7 @@ class PhotoController extends Controller
 			$url = Yii::app()->controller->createUrl('ajaxadd', array('id'=>$id));
 			$data .= '<li id="upload" '.$class.'>';
 			$data .= '<a id="upload-gallery" href="'.$url.'" title="'.Phrase::trans(26054,1).'">'.Phrase::trans(26054,1).'</a>';
-			$data .= '<img src="'.Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_default.png', 320, 250, 1).'" alt="" />';
+			$data .= '<img src="'.Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_plus.png', 320, 250, 1).'" alt="" />';
 			$data .= '</li>';
 			// end.Upload Button
 		}

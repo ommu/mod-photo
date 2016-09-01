@@ -4,13 +4,13 @@
  * @var $this LikesController
  * @var $model AlbumLikes
  * @var $form CActiveForm
- * version: 0.0.1
+ * version: 0.1.4
  * Reference start
  *
  * TOC :
  *	Index
-*	Up
-*	Down
+ *	Up
+ *	Down
  *	Manage
  *	Delete
  *
