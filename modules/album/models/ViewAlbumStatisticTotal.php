@@ -1,10 +1,11 @@
 <?php
 /**
- * ViewAlbums
+ * ViewAlbumStatisticTotal
  * version: 0.1.4
  *
- * @author Putra Sudaryanto <putra@sudaryanto.id>
+ * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
  * @copyright Copyright (c) 2016 Ommu Platform (ommu.co)
+ * @created date 1 September 2016, 09:21 WIB
  * @link https://github.com/oMMu/Ommu-Photo-Albums
  * @contact (+62)856-299-4114
  *
@@ -19,16 +20,13 @@
  *
  * --------------------------------------------------------------------------------------
  *
- * This is the model class for table "_view_albums".
+ * This is the model class for table "_view_album_statistic_total".
  *
- * The followings are the available columns in table '_view_albums':
- * @property string $album_id
- * @property string $media
- * @property string $photos
- * @property string $photo_publish
- * @property string $photo_unpublish
+ * The followings are the available columns in table '_view_album_statistic_total':
+ * @property string $statistic_key
+ * @property string $total
  */
-class ViewAlbums extends CActiveRecord
+class ViewAlbumStatisticTotal extends CActiveRecord
 {
 	public $defaultColumns = array();
 
@@ -36,7 +34,7 @@ class ViewAlbums extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ViewAlbums the static model class
+	 * @return ViewAlbumStatisticTotal the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -48,7 +46,7 @@ class ViewAlbums extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '_view_albums';
+		return '_view_album_statistic_total';
 	}
 
 	/**
@@ -56,7 +54,7 @@ class ViewAlbums extends CActiveRecord
 	 */
 	public function primaryKey()
 	{
-		return 'album_id';
+		return 'statistic_key';
 	}
 
 	/**
@@ -67,11 +65,12 @@ class ViewAlbums extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('album_id', 'length', 'max'=>11),
-			array('media, photos, photo_publish, photo_unpublish', 'length', 'max'=>21),
+			array('statistic_key', 'required'),
+			array('statistic_key', 'length', 'max'=>32),
+			array('total', 'length', 'max'=>21),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('album_id, media, photos, photo_publish, photo_unpublish', 'safe', 'on'=>'search'),
+			array('statistic_key, total', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -92,15 +91,12 @@ class ViewAlbums extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'album_id' => Yii::t('attribute', 'Album'),
-			'media' => Yii::t('attribute', 'Media'),
-			'photos' => Yii::t('attribute', 'Photos'),
-			'photo_publish' => Yii::t('attribute', 'Photo Publish'),
-			'photo_unpublish' => Yii::t('attribute', 'Photo Unpublish'),
+			'statistic_key' => Yii::t('attribute', 'Statistic Key'),
+			'total' => Yii::t('attribute', 'Total'),
 		);
 		/*
-			'Album' => 'Album',
-			'Photos' => 'Photos',
+			'Statistic Key' => 'Statistic Key',
+			'Total' => 'Total',
 		
 		*/
 	}
@@ -123,14 +119,11 @@ class ViewAlbums extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('t.album_id',$this->album_id);
-		$criteria->compare('t.media',strtolower($this->media),true);
-		$criteria->compare('t.photos',$this->photos);
-		$criteria->compare('t.photo_publish',$this->photo_publish);
-		$criteria->compare('t.photo_unpublish',$this->photo_unpublish);
+		$criteria->compare('t.statistic_key',strtolower($this->statistic_key),true);
+		$criteria->compare('t.total',strtolower($this->total),true);
 
-		if(!isset($_GET['ViewAlbums_sort']))
-			$criteria->order = 't.album_id DESC';
+		if(!isset($_GET['ViewAlbumStatisticTotal_sort']))
+			$criteria->order = 't.statistic_key DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -158,11 +151,8 @@ class ViewAlbums extends CActiveRecord
 				$this->defaultColumns[] = $val;
 			}
 		} else {
-			$this->defaultColumns[] = 'album_id';
-			$this->defaultColumns[] = 'media';
-			$this->defaultColumns[] = 'photos';
-			$this->defaultColumns[] = 'photo_publish';
-			$this->defaultColumns[] = 'photo_unpublish';
+			$this->defaultColumns[] = 'statistic_key';
+			$this->defaultColumns[] = 'total';
 		}
 
 		return $this->defaultColumns;
@@ -177,11 +167,8 @@ class ViewAlbums extends CActiveRecord
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			//$this->defaultColumns[] = 'album_id';
-			$this->defaultColumns[] = 'media';
-			$this->defaultColumns[] = 'photos';
-			$this->defaultColumns[] = 'photo_publish';
-			$this->defaultColumns[] = 'photo_unpublish';
+			$this->defaultColumns[] = 'statistic_key';
+			$this->defaultColumns[] = 'total';
 		}
 		parent::afterConstruct();
 	}

@@ -28,9 +28,12 @@
  * @property integer $orders
  * @property integer $cover
  * @property string $media
- * @property string $desc
+ * @property string $title
+ * @property string $description
  * @property string $creation_date
  * @property string $creation_id
+ * @property string $modified_date
+ * @property string $modified_id
  *
  * The followings are the available model relations:
  * @property OmmuAlbums $album
@@ -42,7 +45,9 @@ class AlbumPhoto extends CActiveRecord
 	
 	// Variable Search
 	public $album_search;
+	public $photo_info_search;
 	public $creation_search;
+	public $modified_search;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -72,15 +77,16 @@ class AlbumPhoto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('album_id', 'required'),
-			array('publish, orders, cover, creation_id', 'numerical', 'integerOnly'=>true),
-			array('album_id', 'length', 'max'=>11),
+			array('title, description', 'required', 'on'=>'photoInfoRequired'),
+			array('publish, orders, cover, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
+			array('album_id, creation_id, modified_id', 'length', 'max'=>11),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
-			array('cover, media, desc, creation_date,
+			array('cover, media, title, description,
 				old_media', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('media_id, publish, album_id, orders, cover, media, desc, creation_date,
-				album_search, creation_search', 'safe', 'on'=>'search'),
+			array('media_id, publish, album_id, orders, cover, media, title, description, creation_date, creation_id, modified_date, modified_id,
+				album_search, photo_info_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -92,8 +98,10 @@ class AlbumPhoto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'view' => array(self::BELONGS_TO, 'ViewAlbumPhoto', 'media_id'),
 			'album' => array(self::BELONGS_TO, 'Albums', 'album_id'),
-			'creation_relation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
+			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
+			'modified' => array(self::BELONGS_TO, 'Users', 'modified_id'),
 		);
 	}
 
@@ -109,12 +117,17 @@ class AlbumPhoto extends CActiveRecord
 			'orders' => Yii::t('attribute', 'Orders'),
 			'cover' => Yii::t('attribute', 'Cover'),
 			'media' => Yii::t('attribute', 'Photo'),
-			'desc' => Yii::t('attribute', 'Desc'),
+			'title' => Yii::t('attribute', 'Title'),
+			'description' => Yii::t('attribute', 'Description'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
+			'modified_date' => Yii::t('attribute', 'Modified Date'),
+			'modified_id' => Yii::t('attribute', 'Modified'),
 			'old_media' => Yii::t('attribute', 'Old Photo'),
 			'album_search' => Yii::t('attribute', 'Album'),
+			'photo_info_search' => Yii::t('attribute', 'Photo Info'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
+			'modified_search' => Yii::t('attribute', 'Modified'),
 		);
 	}
 
@@ -136,7 +149,7 @@ class AlbumPhoto extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('t.media_id',$this->media_id,true);
+		$criteria->compare('t.media_id',$this->media_id);
 		if(isset($_GET['type']) && $_GET['type'] == 'publish') {
 			$criteria->compare('t.publish',1);
 		} elseif(isset($_GET['type']) && $_GET['type'] == 'unpublish') {
@@ -154,24 +167,43 @@ class AlbumPhoto extends CActiveRecord
 		$criteria->compare('t.orders',$this->orders);
 		$criteria->compare('t.cover',$this->cover);
 		$criteria->compare('t.media',$this->media,true);
-		$criteria->compare('t.desc',$this->desc,true);
+		$criteria->compare('t.title',$this->title,true);
+		$criteria->compare('t.description',$this->description,true);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
-		$criteria->compare('t.creation_id',$this->creation_id);
+		if(isset($_GET['creation']))
+			$criteria->compare('t.creation_id',$_GET['creation']);
+		else
+			$criteria->compare('t.creation_id',$this->creation_id);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
+			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+		if(isset($_GET['modified']))
+			$criteria->compare('t.modified_id',$_GET['modified']);
+		else
+			$criteria->compare('t.modified_id',$this->modified_id);
 		
 		// Custom Search
 		$criteria->with = array(
+			'view' => array(
+				'alias'=>'view',
+			),
 			'album' => array(
 				'alias'=>'album',
 				'select'=>'title'
 			),
-			'creation_relation' => array(
-				'alias'=>'creation_relation',
+			'creation' => array(
+				'alias'=>'creation',
+				'select'=>'displayname'
+			),
+			'modified' => array(
+				'alias'=>'modified',
 				'select'=>'displayname'
 			),
 		);
 		$criteria->compare('album.title',strtolower($this->album_search), true);
-		$criteria->compare('creation_relation.displayname',strtolower($this->creation_search), true);
+		$criteria->compare('view.photo_info',strtolower($this->photo_info_search), true);
+		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
+		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
 		if(!isset($_GET['AlbumPhoto_sort']))
 			$criteria->order = 't.media_id DESC';
@@ -208,9 +240,12 @@ class AlbumPhoto extends CActiveRecord
 			$this->defaultColumns[] = 'orders';
 			$this->defaultColumns[] = 'cover';
 			$this->defaultColumns[] = 'media';
-			$this->defaultColumns[] = 'desc';
+			$this->defaultColumns[] = 'title';
+			$this->defaultColumns[] = 'description';
 			$this->defaultColumns[] = 'creation_date';
 			$this->defaultColumns[] = 'creation_id';
+			$this->defaultColumns[] = 'modified_date';
+			$this->defaultColumns[] = 'modified_id';
 		}
 
 		return $this->defaultColumns;
@@ -242,7 +277,7 @@ class AlbumPhoto extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_search',
-				'value' => '$data->creation_id != 0 ? $data->creation_relation->displayname : "-"',
+				'value' => '$data->creation_id != 0 ? $data->creation->displayname : "-"',
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_date',
@@ -269,6 +304,18 @@ class AlbumPhoto extends CActiveRecord
 						'showButtonPanel' => true,
 					),
 				), true),
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'photo_info_search',
+				'value' => '$data->view->photo_info == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'filter'=>array(
+					1=>Yii::t('phrase', 'Yes'),
+					0=>Yii::t('phrase', 'No'),
+				),
+				'type' => 'raw',
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'cover',
@@ -309,23 +356,18 @@ class AlbumPhoto extends CActiveRecord
 	public static function getPhoto($id, $type=null) {
 		if($type == null) {
 			$model = self::model()->findAll(array(
-				//'select' => 'album_id, orders, media',
 				'condition' => 'album_id = :id',
 				'params' => array(
 					':id' => $id,
 				),
-				//'limit' => 20,
 			));
 		} else {
 			$model = self::model()->findAll(array(
-				//'select' => 'album_id, orders, media',
 				'condition' => 'album_id = :id AND cover = :cover',
 				'params' => array(
 					':id' => $id,
 					':cover' => $type,
 				),
-				//'limit' => 20,
-				//'order'=> 'orders ASC',
 			));
 		}
 
@@ -336,10 +378,9 @@ class AlbumPhoto extends CActiveRecord
 	 * before validate attributes
 	 */
 	protected function beforeValidate() {
-		if(parent::beforeValidate()) {	
-			$currentAction = strtolower(Yii::app()->controller->id.'/'.Yii::app()->controller->action->id);
+		if(parent::beforeValidate()) {
 			$media = CUploadedFile::getInstance($this, 'media');
-			if($currentAction != 'photo/ajaxadd' && $media->name != '') {
+			if(!Yii::app()->request->isAjaxRequest && $media->name != '') {
 				$extension = pathinfo($media->name, PATHINFO_EXTENSION);
 				if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
 					$this->addError('media', 'The file "'.$media->name.'" cannot be uploaded. Only files with these extensions are allowed: bmp, gif, jpg, png.');
@@ -355,11 +396,10 @@ class AlbumPhoto extends CActiveRecord
 	 * before save attributes
 	 */
 	protected function beforeSave() {
-		if(parent::beforeSave()) {
-			
+		if(parent::beforeSave()) {			
 			//Update album photo
 			$controller = strtolower(Yii::app()->controller->id);
-			if(!$this->isNewRecord && $controller == 'photo' && !Yii::app()->request->isAjaxRequest) {
+			if(!Yii::app()->request->isAjaxRequest && !$this->isNewRecord && $controller == 'o/photo') {
 				$album_path = "public/album/".$this->album_id;
 				
 				$this->media = CUploadedFile::getInstance($this, 'media');
@@ -392,26 +432,34 @@ class AlbumPhoto extends CActiveRecord
 			$cover = Albums::model()->findByPk($this->album_id);
 			$cover->media_id = $this->media_id;
 			$cover->update();
+		}		
+		
+		$setting = AlbumSetting::getInfo('photo_limit, photo_resize, photo_resize_size', 'many');
+		$photo_limit = $setting->photo_limit;
+		$photo_resize = $setting->photo_resize;
+		$photo_resize_size = $setting->photo_resize_size;
+		
+		if($this->album->cat->default_setting == 0) {
+			$photo_limit = $this->album->cat->photo_limit;
+			$photo_resize = $this->album->cat->photo_resize;
+			$photo_resize_size = $this->album->cat->photo_resize_size;			
 		}
 		
-		$setting = AlbumSetting::getInfo('photo_limit', 'many');
-		
 		//create thumb image
-		/* if($setting->media_resize == 1) {
+		if($photo_resize == 1) {
 			Yii::import('ext.phpthumb.PhpThumbFactory');
-			$album_path = "public/album/".$this->album_id;
+			$album_path = 'public/album/'.$this->album_id;
 			$albumImg = PhpThumbFactory::create($album_path.'/'.$this->media, array('jpegQuality' => 90, 'correctPermissions' => true));
-			$resizeSize = explode(',', $setting->media_resize_size);
-			if($resizeSize[1] == 0)
-				$albumImg->resize($resizeSize[0]);
+			$resizeSize = unserialize($photo_resize_size);
+			if($resizeSize['height'] == 0)
+				$albumImg->resize($resizeSize['width']);
 			else
-				$albumImg->adaptiveResize($resizeSize[0], $resizeSize[1]);
-				
+				$albumImg->adaptiveResize($resizeSize['width'], $resizeSize['height']);				
 			$albumImg->save($album_path.'/'.$this->media);
-		} */
-		
-		//delete other media (if photo_limit = 1)
-		if($setting->photo_limit == 1) {
+		}
+			
+		//delete other photo (if photo_limit = 1)
+		if($photo_limit == 1) {
 			self::model()->deleteAll(array(
 				'condition'=> 'album_id = :id AND cover = :cover',
 				'params'=>array(

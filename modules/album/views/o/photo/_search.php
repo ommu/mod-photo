@@ -50,8 +50,13 @@
 		</li>
 
 		<li>
-			<?php echo $model->getAttributeLabel('desc'); ?><br/>
-			<?php echo $form->textArea($model,'desc',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $model->getAttributeLabel('title'); ?><br/>
+			<?php echo $form->textArea($model,'title',array('rows'=>6, 'cols'=>50)); ?>
+		</li>
+
+		<li>
+			<?php echo $model->getAttributeLabel('description'); ?><br/>
+			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
 		</li>
 
 		<li>

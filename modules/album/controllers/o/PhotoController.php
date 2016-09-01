@@ -162,7 +162,7 @@ class PhotoController extends Controller
 			$model->album_id = $id;
 			$model->media = $fileName;
 			if($model->save()) {
-				$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'type'=>'admin','replace'=>'true'));
+				$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'replace'=>'true','type'=>'admin'));
 				echo CJSON::encode(array(
 					'id' => 'media-render',
 					'get' => $url,
@@ -186,7 +186,7 @@ class PhotoController extends Controller
 				$model->cover = 1;
 				
 				if($model->update()) {
-					$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'type'=>'admin','replace'=>'true'));
+					$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'replace'=>'true','type'=>'admin'));
 					echo CJSON::encode(array(
 						'type' => 2,
 						'id' => 'media-render',

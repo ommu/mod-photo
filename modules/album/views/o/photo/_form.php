@@ -52,27 +52,33 @@
 	</div>
 
 	<div class="clearfix">
-		<?php echo $form->labelEx($model,'desc'); ?>
+		<?php echo $form->labelEx($model,'title'); ?>
 		<div class="desc">
-			<?php echo $form->textArea($model,'desc',array('rows'=>6, 'cols'=>50)); ?>
-			<?php echo $form->error($model,'desc'); ?>
+			<?php echo $form->textField($model,'title',array('class'=>'span-6')); ?>
+			<?php echo $form->error($model,'title'); ?>
+		</div>
+	</div>
+
+	<div class="clearfix">
+		<?php echo $form->labelEx($model,'description'); ?>
+		<div class="desc">
+			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
+			<?php echo $form->error($model,'description'); ?>
 		</div>
 	</div>
 	
-	<div class="clearfix publish">
+	<div class="clearfix">
 		<?php echo $form->labelEx($model,'cover'); ?>
 		<div class="desc">
 			<?php echo $form->checkBox($model,'cover'); ?>
-			<?php echo $form->labelEx($model,'cover'); ?>
 			<?php echo $form->error($model,'cover'); ?>
 		</div>
 	</div>
 
-	<div class="clearfix publish">
+	<div class="clearfix">
 		<?php echo $form->labelEx($model,'publish'); ?>
 		<div class="desc">
 			<?php echo $form->checkBox($model,'publish'); ?>
-			<?php echo $form->labelEx($model,'publish'); ?>
 			<?php echo $form->error($model,'publish'); ?>
 		</div>
 	</div>
