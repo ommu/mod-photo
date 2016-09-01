@@ -6,7 +6,7 @@
  * @var $form CActiveForm
  * version: 0.1.4
  *
- * @author Putra Sudaryanto <putra.sudaryanto@gmail.com>
+ * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2016 Ommu Platform (ommu.co)
  * @created date 1 September 2016, 11:58 WIB
  * @link https://github.com/oMMu/Ommu-Photo-Albums
