@@ -147,7 +147,7 @@
 							<?php 
 							$arrKeyword = explode(',', $setting->meta_keyword);
 							foreach($arrKeyword as $row) {?>
-								<div class="d"><?php echo $row;?></div>
+								<div class="d"><?php echo trim($row);?></div>
 							<?php }
 							if(!$model->isNewRecord) {
 								if($tag != null) {

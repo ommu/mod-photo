@@ -12,10 +12,10 @@
 *	AjaxManage
 *	AjaxAdd
 *	AjaxEdit
-*	AjaxDelete
  *	Manage
  *	Edit
  *	Delete
+ *	Cover
  *
  *	LoadModel
  *	performAjaxValidation
@@ -79,12 +79,12 @@ class PhotoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('ajaxmanage','ajaxadd','ajaxdelete','ajaxcover'),
+				'actions'=>array('ajaxmanage','ajaxadd','delete','cover'),
 				'users'=>array('@'),
 				'expression'=>'isset(Yii::app()->user->level)',
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('manage','edit','delete'),
+				'actions'=>array('manage','edit','delete','cover'),
 				'users'=>array('@'),
 				'expression'=>'isset(Yii::app()->user->level) && in_array(Yii::app()->user->level, array(1,2))',
 			),
@@ -121,8 +121,8 @@ class PhotoController extends Controller
 		if($model != null) {			
 			foreach($model as $key => $val) {
 				$image = Yii::app()->request->baseUrl.'/public/album/'.$val->album_id.'/'.$val->media;
-				$url = Yii::app()->controller->createUrl('ajaxdelete', array('id'=>$val->media_id,'type'=>'admin'));
-				$urlCover = Yii::app()->controller->createUrl('ajaxcover', array('id'=>$val->media_id,'type'=>'admin'));
+				$url = Yii::app()->controller->createUrl('delete', array('id'=>$val->media_id,'type'=>'admin'));
+				$urlCover = Yii::app()->controller->createUrl('cover', array('id'=>$val->media_id,'type'=>'admin'));
 				$data .= '<li>';
 				if($val->cover == 0) {
 					$data .= '<a id="set-cover" href="'.$urlCover.'" title="'.Phrase::trans(26108,1).'">'.Phrase::trans(26108,1).'</a>';
@@ -134,7 +134,13 @@ class PhotoController extends Controller
 		}
 		if(isset($_GET['replace'])) {
 			// begin.Upload Button
-			$class = (count($model) == $setting->photo_limit) ? 'class="hide"' : '';
+			$album = Albums::getInfo($id);
+			//$photo_limit
+			$photo_limit = $setting->photo_limit;
+			if($album->cat->default_setting == 0)
+				$photo_limit = $model->cat->photo_limit;
+			
+			$class = (count($model) == $photo_limit) ? 'class="hide"' : '';
 			$url = Yii::app()->controller->createUrl('ajaxadd', array('id'=>$id,'type'=>'admin'));
 			$data .= '<li id="upload" '.$class.'>';
 			$data .= '<a id="upload-gallery" href="'.$url.'" title="'.Phrase::trans(26054,1).'">'.Phrase::trans(26054,1).'</a>';
@@ -170,43 +176,6 @@ class PhotoController extends Controller
 			}
 		}
 	}
-
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionAjaxCover($id) 
-	{
-		$model = $this->loadModel($id);
-		
-		if(Yii::app()->request->isPostRequest) {
-			// we only allow deletion via POST request
-			if(isset($id)) {				
-				$model->cover = 1;
-				
-				if($model->update()) {
-					$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'replace'=>'true','type'=>'admin'));
-					echo CJSON::encode(array(
-						'type' => 2,
-						'id' => 'media-render',
-						'get' => $url,
-					));
-				}
-			}
-
-		} else {
-			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('o/admin/edit', array('id'=>$model->album_id));
-			$this->dialogWidth = 350;
-
-			$this->pageTitle = Phrase::trans(26105,1);
-			$this->pageDescription = '';
-			$this->pageMeta = '';
-			$this->render('admin_cover');
-		}
-	}
-
 
 	/**
 	 * Manages all models.
@@ -280,24 +249,78 @@ class PhotoController extends Controller
 			// we only allow deletion via POST request
 			if(isset($id)) {
 				if($model->delete()) {
-					echo CJSON::encode(array(
-						'type' => 5,
-						'get' => Yii::app()->controller->createUrl('manage'),
-						'id' => 'partial-album-photo',
-						'msg' => '<div class="errorSummary success"><strong>AlbumPhoto success deleted.</strong></div>',
-					));
+					if(isset($_GET['type']) && $_GET['type'] == 'admin') {
+						$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'replace'=>'true','type'=>'admin'));
+						echo CJSON::encode(array(
+							'type' => 2,
+							'id' => 'media-render',
+							'get' => $url,
+						));						
+					} else {
+						echo CJSON::encode(array(
+							'type' => 5,
+							'get' => Yii::app()->controller->createUrl('manage'),
+							'id' => 'partial-album-photo',
+							'msg' => '<div class="errorSummary success"><strong>AlbumPhoto success deleted.</strong></div>',
+						));
+					}
 				}
 			}
 
 		} else {
 			$this->dialogDetail = true;
-			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
+			$this->dialogGroundUrl = isset($_GET['type']) && $_GET['type'] == 'admin' ? Yii::app()->controller->createUrl('o/admin/edit', array('id'=>$model->album_id)) : Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
 			$this->pageTitle = Phrase::trans(24012,1);
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
+		}
+	}
+
+	/**
+	 * Deletes a particular model.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @param integer $id the ID of the model to be deleted
+	 */
+	public function actionCover($id) 
+	{
+		$model = $this->loadModel($id);
+		
+		if(Yii::app()->request->isPostRequest) {
+			// we only allow deletion via POST request
+			if(isset($id)) {				
+				$model->cover = 1;
+				
+				if($model->update()) {
+					if(isset($_GET['type']) && $_GET['type'] == 'admin') {
+						$url = Yii::app()->controller->createUrl('ajaxmanage', array('id'=>$model->album_id,'replace'=>'true','type'=>'admin'));
+						echo CJSON::encode(array(
+							'type' => 2,
+							'id' => 'media-render',
+							'get' => $url,
+						));
+					} else {
+						echo CJSON::encode(array(
+							'type' => 5,
+							'get' => Yii::app()->controller->createUrl('manage'),
+							'id' => 'partial-album-photo',
+							'msg' => '<div class="errorSummary success"><strong>AlbumPhoto success updated.</strong></div>',
+						));						
+					}
+				}
+			}
+
+		} else {
+			$this->dialogDetail = true;
+			$this->dialogGroundUrl = isset($_GET['type']) && $_GET['type'] == 'admin' ? Yii::app()->controller->createUrl('o/admin/edit', array('id'=>$model->album_id)) : Yii::app()->controller->createUrl('manage');
+			$this->dialogWidth = 350;
+
+			$this->pageTitle = Phrase::trans(26105,1);
+			$this->pageDescription = '';
+			$this->pageMeta = '';
+			$this->render('admin_cover');
 		}
 	}
 
