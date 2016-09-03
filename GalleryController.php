@@ -89,6 +89,9 @@ class GalleryController extends ControllerApi
 				if(isset($_GET['cat']) && $_GET['cat'] != '') {
 					$album_id = trim($_GET['cat']);
 					$pagesize = trim($_GET['number']);
+					
+					if(!isset(Yii::app()->session['exhibition_id']) || (isset(Yii::app()->session['exhibition_id']) && $album_id != Yii::app()->session['exhibition_id']))
+						Yii::app()->session['exhibition_id'] = $album_id;
 				
 					$criteria=new CDbCriteria;
 					$criteria->compare('t.album_id', $album_id);
@@ -202,7 +205,10 @@ class GalleryController extends ControllerApi
 				
 			} else if($_GET['action'] == 'pexeto_get_portfolio_content') {
 				//if(isset($_GET['cat']) && $_GET['cat'] != '') {
-					$album_id = 90;
+					if(isset($_GET['cat']) && $_GET['cat'] != '')
+						$album_id = $_GET['cat'];
+					else
+						$album_id = Yii::app()->session['exhibition_id'];
 					$pagesize = trim($_GET['number']);
 					$itemslug = trim($_GET['itemslug']);
 					
