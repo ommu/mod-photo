@@ -25,6 +25,7 @@
  * The followings are the available columns in table '_view_album_photo_tag':
  * @property string $tag_id
  * @property string $album_id
+ * @property string $media_id
  * @property string $tags
  */
 class ViewAlbumPhotoTag extends CActiveRecord
@@ -58,12 +59,12 @@ class ViewAlbumPhotoTag extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tag_id, album_id', 'required'),
-			array('tag_id, album_id', 'length', 'max'=>11),
+			array('tag_id, album_id, media_id', 'required'),
+			array('tag_id, album_id, media_id', 'length', 'max'=>11),
 			array('tags', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('tag_id, album_id, tags', 'safe', 'on'=>'search'),
+			array('tag_id, album_id, media_id, tags', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -75,8 +76,9 @@ class ViewAlbumPhotoTag extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'album' => array(self::BELONGS_TO, 'Albums', 'album_id'),
 			'tag' => array(self::BELONGS_TO, 'OmmuTags', 'tag_id'),
+			'album' => array(self::BELONGS_TO, 'Albums', 'album_id'),
+			'photo' => array(self::BELONGS_TO, 'AlbumPhoto', 'media_id'),
 		);
 	}
 
@@ -88,6 +90,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 		return array(
 			'tag_id' => Yii::t('attribute', 'Tag'),
 			'album_id' => Yii::t('attribute', 'Album'),
+			'media_id' => Yii::t('attribute', 'Photo'),
 			'tags' => Yii::t('attribute', 'Tags'),
 		);
 		/*
@@ -118,6 +121,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 
 		$criteria->compare('t.tag_id',strtolower($this->tag_id),true);
 		$criteria->compare('t.album_id',strtolower($this->album_id),true);
+		$criteria->compare('t.media_id',strtolower($this->media_id),true);
 		$criteria->compare('t.tags',strtolower($this->tags),true);
 
 		if(!isset($_GET['ViewAlbumPhotoTag_sort']))
@@ -151,6 +155,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 		} else {
 			$this->defaultColumns[] = 'tag_id';
 			$this->defaultColumns[] = 'album_id';
+			$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'tags';
 		}
 
@@ -168,6 +173,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 			);
 			$this->defaultColumns[] = 'tag_id';
 			$this->defaultColumns[] = 'album_id';
+			$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'tags';
 		}
 		parent::afterConstruct();
