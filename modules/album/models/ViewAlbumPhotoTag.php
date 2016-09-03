@@ -27,6 +27,7 @@
  * @property string $album_id
  * @property string $media_id
  * @property string $tags
+ * @property string $photos
  */
 class ViewAlbumPhotoTag extends CActiveRecord
 {
@@ -59,12 +60,12 @@ class ViewAlbumPhotoTag extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tag_id, album_id, media_id', 'required'),
-			array('tag_id, album_id, media_id', 'length', 'max'=>11),
+			array('tag_id, album_id, media_id, photos', 'required'),
+			array('tag_id, album_id, media_id, photos', 'length', 'max'=>11),
 			array('tags', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('tag_id, album_id, media_id, tags', 'safe', 'on'=>'search'),
+			array('tag_id, album_id, media_id, tags, photos', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -92,6 +93,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 			'album_id' => Yii::t('attribute', 'Album'),
 			'media_id' => Yii::t('attribute', 'Photo'),
 			'tags' => Yii::t('attribute', 'Tags'),
+			'photos' => Yii::t('attribute', 'Photos'),
 		);
 		/*
 			'Tag' => 'Tag',
@@ -123,6 +125,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 		$criteria->compare('t.album_id',strtolower($this->album_id),true);
 		$criteria->compare('t.media_id',strtolower($this->media_id),true);
 		$criteria->compare('t.tags',strtolower($this->tags),true);
+		$criteria->compare('t.photos',strtolower($this->photos),true);
 
 		if(!isset($_GET['ViewAlbumPhotoTag_sort']))
 			$criteria->order = 't.tag_id DESC';
@@ -157,6 +160,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 			$this->defaultColumns[] = 'album_id';
 			$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'tags';
+			$this->defaultColumns[] = 'photos';
 		}
 
 		return $this->defaultColumns;
@@ -175,6 +179,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 			$this->defaultColumns[] = 'album_id';
 			$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'tags';
+			$this->defaultColumns[] = 'photos';
 		}
 		parent::afterConstruct();
 	}
