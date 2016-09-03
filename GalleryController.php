@@ -84,32 +84,21 @@ class GalleryController extends ControllerApi
 	 */
 	public function actionMain() 
 	{
-		if(!isset($_GET['action']))
-			$this->redirect(Yii::app()->createUrl('site/index'));
-			
-		else {
-			if($_GET['action'] == 'pexeto_get_portfolio_items') {		
-				if(isset($_GET['cat']) && $_GET['cat'] != '') {		
+		if(isset($_GET['action'])) {
+			if($_GET['action'] == 'pexeto_get_portfolio_items') {
+				if(isset($_GET['cat']) && $_GET['cat'] != '') {
 					$album_id = trim($_GET['cat']);
 					$pagesize = trim($_GET['number']);
 				
 					$criteria=new CDbCriteria;
-					$criteria->with = array(
-						'photo' => array(
-							'alias'=>'photo',
-						),
-					);
-					$criteria->compare('photo.publish', 1);
-					$criteria->compare('photo.album_id', $album_id);
-					$criteria->group = 't.tag_id';
+					$criteria->compare('t.album_id', $album_id);
 					
-					$dataProvider = new CActiveDataProvider('AlbumPhotoTag', array(
+					$dataProvider = new CActiveDataProvider('ViewAlbumPhotoTag', array(
 						'criteria'=>$criteria,
 						'pagination'=>array(
 							'pageSize'=>$pagesize != null && $pagesize != '' ? $pagesize : 10,
 						),
 					));
-					$model = $dataProvider->getData();
 					
 					// pager
 					$pager = OFunction::getDataProviderPager($dataProvider);
@@ -133,20 +122,20 @@ class GalleryController extends ControllerApi
 					$album_url = Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->request->baseUrl.'/';
 					$album_path = 'public/album/'.$album_id.'/';
 					
-					$dataPhotoNoTag = array();
 					if($photoNoTag != null) {						
 						if($photoNoTag[0]->media != '' && file_exists($album_path.$photoNoTag[0]->media)) {
+							$titleTag = 'Lainnya';
 							$album_photo = $album_url.$album_path.$photoNoTag[0]->media;
 							$dataPhotoNoTag = array(
 								'id'=>0,
-								'title'=>ucwords(strtolower('Lainnya')),
+								'title'=>ucwords(strtolower($titleTag)),
 								'pr'=>$album_photo,
 								'col'=>1,
 								'row'=>1,
 								'image'=>Utility::getTimThumb($album_photo, 380, 235, 1),
 								'cat'=>$photoNoTag[0]->album->title,
-								'slug'=>Utility::getUrlTitle('Lainnya'),
-								'link'=>'http:\/\/pexetothemes.com\/demos\/expression_wp\/portfolio\/sailing-boat\/',
+								'slug'=>Utility::getUrlTitle($titleTag),
+								'link'=>Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id'=>$album_id,'tag'=>0,'slug'=>Utility::getUrlTitle($titleTag))),
 								'fullwidth'=>false,
 								'slider'=>true,
 								'imgnum'=>count($photoNoTag),
@@ -154,55 +143,169 @@ class GalleryController extends ControllerApi
 						}
 					}					
 					
+					$model = $dataProvider->getData();
 					if(!empty($model)) {
-						foreach($model as $key => $item) {							
-							if($item->photo->media != '' && file_exists($album_path.$item->photo->media)) {
-								$album_photo = $album_url.$album_path.$item->photo->media;
+						foreach($model as $key => $val) {
+							if($val->photo->media != '' && file_exists($album_path.$val->photo->media)) {
+								$album_photo = $album_url.$album_path.$val->photo->media;
 								$data[] = array(
-									'id'=>$item->tag_id,
-									'title'=>ucwords(strtolower($item->tag->body)),
+									'id'=>$val->tag_id,
+									'title'=>ucwords(strtolower($val->tag->body)),
 									'pr'=>$album_photo,
 									'col'=>1,
 									'row'=>1,
 									'image'=>Utility::getTimThumb($album_photo, 380, 235, 1),
-									'cat'=>$item->photo->album->title,
-									'slug'=>Utility::getUrlTitle($item->tag->body),
-									'link'=>'http:\/\/pexetothemes.com\/demos\/expression_wp\/portfolio\/sailing-boat\/',
+									'cat'=>$val->album->title,
+									'slug'=>$val->tags,
+									'link'=>Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id'=>$album_id,'tag'=>$val->tag_id,'slug'=>$val->tags)),
 									'fullwidth'=>false,
 									'slider'=>true,
-									'imgnum'=>4,
-								);						
+									'imgnum'=>$val->photos,
+								);
 							}
 						}
-						if($nextPager == '-')
+						if($photoNoTag != null)
 							$data[] = $dataPhotoNoTag;
 						
 					} else {
-						$data = array();
-						if($nextPager == '-')
-							$data[] = $dataPhotoNoTag;						
+						if($photoNoTag != null)
+							$data[] = $dataPhotoNoTag;
+						else
+							$data = array();
 					}
-					
+						
 					$return = array(
 						'items' => $data,
 						'more' => $nextPager != '-' ? true : false,
 					);
+					if(isset($_GET['itemsMap']) && $_GET['itemsMap'] == 'true') {
+						$itemsMap = ViewAlbumPhotoTag::model()->findAll($criteria);
+						if($itemsMap != null) {
+							foreach($itemsMap as $key => $row) {
+								$item[] = array(
+									'slug'=>$row->tags,
+								);
+							}
+							if($photoNoTag != null) {
+								$item[] = array(
+									'slug'=>Utility::getUrlTitle('Lainnya'),
+								);								
+							}
+						}
+						$return['itemsMap'] = $item;
+					}
+					
 					$this->_sendResponse(200, CJSON::encode($this->renderJson($return)));	
 					
 				} else
 					$this->redirect(Yii::app()->createUrl('site/index'));
 				
 			} else if($_GET['action'] == 'pexeto_get_portfolio_content') {
-				
+				//if(isset($_GET['cat']) && $_GET['cat'] != '') {
+					$album_id = 90;
+					$pagesize = trim($_GET['number']);
+					$itemslug = trim($_GET['itemslug']);
+					
+					//url and directory path
+					$album_url = Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->request->baseUrl.'/';
+					$album_path = 'public/album/'.$album_id.'/';
+					
+					if($itemslug != 'lainnya') {
+						$slug = ViewAlbumPhotoTag::model()->findByAttributes(array('album_id' => $album_id, 'tags'=>$itemslug), array(
+							'select' => 'tag_id, tags',
+						));					
+					
+						$criteria=new CDbCriteria;
+						$criteria->with = array(
+							'photo' => array(
+								'alias'=>'photo',
+							),
+						);
+						$criteria->compare('photo.publish', 1);
+						$criteria->compare('photo.album_id', $album_id);
+						$criteria->compare('t.tag_id', $slug->tag_id);
+						
+						$model = AlbumPhotoTag::model()->findAll($criteria);
+					
+						if($model != null) {
+							foreach($model as $key => $item) {
+								if($item->photo->media != '' && file_exists($album_path.$item->photo->media)) {
+									$album_photo = $album_url.$album_path.$item->photo->media;
+									$data[] = array(
+										'img'=>$album_photo,
+										'desc'=>$item->photo->description != '' ? $item->photo->description : '-',
+										'thumb'=>Utility::getTimThumb($album_photo, 150, 150, 1),
+									);
+								}
+							}
+							
+						} else
+							$data = array();
+						
+					} else {
+						$criteria=new CDbCriteria;
+						$criteria->with = array(
+							'view' => array(
+								'alias'=>'view',
+							),
+						);
+						$criteria->compare('t.publish', 1);
+						$criteria->compare('t.album_id', $album_id);
+						$criteria->compare('view.photo_tag', 0);
+						
+						$model = AlbumPhoto::model()->findAll($criteria);
+					
+						if($model != null) {
+							foreach($model as $key => $item) {
+								if($item->media != '' && file_exists($album_path.$item->media)) {
+									$album_photo = $album_url.$album_path.$item->media;
+									$data[] = array(
+										'img'=>$album_photo,
+										'desc'=>$item->description != '' ? $item->description : '-',
+										'thumb'=>Utility::getTimThumb($album_photo, 150, 150, 1),
+									);
+								}
+							}							
+						} else
+							$data = array();						
+					}
+					
+					$itemslug = $itemslug != 'lainnya' ? $slug->tags : $itemslug;
+					$tag_id = $itemslug != 'lainnya' ? $slug->tag_id : 0;
+					$return = array(
+						'title' => $itemslug != 'lainnya' ? ucwords(strtolower($slug->tag->body)) : '',
+						'slug' => $itemslug,
+						'link' => Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id'=>$album_id,'tag'=>$tag_id,'slug'=>$itemslug)),
+						'fullwidth' => false,
+						'images' => $data,
+					);
+					$this->_sendResponse(200, CJSON::encode($this->renderJson($return)));	
+					
+				//} else
+				//	$this->redirect(Yii::app()->createUrl('site/index'));
 			}
-		}
+		} else
+			$this->redirect(Yii::app()->createUrl('site/index'));
 	}
 	
-	public function getCountPhotoInTag($album, ) 
+	public function getCountPhotoInTag($album=null, $tag)
 	{
-		$model = Albums::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404, Yii::t('phrase', 'The requested page does not exist.'));
+		$criteria=new CDbCriteria;
+		$criteria->with = array(
+			'photo' => array(
+				'alias'=>'photo',
+			),
+			'photo.album' => array(
+				'alias'=>'album',
+			),
+		);
+		$criteria->compare('t.tag_id', $tag);
+		$criteria->compare('photo.publish', 1);
+		if($album != null)
+			$criteria->compare('album.album_id', $album);
+		
+		$model = AlbumPhotoTag::model()->count($criteria);
+		
 		return $model;
 	}
 
