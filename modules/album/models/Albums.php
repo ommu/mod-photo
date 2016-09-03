@@ -285,8 +285,11 @@ class Albums extends CActiveRecord
 	/**
 	 * Set default columns to display
 	 */
-	protected function afterConstruct() {
-		if(count($this->defaultColumns) == 0) {
+	protected function afterConstruct() 
+	{
+		$controller = strtolower(Yii::app()->controller->id);
+		if(count($this->defaultColumns) == 0) 
+		{
 			/*
 			$this->defaultColumns[] = array(
 				'class' => 'CCheckBoxColumn',
@@ -354,7 +357,7 @@ class Albums extends CActiveRecord
 				), true),
 			);
 			if(!isset($_GET['type'])) {
-				if(OmmuSettings::getInfo('site_headline') == 1) {
+				if($controller == 'o/admin' && OmmuSettings::getInfo('site_headline') == 1) {
 					$this->defaultColumns[] = array(
 						'name' => 'headline',
 						'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("headline",array("id"=>$data->album_id)), $data->headline, 1)',

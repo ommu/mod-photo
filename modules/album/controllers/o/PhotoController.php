@@ -215,6 +215,12 @@ class PhotoController extends Controller
 	public function actionEdit($id) 
 	{
 		$model=$this->loadModel($id);
+		$tag = AlbumPhotoTag::model()->findAll(array(
+			'condition' => 'media_id = :id',
+			'params' => array(
+				':id' => $model->media_id,
+			),
+		));
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
@@ -233,6 +239,7 @@ class PhotoController extends Controller
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
 			'model'=>$model,
+			'tag'=>$tag,
 		));
 	}
 
