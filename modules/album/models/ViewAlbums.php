@@ -27,6 +27,7 @@
  * @property string $photos
  * @property string $photo_publish
  * @property string $photo_unpublish
+ * @property string $photo_tags
  */
 class ViewAlbums extends CActiveRecord
 {
@@ -68,10 +69,10 @@ class ViewAlbums extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('album_id', 'length', 'max'=>11),
-			array('media, photos, photo_publish, photo_unpublish', 'length', 'max'=>21),
+			array('media, photos, photo_publish, photo_unpublish, photo_tags', 'length', 'max'=>21),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('album_id, media, photos, photo_publish, photo_unpublish', 'safe', 'on'=>'search'),
+			array('album_id, media, photos, photo_publish, photo_unpublish, photo_tags', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -97,6 +98,7 @@ class ViewAlbums extends CActiveRecord
 			'photos' => Yii::t('attribute', 'Photos'),
 			'photo_publish' => Yii::t('attribute', 'Photo Publish'),
 			'photo_unpublish' => Yii::t('attribute', 'Photo Unpublish'),
+			'photo_tags' => Yii::t('attribute', 'Photo Tags'),
 		);
 		/*
 			'Album' => 'Album',
@@ -128,6 +130,7 @@ class ViewAlbums extends CActiveRecord
 		$criteria->compare('t.photos',$this->photos);
 		$criteria->compare('t.photo_publish',$this->photo_publish);
 		$criteria->compare('t.photo_unpublish',$this->photo_unpublish);
+		$criteria->compare('t.photo_tags',$this->photo_tags);
 
 		if(!isset($_GET['ViewAlbums_sort']))
 			$criteria->order = 't.album_id DESC';
@@ -163,6 +166,7 @@ class ViewAlbums extends CActiveRecord
 			$this->defaultColumns[] = 'photos';
 			$this->defaultColumns[] = 'photo_publish';
 			$this->defaultColumns[] = 'photo_unpublish';
+			$this->defaultColumns[] = 'photo_tags';
 		}
 
 		return $this->defaultColumns;
@@ -182,6 +186,7 @@ class ViewAlbums extends CActiveRecord
 			$this->defaultColumns[] = 'photos';
 			$this->defaultColumns[] = 'photo_publish';
 			$this->defaultColumns[] = 'photo_unpublish';
+			$this->defaultColumns[] = 'photo_tags';
 		}
 		parent::afterConstruct();
 	}
