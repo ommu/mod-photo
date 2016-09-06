@@ -1,6 +1,7 @@
 <?php
 /**
  * AlbumModule
+ * version: 0.1.4
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2014 Ommu Platform (ommu.co)
@@ -35,6 +36,7 @@ class AlbumModule extends CWebModule
 				'photo',
 				'search',
 				'site',
+				'api/gallery',
 			);
 			
 			// pake ini untuk set theme per action di controller..
