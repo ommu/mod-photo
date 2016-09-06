@@ -89,6 +89,7 @@ class GalleryController extends ControllerApi
 				if(isset($_GET['cat']) && $_GET['cat'] != '') {
 					$album_id = trim($_GET['cat']);
 					$pagesize = trim($_GET['number']);
+					$offset = trim($_GET['offset']);
 					
 					if(!isset(Yii::app()->session['exhibition_id']) || (isset(Yii::app()->session['exhibition_id']) && $album_id != Yii::app()->session['exhibition_id']))
 						Yii::app()->session['exhibition_id'] = $album_id;
@@ -100,6 +101,7 @@ class GalleryController extends ControllerApi
 						'criteria'=>$criteria,
 						'pagination'=>array(
 							'pageSize'=>$pagesize != null && $pagesize != '' ? $pagesize : 10,
+							'currentPage'=>$offset != 0 ? ($offset % $pagesize) + 1 : 0, 
 						),
 					));
 				
