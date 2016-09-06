@@ -102,11 +102,6 @@ class GalleryController extends ControllerApi
 							'pageSize'=>$pagesize != null && $pagesize != '' ? $pagesize : 10,
 						),
 					));
-					
-					// pager
-					$pager = OFunction::getDataProviderPager($dataProvider);
-					$get = array_merge($_GET, array($pager['pageVar']=>$pager['nextPage']));
-					$nextPager = $pager['nextPage'] != 0 ? OFunction::validHostURL(Yii::app()->controller->createUrl('main', $get)) : '-';
 				
 					// photo is no tags
 					$criteriaNoTag=new CDbCriteria;
@@ -144,9 +139,15 @@ class GalleryController extends ControllerApi
 								'imgnum'=>count($photoNoTag),
 							);
 						}
-					}					
+					}
 					
 					$model = $dataProvider->getData();
+					
+					// pager
+					$pager = OFunction::getDataProviderPager($dataProvider);
+					$get = array_merge($_GET, array($pager['pageVar']=>$pager['nextPage']));
+					$nextPager = $pager['nextPage'] != 0 ? OFunction::validHostURL(Yii::app()->controller->createUrl('main', $get)) : '-';
+					
 					if(!empty($model)) {
 						foreach($model as $key => $val) {
 							if($val->photo->media != '' && file_exists($album_path.$val->photo->media)) {
@@ -167,7 +168,7 @@ class GalleryController extends ControllerApi
 								);
 							}
 						}
-						if($photoNoTag != null)
+						if($nextPager == '-' && $photoNoTag != null)
 							$data[] = $dataPhotoNoTag;
 						
 					} else {
