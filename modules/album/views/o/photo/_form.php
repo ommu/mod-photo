@@ -52,18 +52,10 @@
 	</div>
 
 	<div class="clearfix">
-		<?php echo $form->labelEx($model,'title'); ?>
+		<?php echo $form->labelEx($model,'caption'); ?>
 		<div class="desc">
-			<?php echo $form->textField($model,'title',array('class'=>'span-6')); ?>
-			<?php echo $form->error($model,'title'); ?>
-		</div>
-	</div>
-
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'description'); ?>
-		<div class="desc">
-			<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
-			<?php echo $form->error($model,'description'); ?>
+			<?php echo $form->textArea($model,'caption',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
+			<?php echo $form->error($model,'caption'); ?>
 		</div>
 	</div>
 	

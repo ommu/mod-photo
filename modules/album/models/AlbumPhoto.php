@@ -28,8 +28,7 @@
  * @property integer $orders
  * @property integer $cover
  * @property string $media
- * @property string $title
- * @property string $description
+ * @property string $caption
  * @property string $creation_date
  * @property string $creation_id
  * @property string $modified_date
@@ -78,15 +77,15 @@ class AlbumPhoto extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('album_id', 'required'),
-			array('title, description', 'required', 'on'=>'photoInfoRequired'),
+			array('caption', 'required', 'on'=>'photoInfoRequired'),
 			array('publish, orders, cover, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('album_id, creation_id, modified_id', 'length', 'max'=>11),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
-			array('cover, media, title, description,
+			array('cover, media, caption,
 				tag, old_media', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('media_id, publish, album_id, orders, cover, media, title, description, creation_date, creation_id, modified_date, modified_id,
+			array('media_id, publish, album_id, orders, cover, media, caption, creation_date, creation_id, modified_date, modified_id,
 				album_search, photo_info_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -118,8 +117,7 @@ class AlbumPhoto extends CActiveRecord
 			'orders' => Yii::t('attribute', 'Orders'),
 			'cover' => Yii::t('attribute', 'Cover'),
 			'media' => Yii::t('attribute', 'Photo'),
-			'title' => Yii::t('attribute', 'Title'),
-			'description' => Yii::t('attribute', 'Description'),
+			'caption' => Yii::t('attribute', 'Caption'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
@@ -169,8 +167,7 @@ class AlbumPhoto extends CActiveRecord
 		$criteria->compare('t.orders',$this->orders);
 		$criteria->compare('t.cover',$this->cover);
 		$criteria->compare('t.media',$this->media,true);
-		$criteria->compare('t.title',$this->title,true);
-		$criteria->compare('t.description',$this->description,true);
+		$criteria->compare('t.caption',$this->caption,true);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
 		if(isset($_GET['creation']))
@@ -242,8 +239,7 @@ class AlbumPhoto extends CActiveRecord
 			$this->defaultColumns[] = 'orders';
 			$this->defaultColumns[] = 'cover';
 			$this->defaultColumns[] = 'media';
-			$this->defaultColumns[] = 'title';
-			$this->defaultColumns[] = 'description';
+			$this->defaultColumns[] = 'caption';
 			$this->defaultColumns[] = 'creation_date';
 			$this->defaultColumns[] = 'creation_id';
 			$this->defaultColumns[] = 'modified_date';
