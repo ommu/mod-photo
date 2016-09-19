@@ -32,6 +32,7 @@
  * @property integer $photo_resize 
  * @property string $photo_resize_size
  * @property string $photo_view_size
+ * @property string $modified_date
  * @property string $modified_id
  */
 class AlbumSetting extends CActiveRecord
@@ -104,11 +105,11 @@ class AlbumSetting extends CActiveRecord
 			'meta_description' => Yii::t('attribute', 'Meta Description'),
 			'headline' => Yii::t('attribute', 'Headline Limit'),
 			'photo_limit' => Yii::t('attribute', 'Photo Limit'),
-			'modified_date' => Yii::t('attribute', 'Modified Date'),
-			'modified_id' => Yii::t('attribute', 'Modified'),
 			'photo_resize' => Yii::t('attribute', 'Photo Resize'),
 			'photo_resize_size' => Yii::t('attribute', 'Photo Resize Size'),
 			'photo_view_size' => Yii::t('attribute', 'Photo View Size'),
+			'modified_date' => Yii::t('attribute', 'Modified Date'),
+			'modified_id' => Yii::t('attribute', 'Modified'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
 		);
 	}
