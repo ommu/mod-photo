@@ -242,7 +242,7 @@ class GalleryController extends ControllerApi
 									$album_photo = $album_url.$album_path.$item->photo->media;
 									$data[] = array(
 										'img'=>$album_photo,
-										'desc'=>$item->photo->description != '' ? $item->photo->description : '-',
+										'desc'=>$item->photo->caption != '' ? $item->photo->caption : '-',
 										'thumb'=>Utility::getTimThumb($album_photo, 150, 150, 1),
 									);
 								}
@@ -270,7 +270,7 @@ class GalleryController extends ControllerApi
 									$album_photo = $album_url.$album_path.$item->media;
 									$data[] = array(
 										'img'=>$album_photo,
-										'desc'=>$item->description != '' ? $item->description : '-',
+										'desc'=>$item->caption != '' ? $item->caption : '-',
 										'thumb'=>Utility::getTimThumb($album_photo, 150, 150, 1),
 									);
 								}
