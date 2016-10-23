@@ -149,6 +149,14 @@ class PhotoController extends Controller
 	{
 		$albumPhoto = CUploadedFile::getInstanceByName('namaFile');
 		$album_path = "public/album/".$id;
+		// Add directory
+		if(!file_exists($album_path)) {
+			@mkdir($album_path, 0755, true);
+
+			// Add file in directory (index.php)
+			$newFile = $album_path.'/index.php';
+			$FileHandle = fopen($newFile, 'w');
+		}
 		$fileName	= time().'_'.$id.'_'.Utility::getUrlTitle(Albums::getInfo($id, 'title')).'.'.strtolower($albumPhoto->extensionName);
 		if($albumPhoto->saveAs($album_path.'/'.$fileName)) {
 			$model = new AlbumPhoto;

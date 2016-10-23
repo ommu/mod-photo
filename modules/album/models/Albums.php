@@ -469,7 +469,7 @@ class Albums extends CActiveRecord
 			// Add album directory
 			$album_path = "public/album/".$this->album_id;
 			if(!file_exists($album_path)) {
-				@mkdir($album_path, 0777, true);
+				@mkdir($album_path, 0755, true);
 
 				// Add file in album directory (index.php)
 				$newFile = $album_path.'/index.php';

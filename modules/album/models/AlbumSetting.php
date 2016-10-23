@@ -220,7 +220,6 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'photo_resize_size';
 			$this->defaultColumns[] = 'photo_view_size';
 			$this->defaultColumns[] = 'modified_date';
-			$this->defaultColumns[] = 'modified_id';
 			$this->defaultColumns[] = array(
 				'name' => 'modified_search',
 				'value' => '$data->modified_relation->displayname',
