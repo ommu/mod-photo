@@ -169,7 +169,9 @@ class PhotoController extends Controller
 			// Add file in directory (index.php)
 			$newFile = $album_path.'/index.php';
 			$FileHandle = fopen($newFile, 'w');
-		}
+		} else
+			@chmod($album_path, 0755, true);
+		
 		$fileName	= time().'_'.$id.'_'.Utility::getUrlTitle(Albums::getInfo($id, 'title')).'.'.strtolower($albumPhoto->extensionName);
 		if($albumPhoto->saveAs($album_path.'/'.$fileName)) {
 			$model = new AlbumPhoto;

@@ -474,7 +474,8 @@ class Albums extends CActiveRecord
 				// Add file in album directory (index.php)
 				$newFile = $album_path.'/index.php';
 				$FileHandle = fopen($newFile, 'w');
-			}
+			} else
+				@chmod($album_path, 0755, true);
 
 			$this->media = CUploadedFile::getInstance($this, 'media');
 			if($this->media instanceOf CUploadedFile) {

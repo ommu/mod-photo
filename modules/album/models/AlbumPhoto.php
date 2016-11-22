@@ -408,7 +408,8 @@ class AlbumPhoto extends CActiveRecord
 					// Add file in directory (index.php)
 					$newFile = $album_path.'/index.php';
 					$FileHandle = fopen($newFile, 'w');
-				}
+				} else
+					@chmod($album_path, 0755, true);
 				
 				$this->media = CUploadedFile::getInstance($this, 'media');
 				if($this->media instanceOf CUploadedFile) {
@@ -464,7 +465,9 @@ class AlbumPhoto extends CActiveRecord
 				// Add file in directory (index.php)
 				$newFile = $album_path.'/index.php';
 				$FileHandle = fopen($newFile, 'w');
-			}
+			} else
+				@chmod($album_path, 0755, true);
+				
 			$albumImg = PhpThumbFactory::create($album_path.'/'.$this->media, array('jpegQuality' => 90, 'correctPermissions' => true));
 			$resizeSize = unserialize($photo_resize_size);
 			if($resizeSize['height'] == 0)
