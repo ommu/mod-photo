@@ -119,13 +119,13 @@ class GalleryController extends ControllerApi
 					$photoNoTag = AlbumPhoto::model()->findAll($criteriaNoTag);
 					
 					//url and directory path
-					$album_url = Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->request->baseUrl.'/';
-					$album_path = 'public/album/'.$album_id.'/';
+					$album_url = Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->request->baseUrl;
+					$album_path = 'public/album/'.$album_id;
 					
 					if($photoNoTag != null) {						
-						if($photoNoTag[0]->media != '' && file_exists($album_path.$photoNoTag[0]->media)) {
+						if($photoNoTag[0]->media != '' && file_exists($album_path.'/'.$photoNoTag[0]->media)) {
 							$titleTag = 'Lainnya';
-							$album_photo = $album_url.$album_path.$photoNoTag[0]->media;
+							$album_photo = $album_url.'/'.$album_path.'/'.$photoNoTag[0]->media;
 							$dataPhotoNoTag = array(
 								'id'=>0,
 								'title'=>ucwords(strtolower($titleTag)),
@@ -152,8 +152,8 @@ class GalleryController extends ControllerApi
 					
 					if(!empty($model)) {
 						foreach($model as $key => $val) {
-							if($val->photo->media != '' && file_exists($album_path.$val->photo->media)) {
-								$album_photo = $album_url.$album_path.$val->photo->media;
+							if($val->photo->media != '' && file_exists($album_path.'/'.$val->photo->media)) {
+								$album_photo = $album_url.'/'.$album_path.'/'.$val->photo->media;
 								$data[] = array(
 									'id'=>$val->tag_id,
 									'title'=>ucwords(strtolower($val->tag->body)),
@@ -216,8 +216,8 @@ class GalleryController extends ControllerApi
 					$itemslug = trim($_GET['itemslug']);
 					
 					//url and directory path
-					$album_url = Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->request->baseUrl.'/';
-					$album_path = 'public/album/'.$album_id.'/';
+					$album_url = Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->request->baseUrl;
+					$album_path = 'public/album/'.$album_id;
 					
 					if($itemslug != 'lainnya') {
 						$slug = ViewAlbumPhotoTag::model()->findByAttributes(array('album_id' => $album_id, 'tags'=>$itemslug), array(
@@ -238,8 +238,8 @@ class GalleryController extends ControllerApi
 					
 						if($model != null) {
 							foreach($model as $key => $item) {
-								if($item->photo->media != '' && file_exists($album_path.$item->photo->media)) {
-									$album_photo = $album_url.$album_path.$item->photo->media;
+								if($item->photo->media != '' && file_exists($album_path.'/'.$item->photo->media)) {
+									$album_photo = $album_url.'/'.$album_path.'/'.$item->photo->media;
 									$data[] = array(
 										'img'=>$album_photo,
 										'desc'=>$item->photo->caption != '' ? $item->photo->caption : '-',
@@ -266,8 +266,8 @@ class GalleryController extends ControllerApi
 					
 						if($model != null) {
 							foreach($model as $key => $item) {
-								if($item->media != '' && file_exists($album_path.$item->media)) {
-									$album_photo = $album_url.$album_path.$item->media;
+								if($item->media != '' && file_exists($album_path.'/'.$item->media)) {
+									$album_photo = $album_url.'/'.$album_path.'/'.$item->media;
 									$data[] = array(
 										'img'=>$album_photo,
 										'desc'=>$item->caption != '' ? $item->caption : '-',
