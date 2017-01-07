@@ -26,6 +26,7 @@
  * @property string $media_id
  * @property integer $photo_info
  * @property integer $photo_tag
+ * @property integer $tags
  */
 class ViewAlbumPhoto extends CActiveRecord
 {
@@ -66,11 +67,11 @@ class ViewAlbumPhoto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('photo_info, photo_tag', 'numerical', 'integerOnly'=>true),
-			array('media_id', 'length', 'max'=>11),
+			array('photo_info, photo_tag, tags', 'numerical', 'integerOnly'=>true),
+			array('media_id, tags', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('media_id, photo_info, photo_tag', 'safe', 'on'=>'search'),
+			array('media_id, photo_info, photo_tag, tags', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -94,6 +95,7 @@ class ViewAlbumPhoto extends CActiveRecord
 			'media_id' => Yii::t('attribute', 'Media'),
 			'photo_info' => Yii::t('attribute', 'Photo Info'),
 			'photo_tag' => Yii::t('attribute', 'Photo Tag'),
+			'tags' => Yii::t('attribute', 'Tags'),
 		);
 		/*
 			'Media' => 'Media',
@@ -123,6 +125,7 @@ class ViewAlbumPhoto extends CActiveRecord
 		$criteria->compare('t.media_id',strtolower($this->media_id),true);
 		$criteria->compare('t.photo_info',$this->photo_info);
 		$criteria->compare('t.photo_tag',$this->photo_tag);
+		$criteria->compare('t.tags',$this->tags);
 
 		if(!isset($_GET['ViewAlbumPhoto_sort']))
 			$criteria->order = 't.media_id DESC';
@@ -156,6 +159,7 @@ class ViewAlbumPhoto extends CActiveRecord
 			$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'photo_info';
 			$this->defaultColumns[] = 'photo_tag';
+			$this->defaultColumns[] = 'tags';
 		}
 
 		return $this->defaultColumns;
@@ -173,6 +177,7 @@ class ViewAlbumPhoto extends CActiveRecord
 			//$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'photo_info';
 			$this->defaultColumns[] = 'photo_tag';
+			$this->defaultColumns[] = 'tags';
 		}
 		parent::afterConstruct();
 	}

@@ -24,11 +24,8 @@
  *
  * The followings are the available columns in table '_view_album_category':
  * @property integer $cat_id
- * @property string $category_name
- * @property string $category_desc
- * @property string $album_publish
- * @property string $album_unpublish
  * @property string $albums
+ * @property string $album_all
  */
 class ViewAlbumCategory extends CActiveRecord
 {
@@ -70,11 +67,10 @@ class ViewAlbumCategory extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('cat_id', 'numerical', 'integerOnly'=>true),
-			array('album_publish, album_unpublish, albums', 'length', 'max'=>21),
-			array('category_name, category_desc', 'safe'),
+			array('albums, album_all', 'length', 'max'=>21),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('cat_id, category_name, category_desc, album_publish, album_unpublish, albums', 'safe', 'on'=>'search'),
+			array('cat_id, albums, album_all', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -95,12 +91,9 @@ class ViewAlbumCategory extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'cat_id' => Yii::t('attribute', 'Cat'),
-			'category_name' => Yii::t('attribute', 'Category Name'),
-			'category_desc' => Yii::t('attribute', 'Category Desc'),
-			'album_publish' => Yii::t('attribute', 'Album Publish'),
-			'album_unpublish' => Yii::t('attribute', 'Album Unpublish'),
+			'cat_id' => Yii::t('attribute', 'Category'),
 			'albums' => Yii::t('attribute', 'Albums'),
+			'album_all' => Yii::t('attribute', 'Album All'),
 		);
 		/*
 			'Cat' => 'Cat',
@@ -132,11 +125,8 @@ class ViewAlbumCategory extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('t.cat_id',$this->cat_id);
-		$criteria->compare('t.category_name',strtolower($this->category_name),true);
-		$criteria->compare('t.category_desc',strtolower($this->category_desc),true);
-		$criteria->compare('t.album_publish',strtolower($this->album_publish),true);
-		$criteria->compare('t.album_unpublish',strtolower($this->album_unpublish),true);
 		$criteria->compare('t.albums',strtolower($this->albums),true);
+		$criteria->compare('t.album_all',strtolower($this->album_all),true);
 
 		if(!isset($_GET['ViewAlbumCategory_sort']))
 			$criteria->order = 't.cat_id DESC';
@@ -168,11 +158,8 @@ class ViewAlbumCategory extends CActiveRecord
 			}
 		} else {
 			$this->defaultColumns[] = 'cat_id';
-			$this->defaultColumns[] = 'category_name';
-			$this->defaultColumns[] = 'category_desc';
-			$this->defaultColumns[] = 'album_publish';
-			$this->defaultColumns[] = 'album_unpublish';
 			$this->defaultColumns[] = 'albums';
+			$this->defaultColumns[] = 'album_all';
 		}
 
 		return $this->defaultColumns;
@@ -188,11 +175,8 @@ class ViewAlbumCategory extends CActiveRecord
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
 			//$this->defaultColumns[] = 'cat_id';
-			$this->defaultColumns[] = 'category_name';
-			$this->defaultColumns[] = 'category_desc';
-			$this->defaultColumns[] = 'album_publish';
-			$this->defaultColumns[] = 'album_unpublish';
 			$this->defaultColumns[] = 'albums';
+			$this->defaultColumns[] = 'album_all';
 		}
 		parent::afterConstruct();
 	}
