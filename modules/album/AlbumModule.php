@@ -14,6 +14,12 @@
 class AlbumModule extends CWebModule
 {
 	public $defaultController = 'site';
+	
+	// getAssetsUrl()
+	//	return the URL for this module's assets, performing the publish operation
+	//	the first time, and caching the result for subsequent use.
+	private $_assetsUrl;
+
 
 	public function init() {
 		// this method is called when the module is being created
@@ -24,6 +30,14 @@ class AlbumModule extends CWebModule
 			'album.models.*',
 			'album.components.*',
 		));
+	}
+ 
+	public function getAssetsUrl()
+	{
+		if ($this->_assetsUrl === null)
+			$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('album.assets'));
+		
+		return $this->_assetsUrl;
 	}
 
 	public function beforeControllerAction($controller, $action) {
