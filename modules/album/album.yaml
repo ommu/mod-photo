@@ -12,72 +12,72 @@ db_sql_filename	:
 
 plugin_menu		:
 	- urlTitle: View Albums
-		urlRules: {siteType: 0,1, userLevel: 1,2}
+		urlRules: {siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 		
 	- urlTitle: Album Settings
-		urlRules: {siteType: 0,1, userLevel: 1,2}
+		urlRules: {siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/setting/index, attr: -, icon: -}
 		submenu :
 			- urlTitle: Categories
-				urlRules: {siteType: 0,1, userLevel: 1,2}
+				urlRules: {siteType: "0,1", userLevel: "1,2"}
 				urlPath: {url: o/category/manage, attr: -, icon: -}
 			- urlTitle: Photos
-				urlRules: {siteType: 0,1, userLevel: 1,2}
+				urlRules: {siteType: "0,1", userLevel: "1,2"}
 				urlPath: {url: o/photo/manage, attr: -, icon: -}
 			- urlTitle: Likes
-				urlRules: {siteType: 1, userLevel: 1,2}
+				urlRules: {siteType: 1, userLevel: "1,2"}
 				urlPath: {url: o/likes/manage, attr: -, icon: -}
 			- urlTitle: Album Tags
-				urlRules: {siteType: 0,1, userLevel: 1,2}
+				urlRules: {siteType: "0,1", userLevel: "1,2"}
 				urlPath: {url: o/tag/manage, attr: -, icon: -}
 			- urlTitle: Photo Tags
-				urlRules: {siteType: 0,1, userLevel: 1,2}
+				urlRules: {siteType: "0,1", userLevel: "1,2"}
 				urlPath: {url: o/phototag/manage, attr: -, icon: -}
 
 content_menu	:
 # controller o/admin
 	- urlTitle: Add Album
-		urlRules: {album, o/admin, manage, siteType: 0,1, userLevel: 1,2}
+		urlRules: {album, o/admin, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: add, attr: -, icon: -}
 		
 	- urlTitle: Back to manage
-		urlRules: {album, o/admin, add,edit, siteType: 0,1, userLevel: 1,2}
+		urlRules: {album, o/admin, "add,edit", siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: manage, attr: -, icon: -}
 		
 # controller o/category
 	- urlTitle: Add Category
-		urlRules: {album, o/category, manage, siteType: 0,1, userLevel: 1,2}
+		urlRules: {album, o/category, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: add, attr: -, icon: -}
 		
 	- urlTitle: Back to manage
-		urlRules: {album, o/category, add,edit, siteType: 0,1, userLevel: 1,2}
+		urlRules: {album, o/category, "add,edit", siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: manage, attr: -, icon: -}
 		
 # controller o/photo
 
 	- urlTitle: Back to album manage
-		urlRules: {album, o/photo, manage, siteType: 0,1, userLevel: 1,2}
+		urlRules: {album, o/photo, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 		
 	- urlTitle: Back to album photo manage
-		urlRules: {album, o/photo, edit, siteType: 0,1, userLevel: 1,2}
+		urlRules: {album, o/photo, edit, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: manage, attr: -, icon: -}
 		
 # controller o/like
 
 	- urlTitle: Back to album manage
-		urlRules: {album, o/like, manage, siteType: 1, userLevel: 1,2}
+		urlRules: {album, o/like, manage, siteType: 1, userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 
 # controller o/tag
 
 	- urlTitle: Back to album manage
-		urlRules: {album, o/tag, manage, siteType: 0,1, userLevel: 1,2}
+		urlRules: {album, o/tag, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 		
 # controller o/phototag
 
 	- urlTitle: Back to album manage
-		urlRules: {album, o/phototag, manage, siteType: 0,1, userLevel: 1,2}
+		urlRules: {album, o/phototag, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
