@@ -6,8 +6,8 @@
  * version: 0.1.4
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
- * @copyright Copyright (c) 2015 Ommu Platform (ommu.co)
- * @link https://github.com/oMMu/Ommu-Photo-Albums
+ * @copyright Copyright (c) 2015 Ommu Platform (opensource.ommu.co)
+ * @link https://github.com/ommu/Photo-Albums
  * @contect (+62)856-299-4114
  *
  */
