@@ -18,7 +18,7 @@
  * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
  * @created date 2 September 2016, 14:46 WIB
  * @link https://github.com/ommu/Photo-Albums
- * @contect (+62)856-299-4114
+ * @contact (+62)856-299-4114
  *
  *----------------------------------------------------------------------------------------------------------
  */
