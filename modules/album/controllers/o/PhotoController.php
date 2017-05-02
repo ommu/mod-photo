@@ -135,8 +135,8 @@ class PhotoController extends Controller
 			$album = Albums::getInfo($id);
 			//$photo_limit
 			$photo_limit = $setting->photo_limit;
-			if($album->cat->default_setting == 0)
-				$photo_limit = $model->cat->photo_limit;
+			if($album->category->default_setting == 0)
+				$photo_limit = $model->category->photo_limit;
 			
 			$class = (count($model) == $photo_limit) ? 'class="hide"' : '';
 			$url = Yii::app()->controller->createUrl('ajaxadd', array('id'=>$id,'type'=>'admin'));

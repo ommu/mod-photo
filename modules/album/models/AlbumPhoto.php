@@ -448,10 +448,10 @@ class AlbumPhoto extends CActiveRecord
 		$photo_resize = $setting->photo_resize;
 		$photo_resize_size = $setting->photo_resize_size;
 		
-		if($this->album->cat->default_setting == 0) {
-			$photo_limit = $this->album->cat->photo_limit;
-			$photo_resize = $this->album->cat->photo_resize;
-			$photo_resize_size = $this->album->cat->photo_resize_size;			
+		if($this->album->category->default_setting == 0) {
+			$photo_limit = $this->album->category->photo_limit;
+			$photo_resize = $this->album->category->photo_resize;
+			$photo_resize_size = $this->album->category->photo_resize_size;			
 		}
 		
 		//create thumb image

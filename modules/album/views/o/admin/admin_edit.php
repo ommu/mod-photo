@@ -20,8 +20,8 @@
 	
 	//$photo_limit
 	$photo_limit = $setting->photo_limit;
-	if($model->cat->default_setting == 0)
-		$photo_limit = $model->cat->photo_limit;
+	if($model->category->default_setting == 0)
+		$photo_limit = $model->category->photo_limit;
 
 	$url = Yii::app()->controller->createUrl('o/photo/ajaxmanage', array('id'=>$model->album_id,'type'=>'admin'));
 	$cs = Yii::app()->getClientScript();

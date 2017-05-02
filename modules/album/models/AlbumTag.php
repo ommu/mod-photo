@@ -87,7 +87,7 @@ class AlbumTag extends CActiveRecord
 		return array(
 			'album_relation' => array(self::BELONGS_TO, 'Albums', 'album_id'),
 			'tag_TO' => array(self::BELONGS_TO, 'OmmuTags', 'tag_id'),
-			'creation_relation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
+			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 		);
 	}
 
@@ -149,14 +149,14 @@ class AlbumTag extends CActiveRecord
 				'alias'=>'tag_TO',
 				'select'=>'body'
 			),
-			'creation_relation' => array(
-				'alias'=>'creation_relation',
+			'creation' => array(
+				'alias'=>'creation',
 				'select'=>'displayname'
 			),
 		);
 		$criteria->compare('album_relation.title',strtolower($this->album_search), true);
 		$criteria->compare('tag_TO.body',strtolower($this->tag_search), true);
-		$criteria->compare('creation_relation.displayname',strtolower($this->creation_search), true);
+		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 
 		if(!isset($_GET['AlbumTag_sort']))
 			$criteria->order = 't.id DESC';
@@ -222,7 +222,7 @@ class AlbumTag extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_search',
-				'value' => '$data->creation_relation->displayname',
+				'value' => '$data->creation->displayname',
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_date',

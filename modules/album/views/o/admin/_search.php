@@ -64,18 +64,8 @@
 		</li>
 
 		<li>
-			<?php echo $model->getAttributeLabel('comment'); ?><br/>
-			<?php echo $form->textField($model,'comment'); ?>
-		</li>
-
-		<li>
 			<?php echo $model->getAttributeLabel('view'); ?><br/>
 			<?php echo $form->textField($model,'view'); ?>
-		</li>
-
-		<li>
-			<?php echo $model->getAttributeLabel('likes'); ?><br/>
-			<?php echo $form->textField($model,'likes'); ?>
 		</li>
 
 		<li>

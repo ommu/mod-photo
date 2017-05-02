@@ -32,9 +32,7 @@
  * @property string $title
  * @property string $body
  * @property string $quote
- * @property integer $comment
  * @property integer $view
- * @property integer $likes
  * @property string $creation_date
  * @property string $creation_id
  * @property string $modified_date
@@ -85,7 +83,7 @@ class Albums extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('cat_id, title', 'required'),
-			array('publish, headline, comment_code, comment, view, likes, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
+			array('publish, headline, comment_code, view, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('cat_id', 'length', 'max'=>5),
 			array('user_id, media_id', 'length', 'max'=>11),
 			array('
@@ -96,7 +94,7 @@ class Albums extends CActiveRecord
 				media, old_media, keyword', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('album_id, publish, cat_id, user_id, media_id, headline, comment_code, title, body, quote, comment, view, likes, creation_date, creation_id, modified_date, modified_id,
+			array('album_id, publish, cat_id, user_id, media_id, headline, comment_code, title, body, quote, view, creation_date, creation_id, modified_date, modified_id,
 				photo_search, user_search, creation_search, modified_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -110,11 +108,11 @@ class Albums extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'views' => array(self::BELONGS_TO, 'ViewAlbums', 'album_id'),
-			'cat' => array(self::BELONGS_TO, 'AlbumCategory', 'cat_id'),
+			'category' => array(self::BELONGS_TO, 'AlbumCategory', 'cat_id'),
 			'cover' => array(self::BELONGS_TO, 'AlbumPhoto', 'media_id'),
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
-			'creation_relation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
-			'modified_relation' => array(self::BELONGS_TO, 'Users', 'modified_id'),
+			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
+			'modified' => array(self::BELONGS_TO, 'Users', 'modified_id'),
 			'likes' => array(self::HAS_MANY, 'AlbumLikes', 'album_id'),
 			'photo' => array(self::HAS_MANY, 'AlbumPhoto', 'album_id'),
 			'tag_MANY' => array(self::HAS_MANY, 'AlbumTag', 'album_id'),
@@ -138,9 +136,7 @@ class Albums extends CActiveRecord
 			'title' => Yii::t('attribute', 'Title'),
 			'body' => Yii::t('attribute', 'Body'),
 			'quote' => Yii::t('attribute', 'Quote'),
-			'comment' => Yii::t('attribute', 'Comment'),
 			'view' => Yii::t('attribute', 'View'),
-			'likes' => Yii::t('attribute', 'Likes'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation ID'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
@@ -198,9 +194,7 @@ class Albums extends CActiveRecord
 		$criteria->compare('t.title',$this->title,true);
 		$criteria->compare('t.body',$this->body,true);
 		$criteria->compare('t.quote',$this->quote,true);
-		$criteria->compare('t.comment',$this->comment);
 		$criteria->compare('t.view',$this->view);
-		$criteria->compare('t.likes',$this->likes);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
 		$criteria->compare('t.creation_id',$this->creation_id);
@@ -217,19 +211,19 @@ class Albums extends CActiveRecord
 				'alias'=>'user',
 				'select'=>'displayname'
 			),
-			'creation_relation' => array(
-				'alias'=>'creation_relation',
+			'creation' => array(
+				'alias'=>'creation',
 				'select'=>'displayname'
 			),
-			'modified_relation' => array(
-				'alias'=>'modified_relation',
+			'modified' => array(
+				'alias'=>'modified',
 				'select'=>'displayname'
 			),
 		);
 		$criteria->compare('view.photos',$this->photo_search);
 		$criteria->compare('user.displayname',strtolower($this->user_search), true);
-		$criteria->compare('creation_relation.displayname',strtolower($this->creation_search), true);
-		$criteria->compare('modified_relation.displayname',strtolower($this->modified_search), true);
+		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
+		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
 		if(!isset($_GET['Albums_sort']))
 			$criteria->order = 't.album_id DESC';
@@ -270,9 +264,7 @@ class Albums extends CActiveRecord
 			$this->defaultColumns[] = 'title';
 			$this->defaultColumns[] = 'body';
 			$this->defaultColumns[] = 'quote';
-			$this->defaultColumns[] = 'comment';
 			$this->defaultColumns[] = 'view';
-			$this->defaultColumns[] = 'likes';
 			$this->defaultColumns[] = 'creation_date';
 			$this->defaultColumns[] = 'creation_id';
 			$this->defaultColumns[] = 'modified_date';
@@ -328,7 +320,7 @@ class Albums extends CActiveRecord
 			);			
 			$this->defaultColumns[] = array(
 				'name' => 'creation_search',
-				'value' => '$data->creation_relation->displayname',
+				'value' => '$data->creation->displayname',
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_date',
@@ -356,21 +348,21 @@ class Albums extends CActiveRecord
 					),
 				), true),
 			);
+			if($controller == 'o/admin' && OmmuSettings::getInfo('site_headline') == 1) {
+				$this->defaultColumns[] = array(
+					'name' => 'headline',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("headline",array("id"=>$data->album_id)), $data->headline, 1)',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'filter'=>array(
+						1=>Yii::t('phrase', 'Yes'),
+						0=>Yii::t('phrase', 'No'),
+					),
+					'type' => 'raw',
+				);
+			}
 			if(!isset($_GET['type'])) {
-				if($controller == 'o/admin' && OmmuSettings::getInfo('site_headline') == 1) {
-					$this->defaultColumns[] = array(
-						'name' => 'headline',
-						'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("headline",array("id"=>$data->album_id)), $data->headline, 1)',
-						'htmlOptions' => array(
-							'class' => 'center',
-						),
-						'filter'=>array(
-							1=>Yii::t('phrase', 'Yes'),
-							0=>Yii::t('phrase', 'No'),
-						),
-						'type' => 'raw',
-					);
-				}
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
 					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->album_id)), $data->publish, 1)',
