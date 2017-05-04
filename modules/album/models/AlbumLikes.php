@@ -122,6 +122,18 @@ class AlbumLikes extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		
+		// Custom Search
+		$criteria->with = array(
+			'album' => array(
+				'alias'=>'album',
+				'select'=>'title'
+			),
+			'user' => array(
+				'alias'=>'user',
+				'select'=>'displayname'
+			),
+		);
 
 		$criteria->compare('t.like_id',$this->like_id,true);
 		if(isset($_GET['album']))
@@ -136,17 +148,6 @@ class AlbumLikes extends CActiveRecord
 			$criteria->compare('date(t.likes_date)',date('Y-m-d', strtotime($this->likes_date)));
 		$criteria->compare('t.likes_ip',$this->likes_ip,true);
 		
-		// Custom Search
-		$criteria->with = array(
-			'album' => array(
-				'alias'=>'album',
-				'select'=>'title'
-			),
-			'user' => array(
-				'alias'=>'user',
-				'select'=>'displayname'
-			),
-		);
 		$criteria->compare('album.title',strtolower($this->album_search), true);
 		$criteria->compare('user.displayname',strtolower($this->user_search), true);
 

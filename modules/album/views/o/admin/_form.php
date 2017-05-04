@@ -169,7 +169,7 @@
 							}
 							if(!$model->isNewRecord) {
 								$tags = $model->tags;
-								if(empty($tags)) {
+								if(!empty($tags)) {
 									foreach($tags as $key => $val) {?>
 									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/tag/delete',array('id'=>$val->id,'type'=>'album'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
@@ -179,8 +179,6 @@
 						<?php if($model->isNewRecord) {?><span class="small-px">tambahkan tanda koma (,) jika ingin menambahkan keyword lebih dari satu</span><?php }?>
 					</div>
 				</div>
-				<?php if(!$model->isNewRecord || ($model->isNewRecord && $setting->meta_keyword != '')) {?>
-				<?php }?>
 
 			</div>
 
