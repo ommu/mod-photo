@@ -24,7 +24,7 @@
  *
  * The followings are the available columns in table '_view_album_photo':
  * @property string $media_id
- * @property integer $photo_info
+ * @property integer $photo_caption
  * @property integer $photo_tag
  * @property integer $tags
  */
@@ -67,11 +67,11 @@ class ViewAlbumPhoto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('photo_info, photo_tag, tags', 'numerical', 'integerOnly'=>true),
+			array('photo_caption, photo_tag, tags', 'numerical', 'integerOnly'=>true),
 			array('media_id, tags', 'length', 'max'=>11),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('media_id, photo_info, photo_tag, tags', 'safe', 'on'=>'search'),
+			array('media_id, photo_caption, photo_tag, tags', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -93,7 +93,7 @@ class ViewAlbumPhoto extends CActiveRecord
 	{
 		return array(
 			'media_id' => Yii::t('attribute', 'Media'),
-			'photo_info' => Yii::t('attribute', 'Photo Info'),
+			'photo_caption' => Yii::t('attribute', 'Photo Info'),
 			'photo_tag' => Yii::t('attribute', 'Photo Tag'),
 			'tags' => Yii::t('attribute', 'Tags'),
 		);
@@ -123,7 +123,7 @@ class ViewAlbumPhoto extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('t.media_id',strtolower($this->media_id),true);
-		$criteria->compare('t.photo_info',$this->photo_info);
+		$criteria->compare('t.photo_caption',$this->photo_caption);
 		$criteria->compare('t.photo_tag',$this->photo_tag);
 		$criteria->compare('t.tags',$this->tags);
 
@@ -157,7 +157,7 @@ class ViewAlbumPhoto extends CActiveRecord
 			}
 		} else {
 			$this->defaultColumns[] = 'media_id';
-			$this->defaultColumns[] = 'photo_info';
+			$this->defaultColumns[] = 'photo_caption';
 			$this->defaultColumns[] = 'photo_tag';
 			$this->defaultColumns[] = 'tags';
 		}
@@ -175,7 +175,7 @@ class ViewAlbumPhoto extends CActiveRecord
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
 			//$this->defaultColumns[] = 'media_id';
-			$this->defaultColumns[] = 'photo_info';
+			$this->defaultColumns[] = 'photo_caption';
 			$this->defaultColumns[] = 'photo_tag';
 			$this->defaultColumns[] = 'tags';
 		}

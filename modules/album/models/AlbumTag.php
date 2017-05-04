@@ -277,24 +277,30 @@ class AlbumTag extends CActiveRecord
 	/**
 	 * get album tag
 	 */
-	public static function getKeyword($keyword, $id) {
-		$model = self::model()->findAll(array(
-			'condition' => 'album_id = :id',
-			'params' => array(
-				':id' => $id,
-			),
-			'order' => 'id ASC',
-			'limit' => 30,
-		));
+	public static function getKeyword($keyword, $tags) 
+	{
+		if(empty($tags))
+			return $keyword;
 		
-		$tag = '';
-		if($model != null) {
-			foreach($model as $val) {
-				$tag .= ','.$val->tag->body;
-			}
+		else {
+			$tag = array();
+			foreach($tags as $val)
+				$tag[] = $val->tag->body;
+				
+			$implodeTag = Utility::formatFileType($tag, false);
+			return $keyword.', '.$implodeTag;
 		}
-		
-		return $keyword.$tag;
+	}
+
+	/**
+	 * before validate attributes
+	 */
+	protected function beforeValidate() {
+		if(parent::beforeValidate()) {
+			if($this->isNewRecord)
+				$this->creation_id = Yii::app()->user->id;
+		}
+		return true;
 	}
 	
 	/**
@@ -311,18 +317,16 @@ class AlbumTag extends CActiveRecord
 							':body' => Utility::getUrlTitle(strtolower(trim($this->tag_i))),
 						),
 					));
-					if($tag != null) {
+					if($tag != null)
 						$this->tag_id = $tag->tag_id;
-					} else {
+					else {
 						$data = new OmmuTags;
 						$data->body = $this->tag_i;
-						if($data->save()) {
+						if($data->save())
 							$this->tag_id = $data->tag_id;
-						}
 					}					
 				}
 			}
-			$this->creation_id = Yii::app()->user->id;
 		}
 		return true;
 	}

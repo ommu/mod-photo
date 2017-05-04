@@ -25,7 +25,6 @@
  * @property string $media_id
  * @property integer $publish
  * @property string $album_id
- * @property integer $orders
  * @property integer $cover
  * @property string $media
  * @property string $caption
@@ -45,7 +44,8 @@ class AlbumPhoto extends CActiveRecord
 	
 	// Variable Search
 	public $album_search;
-	public $photo_info_search;
+	public $photo_caption_search;
+	public $photo_tag_search;
 	public $creation_search;
 	public $modified_search;
 
@@ -78,15 +78,15 @@ class AlbumPhoto extends CActiveRecord
 		return array(
 			array('album_id', 'required'),
 			array('caption', 'required', 'on'=>'photoInfoRequired'),
-			array('publish, orders, cover, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
+			array('publish, cover, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('album_id, creation_id, modified_id', 'length', 'max'=>11),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
 			array('cover, media, caption,
 				keyword_i, old_media_i', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('media_id, publish, album_id, orders, cover, media, caption, creation_date, creation_id, modified_date, modified_id,
-				album_search, photo_info_search, creation_search', 'safe', 'on'=>'search'),
+			array('media_id, publish, album_id, cover, media, caption, creation_date, creation_id, modified_date, modified_id,
+				album_search, photo_caption_search, photo_tag_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -115,7 +115,6 @@ class AlbumPhoto extends CActiveRecord
 			'media_id' => Yii::t('attribute', 'Media'),
 			'publish' => Yii::t('attribute', 'Publish'),
 			'album_id' => Yii::t('attribute', 'Album'),
-			'orders' => Yii::t('attribute', 'Orders'),
 			'cover' => Yii::t('attribute', 'Cover'),
 			'media' => Yii::t('attribute', 'Photo'),
 			'caption' => Yii::t('attribute', 'Caption'),
@@ -126,7 +125,8 @@ class AlbumPhoto extends CActiveRecord
 			'keyword_i' => Yii::t('attribute', 'Tags'),
 			'old_media_i' => Yii::t('attribute', 'Old Photo'),
 			'album_search' => Yii::t('attribute', 'Album'),
-			'photo_info_search' => Yii::t('attribute', 'Photo Info'),
+			'photo_caption_search' => Yii::t('attribute', 'Caption'),
+			'photo_tag_search' => Yii::t('attribute', 'Tag'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
 		);
@@ -184,7 +184,6 @@ class AlbumPhoto extends CActiveRecord
 			$criteria->compare('t.album_id',$_GET['album']);
 		else
 			$criteria->compare('t.album_id',$this->album_id);
-		$criteria->compare('t.orders',$this->orders);
 		$criteria->compare('t.cover',$this->cover);
 		$criteria->compare('t.media',$this->media,true);
 		$criteria->compare('t.caption',$this->caption,true);
@@ -202,7 +201,8 @@ class AlbumPhoto extends CActiveRecord
 			$criteria->compare('t.modified_id',$this->modified_id);
 		
 		$criteria->compare('album.title',strtolower($this->album_search), true);
-		$criteria->compare('view.photo_info',strtolower($this->photo_info_search), true);
+		$criteria->compare('view.photo_caption',strtolower($this->photo_caption_search), true);
+		$criteria->compare('view.photo_tag',strtolower($this->photo_tag_search), true);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
@@ -238,7 +238,6 @@ class AlbumPhoto extends CActiveRecord
 			//$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'publish';
 			$this->defaultColumns[] = 'album_id';
-			$this->defaultColumns[] = 'orders';
 			$this->defaultColumns[] = 'cover';
 			$this->defaultColumns[] = 'media';
 			$this->defaultColumns[] = 'caption';
@@ -306,8 +305,20 @@ class AlbumPhoto extends CActiveRecord
 				), true),
 			);
 			$this->defaultColumns[] = array(
-				'name' => 'photo_info_search',
-				'value' => '$data->view->photo_info == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'name' => 'photo_caption_search',
+				'value' => '$data->view->photo_caption == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'filter'=>array(
+					1=>Yii::t('phrase', 'Yes'),
+					0=>Yii::t('phrase', 'No'),
+				),
+				'type' => 'raw',
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'photo_tag_search',
+				'value' => '$data->view->photo_tag == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),

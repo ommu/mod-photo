@@ -39,6 +39,7 @@ class AlbumPhotoTag extends CActiveRecord
 	
 	// Variable Search
 	public $photo_search;
+	public $album_search;
 	public $tag_search;
 	public $creation_search;
 
@@ -76,7 +77,7 @@ class AlbumPhotoTag extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, media_id, tag_id, creation_date, creation_id,
-				photo_search, tag_search, creation_search', 'safe', 'on'=>'search'),
+				photo_search, album_search, tag_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -106,6 +107,7 @@ class AlbumPhotoTag extends CActiveRecord
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'photo_search' => Yii::t('attribute', 'Photo'),
+			'album_search' => Yii::t('attribute', 'Album'),
 			'tag_search' => Yii::t('attribute', 'Tag'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 		);
@@ -143,6 +145,10 @@ class AlbumPhotoTag extends CActiveRecord
 				'alias'=>'photo',
 				'select'=>'media'
 			),
+			'photo.album' => array(
+				'alias'=>'photo_album',
+				'select'=>'title'
+			),
 			'tag' => array(
 				'alias'=>'tag',
 				'select'=>'body'
@@ -158,7 +164,10 @@ class AlbumPhotoTag extends CActiveRecord
 			$criteria->compare('t.media_id',$_GET['media']);
 		else
 			$criteria->compare('t.media_id',$this->media_id);
-		$criteria->compare('t.tag_id',strtolower($this->tag_id),true);
+		if(isset($_GET['tag']))
+			$criteria->compare('t.tag_id',$_GET['tag']);
+		else
+			$criteria->compare('t.tag_id',$this->tag_id);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
 		if(isset($_GET['creation']))
@@ -167,6 +176,7 @@ class AlbumPhotoTag extends CActiveRecord
 			$criteria->compare('t.creation_id',$this->creation_id);
 		
 		$criteria->compare('photo.media',strtolower($this->photo_search), true);
+		$criteria->compare('photo_album.title',strtolower($this->album_search), true);
 		$criteria->compare('tag.body',strtolower($this->tag_search), true);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 
@@ -228,14 +238,20 @@ class AlbumPhotoTag extends CActiveRecord
 			);
 			if(!isset($_GET['photo'])) {
 				$this->defaultColumns[] = array(
+					'name' => 'album_search',
+					'value' => '$data->photo->album->title',
+				);
+				$this->defaultColumns[] = array(
 					'name' => 'photo_search',
 					'value' => '$data->photo->media',
 				);
 			}
-			$this->defaultColumns[] = array(
-				'name' => 'tag_search',
-				'value' => '$data->tag->body',
-			);
+			if(!isset($_GET['tag'])) {
+				$this->defaultColumns[] = array(
+					'name' => 'tag_search',
+					'value' => '$data->tag->body',
+				);
+			}
 			$this->defaultColumns[] = array(
 				'name' => 'creation_search',
 				'value' => '$data->creation->displayname',

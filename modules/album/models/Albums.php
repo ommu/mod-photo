@@ -487,7 +487,10 @@ class Albums extends CActiveRecord
 			if($media_i->name != '') {
 				$extension = pathinfo($media_i->name, PATHINFO_EXTENSION);
 				if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
-					$this->addError('media_i', 'The file "'.$media_i->name.'" cannot be uploaded. Only files with these extensions are allowed: bmp, gif, jpg, png.');
+					$this->addError('media_i', Yii::t('phrase', 'The file {name} cannot be uploaded. Only files with these extensions are allowed: {extensions}.', array(
+						'{name}'=>$media_i->name,
+						'{extensions}'=>'bmp, gif, jpg, png',
+					)));
 			}
 		}
 		return true;
@@ -500,7 +503,7 @@ class Albums extends CActiveRecord
 	{
 		parent::afterSave();
 		$setting = AlbumSetting::model()->findByPk(1, array(
-			'select' => 'headline, photo_limit, photo_resize, photo_resize_size',
+			'select' => 'headline',
 		));
 		
 		// Add album directory
@@ -516,14 +519,16 @@ class Albums extends CActiveRecord
 		
 		if($this->isNewRecord) {
 			$this->media_i = CUploadedFile::getInstance($this, 'media_i');
-			if($this->media_i instanceOf CUploadedFile) {
-				$fileName = time().'_'.Utility::getUrlTitle($this->title).'.'.strtolower($this->media_i->extensionName);
-				if($this->media_i->saveAs($album_path.'/'.$fileName)) {
-					$images = new AlbumPhoto;
-					$images->album_id = $this->album_id;
-					$images->cover = '1';
-					$images->media = $fileName;
-					$images->save();
+			if($this->media_i != null) {
+				if($this->media_i instanceOf CUploadedFile) {
+					$fileName = time().'_'.Utility::getUrlTitle($this->title).'.'.strtolower($this->media_i->extensionName);
+					if($this->media_i->saveAs($album_path.'/'.$fileName)) {
+						$images = new AlbumPhoto;
+						$images->album_id = $this->album_id;
+						$images->cover = '1';
+						$images->media = $fileName;
+						$images->save();
+					}
 				}
 			}
 			
