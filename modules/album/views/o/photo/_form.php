@@ -27,21 +27,20 @@
 <?php //begin.Messages ?>
 
 <fieldset>
-
-	<?php
-		if(!$model->isNewRecord) {
-			$model->old_media = $model->media;
-			echo $form->hiddenField($model,'old_media');
-			if($model->media != '') {
-				$file = Yii::app()->request->baseUrl.'/public/album/'.$model->album_id.'/'.$model->media;
-				$media = '<img src="'.Utility::getTimThumb($file, 300, 500, 3).'" alt="">';
-				echo '<div class="clearfix">';
-				echo $form->labelEx($model,'old_media');
-				echo '<div class="desc">'.$media.'</div>';
-				echo '</div>';
-			}
-		}	
-	?>
+	
+	<?php if(!$model->isNewRecord) {?>		
+	<div class="clearfix">
+		<?php echo $form->labelEx($model,'old_media_i'); ?>
+		<div class="desc">
+			<?php 
+			if(!$model->getErrors())
+				$model->old_media_i = $model->media;
+			echo $form->hiddenField($model,'old_media_i');
+			$media = Yii::app()->request->baseUrl.'/public/album/'.$model->album_id.'/'.$model->old_media_i;?>
+			<img src="<?php echo Utility::getTimThumb($media, 300, 500, 3);?>" alt="">
+		</div>
+	</div>
+	<?php }?>
 
 	<div class="clearfix">
 		<?php echo $form->labelEx($model,'media'); ?>
@@ -61,17 +60,17 @@
 	
 	<?php if(!$model->isNewRecord) {?>
 	<div class="clearfix">
-		<?php echo $form->labelEx($model,'tag'); ?>
+		<?php echo $form->labelEx($model,'keyword_i'); ?>
 		<div class="desc">
 			<?php 
 			if(!$model->isNewRecord) {
-				//echo $form->textField($model,'keyword',array('maxlength'=>32,'class'=>'span-6'));
+				//echo $form->textField($model,'keyword_i',array('maxlength'=>32,'class'=>'span-6'));
 				$url = Yii::app()->controller->createUrl('o/phototag/add', array('type'=>'photo'));
 				$photo = $model->media_id;
-				$tagId = 'AlbumPhoto_tag';
+				$tagId = 'AlbumPhoto_keyword_i';
 				$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 					'model' => $model,
-					'attribute' => 'tag',
+					'attribute' => 'keyword_i',
 					'source' => Yii::app()->createUrl('globaltag/suggest'),
 					'options' => array(
 						//'delay '=> 50,
@@ -95,7 +94,7 @@
 						'class'	=> 'span-4',
 					),
 				));
-				echo $form->error($model,'keyword');
+				echo $form->error($model,'keyword_i');
 			}?>
 			<div id="tag-suggest" class="suggest clearfix">
 				<?php if(!$model->isNewRecord) {

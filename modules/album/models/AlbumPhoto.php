@@ -40,8 +40,8 @@
 class AlbumPhoto extends CActiveRecord
 {
 	public $defaultColumns = array();
-	public $tag;
-	public $old_media;
+	public $keyword_i;
+	public $old_media_i;
 	
 	// Variable Search
 	public $album_search;
@@ -82,7 +82,7 @@ class AlbumPhoto extends CActiveRecord
 			array('album_id, creation_id, modified_id', 'length', 'max'=>11),
 			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
 			array('cover, media, caption,
-				tag, old_media', 'safe'),
+				keyword_i, old_media_i', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('media_id, publish, album_id, orders, cover, media, caption, creation_date, creation_id, modified_date, modified_id,
@@ -123,8 +123,8 @@ class AlbumPhoto extends CActiveRecord
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
-			'tag' => Yii::t('attribute', 'Tag'),
-			'old_media' => Yii::t('attribute', 'Old Photo'),
+			'keyword_i' => Yii::t('attribute', 'Tags'),
+			'old_media_i' => Yii::t('attribute', 'Old Photo'),
 			'album_search' => Yii::t('attribute', 'Album'),
 			'photo_info_search' => Yii::t('attribute', 'Photo Info'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
@@ -149,6 +149,25 @@ class AlbumPhoto extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		
+		// Custom Search
+		$criteria->with = array(
+			'view' => array(
+				'alias'=>'view',
+			),
+			'album' => array(
+				'alias'=>'album',
+				'select'=>'title'
+			),
+			'creation' => array(
+				'alias'=>'creation',
+				'select'=>'displayname'
+			),
+			'modified' => array(
+				'alias'=>'modified',
+				'select'=>'displayname'
+			),
+		);
 
 		$criteria->compare('t.media_id',$this->media_id);
 		if(isset($_GET['type']) && $_GET['type'] == 'publish') {
@@ -182,24 +201,6 @@ class AlbumPhoto extends CActiveRecord
 		else
 			$criteria->compare('t.modified_id',$this->modified_id);
 		
-		// Custom Search
-		$criteria->with = array(
-			'view' => array(
-				'alias'=>'view',
-			),
-			'album' => array(
-				'alias'=>'album',
-				'select'=>'title'
-			),
-			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname'
-			),
-			'modified' => array(
-				'alias'=>'modified',
-				'select'=>'displayname'
-			),
-		);
 		$criteria->compare('album.title',strtolower($this->album_search), true);
 		$criteria->compare('view.photo_info',strtolower($this->photo_info_search), true);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
@@ -328,6 +329,20 @@ class AlbumPhoto extends CActiveRecord
 				),
 				'type' => 'raw',
 			);
+			if(!isset($_GET['type'])) {
+				$this->defaultColumns[] = array(
+					'name' => 'publish',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->media_id)), $data->publish, 1)',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'filter'=>array(
+						1=>Yii::t('phrase', 'Yes'),
+						0=>Yii::t('phrase', 'No'),
+					),
+					'type' => 'raw',
+				);
+			}
 		}
 		parent::afterConstruct();
 	}
@@ -350,45 +365,51 @@ class AlbumPhoto extends CActiveRecord
 	}
 
 	/**
-	 * get photo product
+	 * Resize Photo
 	 */
-	public static function getPhoto($id, $type=null) {
-		if($type == null) {
-			$model = self::model()->findAll(array(
-				'condition' => 'album_id = :id',
-				'params' => array(
-					':id' => $id,
-				),
-			));
-		} else {
-			$model = self::model()->findAll(array(
-				'condition' => 'album_id = :id AND cover = :cover',
-				'params' => array(
-					':id' => $id,
-					':cover' => $type,
-				),
-			));
-		}
-
-		return $model;
+	public static function resizePhoto($photo, $size) {
+		Yii::import('ext.phpthumb.PhpThumbFactory');
+		$resizePhoto = PhpThumbFactory::create($photo, array('jpegQuality' => 90, 'correctPermissions' => true));
+		if($size['height'] == 0)
+			$resizePhoto->resize($size['width']);
+		else			
+			$resizePhoto->adaptiveResize($size['width'], $size['height']);
+		
+		$resizePhoto->save($photo);
+		
+		return true;
 	}
 
 	/**
 	 * before validate attributes
 	 */
-	protected function beforeValidate() {
-		if(parent::beforeValidate()) {
-			$media = CUploadedFile::getInstance($this, 'media');
-			if(!Yii::app()->request->isAjaxRequest && $media->name != '') {
-				$extension = pathinfo($media->name, PATHINFO_EXTENSION);
-				if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
-					$this->addError('media', 'The file "'.$media->name.'" cannot be uploaded. Only files with these extensions are allowed: bmp, gif, jpg, png.');
-			}
-			
+	protected function beforeValidate() 
+	{
+		$controller = strtolower(Yii::app()->controller->id);
+		$currentAction = strtolower(Yii::app()->controller->id.'/'.Yii::app()->controller->action->id);
+		
+		if(parent::beforeValidate()) 
+		{
 			if($this->isNewRecord)
 				$this->creation_id = Yii::app()->user->id;
 			else
 				$this->modified_id = Yii::app()->user->id;
+			
+			if($currentAction != 'o/admin/insertcover') {
+				$media = CUploadedFile::getInstance($this, 'media');
+				if($media != null) {
+					$extension = pathinfo($media->name, PATHINFO_EXTENSION);
+					if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
+						$this->addError('media', Yii::t('phrase', 'The file {name} cannot be uploaded. Only files with these extensions are allowed: {extensions}.', array(
+							'{name}'=>$media->name,
+							'{extensions}'=>'bmp, gif, jpg, png.',
+						)));
+					
+				} else {
+					if($this->isNewRecord && $controller == 'o/photo')
+						$this->addError('media', 'Media (Photo) cannot be blank.');				
+				}
+			}
 		}
 		return true;
 	}
@@ -396,69 +417,14 @@ class AlbumPhoto extends CActiveRecord
 	/**
 	 * before save attributes
 	 */
-	protected function beforeSave() {
-		if(parent::beforeSave()) {			
-			//Update album photo
-			$controller = strtolower(Yii::app()->controller->id);
-			if(!Yii::app()->request->isAjaxRequest && !$this->isNewRecord && $controller == 'o/photo') {
-				$album_path = "public/album/".$this->album_id;
-				// Add directory
-				if(!file_exists($album_path)) {
-					@mkdir($album_path, 0755, true);
-
-					// Add file in directory (index.php)
-					$newFile = $album_path.'/index.php';
-					$FileHandle = fopen($newFile, 'w');
-				} else
-					@chmod($album_path, 0755, true);
-				
-				$this->media = CUploadedFile::getInstance($this, 'media');
-				if($this->media instanceOf CUploadedFile) {
-					$fileName = time().'_'.$this->album_id.'_'.Utility::getUrlTitle($this->album->title).'.'.strtolower($this->media->extensionName);
-					if($this->media->saveAs($album_path.'/'.$fileName)) {
-						if($this->old_media != '' && file_exists($album_path.'/'.$this->old_media))
-							rename($album_path.'/'.$this->old_media, 'public/album/verwijderen/'.$this->album_id.'_'.$this->old_media);
-						$this->media = $fileName;
-					}
-				}
-				
-				if($this->media == '') {
-					$this->media = $this->old_media;
-				}
-			}
-		}
-		return true;	
-	}
-	
-	/**
-	 * After save attributes
-	 */
-	protected function afterSave() {
-		parent::afterSave();
-
-		//set flex cover in album
-		//if($this->cover == 1 || count(self::getPhoto($this->album_id)) == 1) {
-		if($this->cover == 1) {
-			$cover = Albums::model()->findByPk($this->album_id);
-			$cover->media_id = $this->media_id;
-			$cover->update();
-		}		
+	protected function beforeSave() 
+	{
+		$controller = strtolower(Yii::app()->controller->id);
+		$currentAction = strtolower(Yii::app()->controller->id.'/'.Yii::app()->controller->action->id);
 		
-		$setting = AlbumSetting::getInfo('photo_limit, photo_resize, photo_resize_size', 'many');
-		$photo_limit = $setting->photo_limit;
-		$photo_resize = $setting->photo_resize;
-		$photo_resize_size = $setting->photo_resize_size;
-		
-		if($this->album->category->default_setting == 0) {
-			$photo_limit = $this->album->category->photo_limit;
-			$photo_resize = $this->album->category->photo_resize;
-			$photo_resize_size = $this->album->category->photo_resize_size;			
-		}
-		
-		//create thumb image
-		if($photo_resize == 1) {
-			Yii::import('ext.phpthumb.PhpThumbFactory');
-			$album_path = 'public/album/'.$this->album_id;
+		if(parent::beforeSave()) {
+			$album_path = "public/album/".$this->album_id;
+			
 			// Add directory
 			if(!file_exists($album_path)) {
 				@mkdir($album_path, 0755, true);
@@ -468,26 +434,84 @@ class AlbumPhoto extends CActiveRecord
 				$FileHandle = fopen($newFile, 'w');
 			} else
 				@chmod($album_path, 0755, true);
-				
-			$albumImg = PhpThumbFactory::create($album_path.'/'.$this->media, array('jpegQuality' => 90, 'correctPermissions' => true));
-			$resizeSize = unserialize($photo_resize_size);
-			if($resizeSize['height'] == 0)
-				$albumImg->resize($resizeSize['width']);
-			else
-				$albumImg->adaptiveResize($resizeSize['width'], $resizeSize['height']);				
-			$albumImg->save($album_path.'/'.$this->media);
+
+			//Update album photo
+			if(in_array($currentAction, array('o/photo/add','o/photo/edit'))) {
+				$this->media = CUploadedFile::getInstance($this, 'media');
+				if($this->media != null) {
+					if($this->media instanceOf CUploadedFile) {
+						$fileName = time().'_'.Utility::getUrlTitle($this->album->title).'.'.strtolower($this->media->extensionName);
+						if($this->media->saveAs($album_path.'/'.$fileName)) {
+							if(!$this->isNewRecord) {
+								if($this->old_media_i != '' && file_exists($album_path.'/'.$this->old_media_i))
+									rename($album_path.'/'.$this->old_media_i, 'public/album/verwijderen/'.$this->album_id.'_'.$this->old_media_i);
+							}
+							$this->media = $fileName;
+						}
+					}
+				} else {
+					if(!$this->isNewRecord && $this->media == '')
+						$this->media = $this->old_media_i;
+				}
+			}
 		}
+		return true;
+	}
+	
+	/**
+	 * After save attributes
+	 */
+	protected function afterSave() {
+		parent::afterSave();
+		
+		$setting = AlbumSetting::model()->findByPk(1, array(
+			'select' => 'photo_limit, photo_resize, photo_resize_size',
+		));		
+		$photo_limit = $setting->photo_limit;
+		$photo_resize = $setting->photo_resize;
+		$photo_resize_size = $setting->photo_resize_size;
+		
+		if($this->album->category->default_setting == 0) {
+			$photo_limit = $this->album->category->photo_limit;
+			$photo_resize = $this->album->category->photo_resize;
+			$photo_resize_size = $this->album->category->photo_resize_size;			
+		}
+		$photo_resize_size = unserialize($photo_resize_size);
+		
+		$album_path = 'public/album/'.$this->album_id;
+		
+		// Add directory
+		if(!file_exists($album_path)) {
+			@mkdir($album_path, 0755, true);
+
+			// Add file in directory (index.php)
+			$newFile = $album_path.'/index.php';
+			$FileHandle = fopen($newFile, 'w');
+		} else
+			@chmod($album_path, 0755, true);
+		
+		//resize cover after upload
+		if($photo_resize == 1 && $this->media != '')
+			self::resizePhoto($album_path.'/'.$this->media, $photo_resize_size);
 			
-		//delete other photo (if photo_limit = 1)
+		//delete other media (if media_limit = 1)
 		if($photo_limit == 1) {
-			self::model()->deleteAll(array(
-				'condition'=> 'album_id = :id AND cover = :cover',
+			$photos = self::model()->findAll(array(
+				'condition'=> 'media_id <> :media AND album_id = :album',
 				'params'=>array(
-					':id'=>$this->album_id,
-					':cover'=>0,
+					':media'=>$this->media_id,
+					':album'=>$this->album_id,
 				),
 			));
+			if($photos != null) {
+				foreach($photos as $key => $val)
+					self::model()->findByPk($val->media_id)->delete();
+			}
 		}
+		
+		//update if new cover (cover = 1)
+		if($this->cover == 1)
+			self::model()->updateAll(array('cover'=>0), 'media_id <> :media AND album_id = :album', array(':media'=>$this->media_id,':album'=>$this->album_id));
 	}
 
 	/**
@@ -497,22 +521,14 @@ class AlbumPhoto extends CActiveRecord
 		parent::afterDelete();
 		//delete album image
 		$album_path = "public/album/".$this->album_id;
+		
 		if($this->media != '' && file_exists($album_path.'/'.$this->media))
 			rename($album_path.'/'.$this->media, 'public/album/verwijderen/'.$this->album_id.'_'.$this->media);
 
-		//reset cover in album
-		$data = self::getPhoto($this->album_id);
-		if($data != null) {
-			if($this->cover == 1) {				
-				$photo = self::model()->findByPk($data[0]->media_id);
-				$photo->cover = 1;
-				if($photo->update()) {
-					$cover = albums::model()->findByPk($this->album_id);
-					$cover->media_id = $photo->media_id;
-					$cover->update();
-				}
-			}
-		}
+		//reset cover in article
+		$photos = $this->album->photos;
+		if($photos != null && $this->cover == 1)
+			self::model()->updateByPk($photos[0]->media_id, array('cover'=>1));
 	}
 
 }
