@@ -112,7 +112,7 @@ class AlbumViews extends CActiveRecord
 		/*
 			'View' => 'View',
 			'Publish' => 'Publish',
-			'Article' => 'Article',
+			'Album' => 'Album',
 			'User' => 'User',
 			'Views' => 'Views',
 			'Views Date' => 'Views Date',

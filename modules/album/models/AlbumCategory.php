@@ -440,32 +440,23 @@ class AlbumCategory extends CActiveRecord
 	}
 
 	/**
-	 * Get Album
-	 */
-	public static function getAlbum($id, $type=null) {
-		$criteria=new CDbCriteria;
-		$criteria->compare('cat_id',$id);
-		
-		if($type == null) {
-			//$criteria->select = '';
-			$model = Albums::model()->findAll($criteria);
-		} else
-			$model = Albums::model()->count($criteria);
-		
-		return $model;
-	}
-
-	/**
 	 * before validate attributes
 	 */
-	protected function beforeValidate() {
-		if(parent::beforeValidate()) {
+	protected function beforeValidate() 
+	{
+		if(parent::beforeValidate()) {			
+			if($this->isNewRecord)
+				$this->creation_id = Yii::app()->user->id;
+			else
+				$this->modified_id = Yii::app()->user->id;
+			
 			if($this->default_setting == 0) {
 				if($this->photo_limit == '')
 					$this->addError('photo_limit', Yii::t('phrase', 'Photo Limit cannot be blank.'));
-				
-				if($this->photo_limit != '' && $this->photo_limit <= 1)
-					$this->addError('photo_limit', Yii::t('phrase', 'Photo Limit lebih besar dari 1.'));
+				else {
+					if($this->photo_limit <= 1)
+						$this->addError('photo_limit', Yii::t('phrase', 'Photo Limit lebih besar dari 1.'));
+				}
 				
 				if($this->photo_resize == 1 && ($this->photo_resize_size['width'] == '' || $this->photo_resize_size['height'] == ''))
 					$this->addError('photo_resize_size', Yii::t('phrase', 'Photo Resize cannot be blank.'));
@@ -479,11 +470,6 @@ class AlbumCategory extends CActiveRecord
 				if($this->photo_view_size['small']['width'] == '' || $this->photo_view_size['small']['height'] == '')
 					$this->addError('photo_view_size[small]', Yii::t('phrase', 'Small Size cannot be blank.'));				
 			}
-			
-			if($this->isNewRecord)
-				$this->creation_id = Yii::app()->user->id;
-			else
-				$this->modified_id = Yii::app()->user->id;
 		}
 		return true;
 	}

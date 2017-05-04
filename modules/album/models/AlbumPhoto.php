@@ -525,7 +525,7 @@ class AlbumPhoto extends CActiveRecord
 		if($this->media != '' && file_exists($album_path.'/'.$this->media))
 			rename($album_path.'/'.$this->media, 'public/album/verwijderen/'.$this->album_id.'_'.$this->media);
 
-		//reset cover in article
+		//reset cover in album
 		$photos = $this->album->photos;
 		if($photos != null && $this->cover == 1)
 			self::model()->updateByPk($photos[0]->media_id, array('cover'=>1));

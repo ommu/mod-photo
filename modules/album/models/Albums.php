@@ -405,7 +405,7 @@ class Albums extends CActiveRecord
 	}
 
 	/**
-	 * Articles get information
+	 * Albums get information
 	 */
 	public static function getHeadline()
 	{

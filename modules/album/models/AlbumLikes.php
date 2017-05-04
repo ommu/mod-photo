@@ -111,8 +111,8 @@ class AlbumLikes extends CActiveRecord
 			'updated_date' => Yii::t('attribute', 'Updated Date'),
 			'like_search' => Yii::t('attribute', 'Like'),
 			'unlike_search' => Yii::t('attribute', 'Unlike'),
-			'album_search' => Yii::t('attribute', 'Album Search'),
-			'user_search' => Yii::t('attribute', 'User Search'),
+			'album_search' => Yii::t('attribute', 'Album'),
+			'user_search' => Yii::t('attribute', 'User'),
 		);
 	}
 
