@@ -1,9 +1,10 @@
 <?php
 /**
- * Album Likes (album-likes)
- * @var $this LikesController
- * @var $model AlbumLikes
+ * Album Like Details (album-like-detail)
+ * @var $this LikedetailController
+ * @var $model AlbumLikeDetail
  * @var $form CActiveForm
+ * version: 0.0.1
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)
@@ -33,5 +34,4 @@ foreach($model->metaData->columns as $key => $val) {
 	</li>
 	<?php endforeach; ?>
 </ul>
-<div class="clear"></div>
 <?php echo CHtml::endForm(); ?>

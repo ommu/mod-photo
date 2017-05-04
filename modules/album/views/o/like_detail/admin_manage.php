@@ -1,8 +1,9 @@
 <?php
 /**
- * Album Likes (album-likes)
- * @var $this LikesController
- * @var $model AlbumLikes
+ * Album Like Details (album-like-detail)
+ * @var $this LikedetailController
+ * @var $model AlbumLikeDetail
+ * version: 0.0.1
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)
@@ -13,7 +14,7 @@
  */
 
 	$this->breadcrumbs=array(
-		'Album Likes'=>array('manage'),
+		'Album Like Details'=>array('manage'),
 		'Manage',
 	);
 	$this->menu=array(
@@ -21,19 +22,13 @@
 			'label' => Yii::t('phrase', 'Filter'), 
 			'url' => array('javascript:void(0);'),
 			'itemOptions' => array('class' => 'search-button'),
-			'linkOptions' => array(
-				'title' => Yii::t('phrase', 'Filter'),
-				'off_address' => '',
-			),
+			'linkOptions' => array('title' => Yii::t('phrase', 'Filter')),
 		),
 		array(
 			'label' => Yii::t('phrase', 'Grid Options'), 
 			'url' => array('javascript:void(0);'),
 			'itemOptions' => array('class' => 'grid-button'),
-			'linkOptions' => array(
-				'title' => Yii::t('phrase', 'Grid Options'),
-				'off_address' => '',
-			),
+			'linkOptions' => array('title' => Yii::t('phrase', 'Grid Options')),
 		),
 	);
 
@@ -41,7 +36,7 @@
 
 <?php //begin.Search ?>
 <div class="search-form">
-<?php $this->renderPartial('_search',array(
+<?php $this->renderPartial('/o/like_detail/_search',array(
 	'model'=>$model,
 )); ?>
 </div>
@@ -49,20 +44,20 @@
 
 <?php //begin.Grid Option ?>
 <div class="grid-form">
-<?php $this->renderPartial('_option_form',array(
+<?php $this->renderPartial('/o/like_detail/_option_form',array(
 	'model'=>$model,
 )); ?>
 </div>
 <?php //end.Grid Option ?>
 
-<div id="partial-album-likes">
+<div id="partial-album-like-detail">
 	<?php //begin.Messages ?>
 	<div id="ajax-message">
 	<?php
-		if(Yii::app()->user->hasFlash('error'))
-			echo Utility::flashError(Yii::app()->user->getFlash('error'));
-		if(Yii::app()->user->hasFlash('success'))
-			echo Utility::flashSuccess(Yii::app()->user->getFlash('success'));
+	if(Yii::app()->user->hasFlash('error'))
+		echo Utility::flashError(Yii::app()->user->getFlash('error'));
+	if(Yii::app()->user->hasFlash('success'))
+		echo Utility::flashSuccess(Yii::app()->user->getFlash('success'));
 	?>
 	</div>
 	<?php //begin.Messages ?>
@@ -101,7 +96,7 @@
 			));
 
 			$this->widget('application.components.system.OGridView', array(
-				'id'=>'album-likes-grid',
+				'id'=>'album-like-detail-grid',
 				'dataProvider'=>$model->search(),
 				'filter'=>$model,
 				'afterAjaxUpdate' => 'reinstallDatePicker',
