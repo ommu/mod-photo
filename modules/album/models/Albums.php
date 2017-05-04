@@ -47,10 +47,25 @@ class Albums extends CActiveRecord
 	public $keyword_i;
 	
 	// Variable Search
-	public $photo_search;
 	public $user_search;
 	public $creation_search;
 	public $modified_search;
+	public $photo_search;
+
+	/**
+	 * Behaviors for this model
+	 */
+	public function behaviors() 
+	{
+		return array(
+			'sluggable' => array(
+				'class'=>'ext.yii-behavior-sluggable.SluggableBehavior',
+				'columns' => array('title'),
+				'unique' => true,
+				'update' => true,
+			),
+		);
+	}
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -92,7 +107,7 @@ class Albums extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('album_id, publish, cat_id, user_id, headline, comment_code, title, body, quote, creation_date, creation_id, modified_date, modified_id,
-				photo_search, user_search, creation_search, modified_search', 'safe', 'on'=>'search'),
+				user_search, creation_search, modified_search, photo_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -136,10 +151,10 @@ class Albums extends CActiveRecord
 			'modified_id' => Yii::t('attribute', 'Modified ID'),
 			'media_i' => Yii::t('attribute', 'Photo Cover'),
 			'keyword_i' => Yii::t('attribute', 'Tags'),
-			'photo_search' => Yii::t('attribute', 'Photos'),
 			'user_search' => Yii::t('attribute', 'User'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
+			'photo_search' => Yii::t('attribute', 'Photos'),
 		);
 	}
 
@@ -160,6 +175,25 @@ class Albums extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		
+		// Custom Search
+		$criteria->with = array(
+			'view' => array(
+				'alias'=>'view',
+			),
+			'user' => array(
+				'alias'=>'user',
+				'select'=>'displayname'
+			),
+			'creation' => array(
+				'alias'=>'creation',
+				'select'=>'displayname'
+			),
+			'modified' => array(
+				'alias'=>'modified',
+				'select'=>'displayname'
+			),
+		);
 
 		$criteria->compare('t.album_id',$this->album_id,true);
 		if(isset($_GET['type']) && $_GET['type'] == 'publish') {
@@ -192,28 +226,10 @@ class Albums extends CActiveRecord
 			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
 		$criteria->compare('t.modified_id',$this->modified_id);
 		
-		// Custom Search
-		$criteria->with = array(
-			'view' => array(
-				'alias'=>'view',
-			),
-			'user' => array(
-				'alias'=>'user',
-				'select'=>'displayname'
-			),
-			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname'
-			),
-			'modified' => array(
-				'alias'=>'modified',
-				'select'=>'displayname'
-			),
-		);
-		$criteria->compare('view.photos',$this->photo_search);
 		$criteria->compare('user.displayname',strtolower($this->user_search), true);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
+		$criteria->compare('view.photos',$this->photo_search);
 
 		if(!isset($_GET['Albums_sort']))
 			$criteria->order = 't.album_id DESC';
