@@ -31,6 +31,8 @@
  * @property string $photo_tags
  * @property string $views
  * @property string $view_all
+ * @property string $likes
+ * @property string $like_all
  */
 class ViewAlbums extends CActiveRecord
 {
@@ -72,10 +74,10 @@ class ViewAlbums extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('album_id', 'length', 'max'=>11),
-			array('photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all', 'length', 'max'=>21),
+			array('photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all, likes, like_all', 'length', 'max'=>21),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('album_id, photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all', 'safe', 'on'=>'search'),
+			array('album_id, photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all, likes, like_all', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -105,6 +107,8 @@ class ViewAlbums extends CActiveRecord
 			'photo_tags' => Yii::t('attribute', 'Photo Tags'),
 			'views' => Yii::t('attribute', 'Views'),
 			'view_all' => Yii::t('attribute', 'View All'),
+			'likes' => Yii::t('attribute', 'Likes'),
+			'like_all' => Yii::t('attribute', 'Like All'),
 		);
 		/*
 			'Album' => 'Album',
@@ -140,6 +144,8 @@ class ViewAlbums extends CActiveRecord
 		$criteria->compare('t.photo_tags',$this->photo_tags);
 		$criteria->compare('t.views',$this->views);
 		$criteria->compare('t.view_all',$this->view_all);
+		$criteria->compare('t.likes',$this->likes);
+		$criteria->compare('t.like_all',$this->like_all);
 
 		if(!isset($_GET['ViewAlbums_sort']))
 			$criteria->order = 't.album_id DESC';
@@ -179,6 +185,8 @@ class ViewAlbums extends CActiveRecord
 			$this->defaultColumns[] = 'photo_tags';
 			$this->defaultColumns[] = 'views';
 			$this->defaultColumns[] = 'view_all';
+			$this->defaultColumns[] = 'likes';
+			$this->defaultColumns[] = 'like_all';
 		}
 
 		return $this->defaultColumns;
@@ -202,6 +210,8 @@ class ViewAlbums extends CActiveRecord
 			$this->defaultColumns[] = 'photo_tags';
 			$this->defaultColumns[] = 'views';
 			$this->defaultColumns[] = 'view_all';
+			$this->defaultColumns[] = 'likes';
+			$this->defaultColumns[] = 'like_all';
 		}
 		parent::afterConstruct();
 	}
