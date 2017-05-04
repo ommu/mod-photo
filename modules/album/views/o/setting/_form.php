@@ -15,7 +15,7 @@
  
 	$cs = Yii::app()->getClientScript();
 $js=<<<EOP
-	$('input[name="AlbumSetting[photo_resize]"]').live('change', function() {
+	$('input[name="AlbumSetting[photo_resize]"]').on('change', function() {
 		var id = $(this).val();
 		if(id == '1') {
 			$('div#resize_size').slideDown();
@@ -47,7 +47,14 @@ EOP;
 				<span><?php echo Yii::t('phrase', 'Enter the your license key that is provided to you when you purchased this plugin. If you do not know your license key, please contact support team.');?></span>
 			</label>
 			<div class="desc">
-				<?php echo $form->textField($model,'license',array('maxlength'=>32,'class'=>'span-4','disabled'=>'disabled')); ?>
+				<?php 
+				if($model->isNewRecord || (!$model->isNewRecord && $model->license == ''))
+					$model->license = AlbumSetting::getLicense();
+			
+				if($model->isNewRecord || (!$model->isNewRecord && $model->license == ''))
+					echo $form->textField($model,'license',array('maxlength'=>32,'class'=>'span-4'));
+				else
+					echo $form->textField($model,'license',array('maxlength'=>32,'class'=>'span-4','disabled'=>'disabled'));?>
 				<?php echo $form->error($model,'license'); ?>
 				<span class="small-px"><?php echo Yii::t('phrase', 'Format: XXXX-XXXX-XXXX-XXXX');?></span>
 			</div>

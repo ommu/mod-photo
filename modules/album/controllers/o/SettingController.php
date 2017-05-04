@@ -9,6 +9,7 @@
  *
  * TOC :
  *	Index
+ *	Edit
  *
  *	LoadModel
  *	performAjaxValidation
@@ -36,7 +37,7 @@ class SettingController extends Controller
 	public function init() 
 	{
 		if(!Yii::app()->user->isGuest) {
-			if(in_array(Yii::app()->user->level, array(1,2))) {
+			if(Yii::app()->user->level == 1) {
 				$arrThemes = Utility::getCurrentTemplate('admin');
 				Yii::app()->theme = $arrThemes['folder'];
 				$this->layout = $arrThemes['layout'];
@@ -66,7 +67,7 @@ class SettingController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array(),
+				'actions'=>array('index'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -76,9 +77,9 @@ class SettingController extends Controller
 				//'expression'=>'isset(Yii::app()->user->level) && (Yii::app()->user->level != 1)',
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index'),
+				'actions'=>array('edit'),
 				'users'=>array('@'),
-				'expression'=>'isset(Yii::app()->user->level) && in_array(Yii::app()->user->level, array(1,2))',
+				'expression'=>'isset(Yii::app()->user->level) && (Yii::app()->user->level == 1)',
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array(),
@@ -95,7 +96,17 @@ class SettingController extends Controller
 	 */
 	public function actionIndex() 
 	{
-		$model=$this->loadModel(1);
+		$this->redirect(array('edit'));
+	}
+	
+	/**
+	 * Lists all models.
+	 */
+	public function actionEdit() 
+	{
+		$model = AlbumSetting::model()->findByPk(1);
+		if($model == null)
+			$model=new AlbumSetting;
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
@@ -131,16 +142,14 @@ class SettingController extends Controller
 				}
 			}
 			Yii::app()->end();
-
 		}
 
 		$this->pageTitle = Yii::t('phrase', 'Album Settings');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_index',array(
+		$this->render('admin_edit',array(
 			'model'=>$model,
 		));
-
 	}
 
 	/**
