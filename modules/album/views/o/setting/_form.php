@@ -23,6 +23,15 @@ $js=<<<EOP
 			$('div#resize_size').slideUp();
 		}
 	});
+	
+	$('select#AlbumSetting_headline').on('change', function() {
+		var id = $(this).val();
+		if(id == '1') {
+			$('div#headline').slideDown();
+		} else {
+			$('div#headline').slideUp();
+		}
+	});
 EOP;
 	$cs->registerScript('resize', $js, CClientScript::POS_END); 
 ?>
@@ -64,7 +73,10 @@ EOP;
 			<?php echo $form->labelEx($model,'permission'); ?>
 			<div class="desc">
 				<span class="small-px"><?php echo Yii::t('phrase', 'Select whether or not you want to let the public (visitors that are not logged-in) to view the following sections of your social network. In some cases (such as Profiles, Blogs, and Albums), if you have given them the option, your users will be able to make their pages private even though you have made them publically viewable here. For more permissions settings, please visit the General Settings page.');?></span>
-				<?php echo $form->radioButtonList($model, 'permission', array(
+				<?php 
+				if($model->isNewRecord && !$model->getErrors())
+					$model->permission = 1;
+				echo $form->radioButtonList($model, 'permission', array(
 					1 => Yii::t('phrase', 'Yes, the public can view album unless they are made private.'),
 					0 => Yii::t('phrase', 'No, the public cannot view video feeder.'),
 				)); ?>
@@ -91,8 +103,43 @@ EOP;
 		<div class="clearfix">
 			<?php echo $form->labelEx($model,'headline'); ?>
 			<div class="desc">
-				<?php echo $form->textField($model,'headline', array('maxlength'=>1, 'class'=>'span-2')); ?>
+				<?php 
+				if($model->isNewRecord && !$model->getErrors())
+					$model->headline = 1;
+				echo $form->dropDownLIst($model,'headline', array(
+					'1' => Yii::t('phrase', 'Enable'),
+					'0' => Yii::t('phrase', 'Disable'),
+				)); ?>
 				<?php echo $form->error($model,'headline'); ?>
+			</div>
+		</div>
+		
+		<div id="headline" class="<?php echo $model->headline == 0 ? 'hide' : '';?>">
+			<div class="clearfix">
+				<?php echo $form->labelEx($model,'headline_limit'); ?>
+				<div class="desc">
+					<?php 
+					if($model->isNewRecord && !$model->getErrors())
+						$model->headline_limit = 0;
+					echo $form->textField($model,'headline_limit', array('maxlength'=>3, 'class'=>'span-2')); ?>
+					<?php echo $form->error($model,'headline_limit'); ?>
+				</div>
+			</div>
+
+			<div class="clearfix">
+				<?php echo $form->labelEx($model,'headline_category'); ?>
+				<div class="desc">
+					<?php 
+					$parent = null;
+					$category = AlbumCategory::getCategory(1);
+					if(!$model->getErrors())
+						$model->headline_category = unserialize($model->headline_category);
+					if($category != null)
+						echo $form->checkBoxList($model,'headline_category', $category);
+					else
+						echo $form->checkBoxList($model,'headline_category', array('prompt'=>Yii::t('phrase', 'No Categories'))); ?>
+					<?php echo $form->error($model,'headline_category'); ?>
+				</div>
 			</div>
 		</div>
 
@@ -108,7 +155,10 @@ EOP;
 			<label><?php echo Yii::t('phrase', 'Photo Setting');?> <span class="required">*</span></label>
 			<div class="desc">
 				<p><?php echo $model->getAttributeLabel('photo_resize');?></p>
-				<?php echo $form->radioButtonList($model, 'photo_resize', array(
+				<?php 
+				if($model->isNewRecord && !$model->getErrors())
+					$model->photo_resize = 0;
+				echo $form->radioButtonList($model, 'photo_resize', array(
 					0 => Yii::t('phrase', 'No, not resize photo after upload.'),
 					1 => Yii::t('phrase', 'Yes, resize photo after upload.'),
 				)); ?>

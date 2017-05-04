@@ -28,6 +28,8 @@
  * @property string $meta_keyword
  * @property string $meta_description
  * @property integer $headline
+ * @property integer $headline_limit
+ * @property string $headline_category
  * @property integer $photo_limit 
  * @property integer $photo_resize 
  * @property string $photo_resize_size
@@ -69,13 +71,14 @@ class AlbumSetting extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('license, permission, meta_keyword, meta_description, headline, photo_limit, photo_resize', 'required'),
-			array('permission, headline, photo_limit, photo_resize, modified_id', 'numerical', 'integerOnly'=>true),
+			array('license, permission, meta_keyword, meta_description, headline, headline_limit, photo_limit, photo_resize', 'required'),
+			array('permission, headline, headline_limit, photo_limit, photo_resize, modified_id', 'numerical', 'integerOnly'=>true),
 			array('license', 'length', 'max'=>32),
-			array('photo_resize_size, photo_view_size', 'safe'),
+			array('headline_limit', 'length', 'max'=>3),
+			array('headline_category, photo_resize_size, photo_view_size', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, license, permission, meta_keyword, meta_description, headline, photo_limit, photo_resize, photo_resize_size, photo_view_size, modified_date, modified_id,
+			array('id, license, permission, meta_keyword, meta_description, headline, headline_limit, headline_category, photo_limit, photo_resize, photo_resize_size, photo_view_size, modified_date, modified_id,
 				modified_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -103,7 +106,9 @@ class AlbumSetting extends CActiveRecord
 			'permission' => Yii::t('attribute', 'Public Permission Defaults'),
 			'meta_keyword' => Yii::t('attribute', 'Meta Keyword'),
 			'meta_description' => Yii::t('attribute', 'Meta Description'),
-			'headline' => Yii::t('attribute', 'Headline Limit'),
+			'headline' => Yii::t('attribute', 'Headline'),
+			'headline_limit' => Yii::t('attribute', 'Headline Limit'),
+			'headline_category' => Yii::t('attribute', 'Headline Category'),
 			'photo_limit' => Yii::t('attribute', 'Photo Limit'),
 			'photo_resize' => Yii::t('attribute', 'Photo Resize'),
 			'photo_resize_size' => Yii::t('attribute', 'Photo Resize Size'),
@@ -131,20 +136,6 @@ class AlbumSetting extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('t.id',$this->id);
-		$criteria->compare('t.license',$this->license,true);
-		$criteria->compare('t.permission',$this->permission);
-		$criteria->compare('t.meta_keyword',$this->meta_keyword,true);
-		$criteria->compare('t.meta_description',$this->meta_description,true);
-		$criteria->compare('t.headline',$this->headline);
-		$criteria->compare('t.photo_limit',$this->photo_limit);
-		$criteria->compare('t.photo_resize',$this->photo_resize);
-		$criteria->compare('t.photo_resize_size',$this->photo_resize_size);
-		$criteria->compare('t.photo_view_size',$this->photo_view_size);
-		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
-		$criteria->compare('t.modified_id',$this->modified_id);
 		
 		// Custom Search
 		$criteria->with = array(
@@ -153,6 +144,23 @@ class AlbumSetting extends CActiveRecord
 				'select'=>'displayname',
 			),
 		);
+
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.license',$this->license,true);
+		$criteria->compare('t.permission',$this->permission);
+		$criteria->compare('t.meta_keyword',$this->meta_keyword,true);
+		$criteria->compare('t.meta_description',$this->meta_description,true);
+		$criteria->compare('t.headline',$this->headline);
+		$criteria->compare('t.headline_limit',$this->headline_limit);
+		$criteria->compare('t.headline_category',$this->headline_category,true);
+		$criteria->compare('t.photo_limit',$this->photo_limit);
+		$criteria->compare('t.photo_resize',$this->photo_resize);
+		$criteria->compare('t.photo_resize_size',$this->photo_resize_size);
+		$criteria->compare('t.photo_view_size',$this->photo_view_size);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
+			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+		$criteria->compare('t.modified_id',$this->modified_id);
+		
 		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
 
 		if(!isset($_GET['AlbumSetting_sort']))
@@ -190,6 +198,8 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'meta_keyword';
 			$this->defaultColumns[] = 'meta_description';
 			$this->defaultColumns[] = 'headline';
+			$this->defaultColumns[] = 'headline_limit';
+			$this->defaultColumns[] = 'headline_category';
 			$this->defaultColumns[] = 'photo_limit';
 			$this->defaultColumns[] = 'photo_resize';
 			$this->defaultColumns[] = 'photo_resize_size';
@@ -215,6 +225,8 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'meta_keyword';
 			$this->defaultColumns[] = 'meta_description';
 			$this->defaultColumns[] = 'headline';
+			$this->defaultColumns[] = 'headline_limit';
+			$this->defaultColumns[] = 'headline_category';
 			$this->defaultColumns[] = 'photo_limit';
 			$this->defaultColumns[] = 'photo_resize';
 			$this->defaultColumns[] = 'photo_resize_size';
@@ -245,6 +257,18 @@ class AlbumSetting extends CActiveRecord
 			));
 			return $model->$column;
 		}
+	}
+
+	/**
+	 * User get information
+	 */
+	public static function getHeadlineCategory()
+	{
+		$setting = self::model()->findByPk(1, array(
+			'select' => 'headline_category',
+		));
+		
+		return unserialize($setting->headline_category);		
 	}
 
 	/**
@@ -279,6 +303,13 @@ class AlbumSetting extends CActiveRecord
 	 */
 	protected function beforeValidate() {
 		if(parent::beforeValidate()) {
+			if($this->headline == 1) {
+				if($this->headline_limit != '' && $this->headline_limit <= 0)
+					$this->addError('headline_limit', Yii::t('phrase', 'Headline Limit lebih besar dari 0'));
+				if($this->headline_category == '')
+					$this->addError('headline_category', Yii::t('phrase', 'Headline Category cannot be blank.'));
+			}
+			
 			if($this->photo_limit != '' && $this->photo_limit <= 1)
 				$this->addError('photo_limit', Yii::t('phrase', 'Photo Limit lebih besar dari 1'));
 			
@@ -304,6 +335,7 @@ class AlbumSetting extends CActiveRecord
 	 */
 	protected function beforeSave() {
 		if(parent::beforeSave()) {
+			$this->headline_category = serialize($this->headline_category);
 			$this->photo_resize_size = serialize($this->photo_resize_size);
 			$this->photo_view_size = serialize($this->photo_view_size);
 		}
