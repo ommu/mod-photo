@@ -402,23 +402,26 @@ class AlbumCategory extends CActiveRecord
 	 * 0 = unpublish
 	 * 1 = publish
 	 */
-	public static function getCategory($publish=null) {
-		
+	public static function getCategory($publish=null, $type=null) 
+	{		
 		$criteria=new CDbCriteria;
 		if($publish != null)
 			$criteria->compare('t.publish',$publish);
 		
 		$model = self::model()->findAll($criteria);
 
-		$items = array();
-		if($model != null) {
-			foreach($model as $key => $val) {
-				$items[$val->cat_id] = Phrase::trans($val->name, 2);
-			}
-			return $items;
-		} else {
-			return false;
-		}
+		if($type == null) {
+			$items = array();
+			if($model != null) {
+				foreach($model as $key => $val) {
+					$items[$val->cat_id] = Phrase::trans($val->name);
+				}
+				return $items;
+			} else
+				return false;
+			
+		} else if($type == 'data')
+			return $model;
 	}
 
 	/**
