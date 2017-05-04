@@ -119,19 +119,21 @@
 					</div>
 				</div>
 		
-				<?php if(!$model->isNewRecord || ($model->isNewRecord && $setting->meta_keyword != '')) {?>
 				<div class="clearfix">
-					<?php echo $form->labelEx($model,'keyword'); ?>
+					<?php echo $form->labelEx($model,'keyword_i'); ?>
 					<div class="desc">
 						<?php 
-						if(!$model->isNewRecord) {
-							//echo $form->textField($model,'keyword',array('maxlength'=>32,'class'=>'span-6'));
+						if($model->isNewRecord) {
+							echo $form->textArea($model,'keyword_i',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
+							
+						} else {
+							//echo $form->textField($model,'keyword_i',array('maxlength'=>32,'class'=>'span-6'));
 							$url = Yii::app()->controller->createUrl('o/tag/add', array('type'=>'album'));
 							$album = $model->album_id;
-							$tagId = 'Albums_keyword';
+							$tagId = 'Albums_keyword_i';
 							$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
 								'model' => $model,
-								'attribute' => 'keyword',
+								'attribute' => 'keyword_i',
 								'source' => Yii::app()->createUrl('globaltag/suggest'),
 								'options' => array(
 									//'delay '=> 50,
@@ -155,24 +157,29 @@
 									'class'	=> 'span-6',
 								),
 							));
-							echo $form->error($model,'keyword');
+							echo $form->error($model,'keyword_i');
 						}?>
 						<div id="keyword-suggest" class="suggest clearfix">
 							<?php 
-							$arrKeyword = explode(',', $setting->meta_keyword);
-							foreach($arrKeyword as $row) {?>
-								<div class="d"><?php echo trim($row);?></div>
+							if($setting->meta_keyword && $setting->meta_keyword != '-') {
+								$arrKeyword = explode(',', $setting->meta_keyword);
+								foreach($arrKeyword as $row) {?>
+									<div class="d"><?php echo trim($row);?></div>
 							<?php }
+							}
 							if(!$model->isNewRecord) {
-								if($tag != null) {
-									foreach($tag as $key => $val) {?>
-									<div><?php echo $val->tag_TO->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/tag/delete',array('id'=>$val->id,'type'=>'album'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
+								$tags = $model->tags;
+								if(empty($tags)) {
+									foreach($tags as $key => $val) {?>
+									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/tag/delete',array('id'=>$val->id,'type'=>'album'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
 								}
 							}?>
 						</div>
+						<?php if($model->isNewRecord) {?><span class="small-px">tambahkan tanda koma (,) jika ingin menambahkan keyword lebih dari satu</span><?php }?>
 					</div>
 				</div>
+				<?php if(!$model->isNewRecord || ($model->isNewRecord && $setting->meta_keyword != '')) {?>
 				<?php }?>
 
 			</div>
@@ -182,15 +189,15 @@
 
 				<?php if($model->isNewRecord) {?>
 				<div class="clearfix">
-					<label><?php echo $model->getAttributeLabel('media');?></label>
+					<label><?php echo $model->getAttributeLabel('media_i');?></label>
 					<div class="desc">
-						<?php echo $form->fileField($model,'media',array('maxlength'=>64)); ?>
-						<?php echo $form->error($model,'media'); ?>
+						<?php echo $form->fileField($model,'media_i',array('maxlength'=>64)); ?>
+						<?php echo $form->error($model,'media_i'); ?>
 					</div>
 				</div>
 				<?php }?>
 				
-				<?php if(OmmuSettings::getInfo(site_type) == '1') {?>
+				<?php if(OmmuSettings::getInfo('site_type') == '1') {?>
 				<div class="clearfix publish">
 					<?php echo $form->labelEx($model,'comment_code'); ?>
 					<div class="desc">
@@ -203,7 +210,7 @@
 					echo $form->hiddenField($model,'comment_code');
 				}?>
 
-				<?php if(OmmuSettings::getInfo(site_headline) == '1') {?>
+				<?php if($setting->headline == 1) {?>
 				<div class="clearfix publish">
 					<?php echo $form->labelEx($model,'headline'); ?>
 					<div class="desc">

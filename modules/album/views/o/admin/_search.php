@@ -34,11 +34,6 @@
 		</li>
 
 		<li>
-			<?php echo $model->getAttributeLabel('media_id'); ?><br/>
-			<?php echo $form->textField($model,'media_id',array('size'=>11,'maxlength'=>11)); ?>
-		</li>
-
-		<li>
 			<?php echo $model->getAttributeLabel('headline'); ?><br/>
 			<?php echo $form->textField($model,'headline'); ?>
 		</li>
@@ -61,11 +56,6 @@
 		<li>
 			<?php echo $model->getAttributeLabel('quote'); ?><br/>
 			<?php echo $form->textArea($model,'quote',array('rows'=>6, 'cols'=>50)); ?>
-		</li>
-
-		<li>
-			<?php echo $model->getAttributeLabel('view'); ?><br/>
-			<?php echo $form->textField($model,'view'); ?>
 		</li>
 
 		<li>

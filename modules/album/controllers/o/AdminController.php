@@ -16,6 +16,8 @@
  *	Delete
  *	Publish
  *	Headline
+ *	Getcover
+ *	Insertcover
  *
  *	LoadModel
  *	performAjaxValidation
@@ -83,7 +85,7 @@ class AdminController extends Controller
 				//'expression'=>'isset(Yii::app()->user->level) && (Yii::app()->user->level != 1)',
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('manage','add','edit','runaction','delete','publish','headline'),
+				'actions'=>array('manage','add','edit','runaction','delete','publish','headline','getcover','insertcover'),
 				'users'=>array('@'),
 				'expression'=>'isset(Yii::app()->user->level) && in_array(Yii::app()->user->level, array(1,2))',
 			),
@@ -143,7 +145,7 @@ class AdminController extends Controller
 	{
 		$model=new Albums;
 		$setting = AlbumSetting::model()->findByPk(1,array(
-			'select' => 'meta_keyword',
+			'select' => 'meta_keyword, headline',
 		));
 
 		// Uncomment the following line if AJAX validation is needed
@@ -177,13 +179,7 @@ class AdminController extends Controller
 		$model=$this->loadModel($id);
 
 		$setting = AlbumSetting::model()->findByPk(1,array(
-			'select' => 'photo_limit, meta_keyword',
-		));
-		$tag = AlbumTag::model()->findAll(array(
-			'condition' => 'album_id = :id',
-			'params' => array(
-				':id' => $model->album_id,
-			),
+			'select' => 'meta_keyword, headline, photo_limit',
 		));
 
 		// Uncomment the following line if AJAX validation is needed
@@ -228,7 +224,6 @@ class AdminController extends Controller
 			$this->render('admin_edit',array(
 				'model'=>$model,
 				'setting'=>$setting,
-				'tag'=>$tag,
 			));
 		}
 	}
@@ -387,6 +382,81 @@ class AdminController extends Controller
 			$this->pageMeta = '';
 			$this->render('admin_headline');
 		}
+	}
+	
+	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionGetcover($id) 
+	{
+		$setting = AlbumSetting::model()->findByPk(1,array(
+			'select' => 'photo_limit',
+		));
+		$photo_limit = $setting->photo_limit;
+		
+		$model=$this->loadModel($id);
+		$photos = $model->photos;
+
+		$data = '';
+		if(isset($_GET['replace']))
+			$data .= $this->renderPartial('_form_photo', array('model'=>$model, 'photos'=>$photos, 'photo_limit'=>$photo_limit), true, false);
+		
+		if(!empty($photos)) {
+			foreach($photos as $key => $val)
+				$data .= $this->renderPartial('_form_view_photos', array('data'=>$val), true, false);
+		}
+		
+		$data .= '';
+		$result['data'] = $data;
+		echo CJSON::encode($result);
+	}
+
+	/**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionInsertcover($id) 
+	{
+		$setting = AlbumSetting::model()->findByPk(1,array(
+			'select' => 'photo_limit',
+		));
+		$photo_limit = $setting->photo_limit;
+	
+		$album_path = "public/album/".$id;
+		// Add directory
+		if(!file_exists($album_path)) {
+			@mkdir($album_path, 0755, true);
+
+			// Add file in directory (index.php)
+			$newFile = $album_path.'/index.php';
+			$FileHandle = fopen($newFile, 'w');
+		} else
+			@chmod($album_path, 0755, true);
+			
+		//if(Yii::app()->request->isAjaxRequest) {
+			$model = $this->loadModel($id);
+			if($model->category->default_setting == 0)
+				$photo_limit = $model->category->photo_limit;
+			
+			$uploadPhoto = CUploadedFile::getInstanceByName('namaFile');
+			$fileName = time().'_'.Utility::getUrlTitle($model->title).'.'.strtolower($uploadPhoto->extensionName);
+			if($uploadPhoto->saveAs($album_path.'/'.$fileName)) {
+				$photo = new AlbumPhoto;
+				$photo->album_id = $model->album_id;
+				$photo->cover = $model->photos == null ? '1' : '0';
+				$photo->media = $fileName;
+				if($photo->save()) {
+					$url = Yii::app()->controller->createUrl('getcover', array('id'=>$model->album_id,'replace'=>'true'));
+					echo CJSON::encode(array(
+						'id' => 'media-render',
+						'get' => $url,
+					));
+				}
+			}
+			
+		//} else
+		//	throw new CHttpException(404, Yii::t('phrase', 'The requested page does not exist.'));
 	}
 
 	/**

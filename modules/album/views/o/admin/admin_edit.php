@@ -18,43 +18,33 @@
 		'Update',
 	);
 	
+	$photos = $model->photos;
+	
 	//$photo_limit
 	$photo_limit = $setting->photo_limit;
 	if($model->category->default_setting == 0)
 		$photo_limit = $model->category->photo_limit;
-
-	$url = Yii::app()->controller->createUrl('o/photo/ajaxmanage', array('id'=>$model->album_id,'type'=>'admin'));
-	$cs = Yii::app()->getClientScript();
-$js=<<<EOP
-	$.ajax({
-		type: 'get',
-		url: '$url',
-		dataType: 'json',
-		//data: { id: '$id' },
-		success: function(render) {
-			$('.horizontal-data #media-render #upload').before(render.data);
-		}
-	});
-EOP;
-	$cs->registerScript('ajaxmanage', $js, CClientScript::POS_END);
 ?>
 
 <div class="form" name="post-on">
 	<?php echo $this->renderPartial('_form', array(
 		'model'=>$model,
 		'setting'=>$setting,
-		'tag'=>$tag,
 	)); ?>
 </div>
 
+<?php if($photo_limit != 1) {?>
 <div class="boxed mt-15">
 	<h3><?php echo Yii::t('phrase', 'Album Photo'); ?></h3>
 	<div class="clearfix horizontal-data" name="four">
 		<ul id="media-render">
-			<li id="upload" <?php echo (count(AlbumPhoto::getPhoto($model->album_id)) == $photo_limit) ? 'class="hide"' : '' ?>>
-				<a id="upload-gallery" href="<?php echo Yii::app()->controller->createUrl('o/photo/ajaxadd', array('id'=>$model->album_id,'type'=>'admin'));?>" title="<?php echo Yii::t('phrase', 'Upload Photo'); ?>"><?php echo Yii::t('phrase', 'Upload Photo'); ?></a>
-				<img src="<?php echo Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/album_plus.png', 320, 250, 1);?>" alt="" />
-			</li>
+			<?php 
+			$this->renderPartial('_form_photo', array('model'=>$model, 'photos'=>$photos, 'photo_limit'=>$photo_limit));
+			if(!empty($photos)) {
+				foreach($photos as $key => $data)
+					$this->renderPartial('_form_view_photos', array('data'=>$data));
+			}?>
 		</ul>
 	</div>
 </div>
+<?php }?>
