@@ -4,7 +4,7 @@
  * @var $this GalleryController
  * @var $model Albums
  * @var $form CActiveForm
- * version: 0.0.1
+ * version: 0.1.4
  * Reference start
  *
  * TOC :
@@ -122,7 +122,7 @@ class GalleryController extends ControllerApi
 					$album_url = Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->request->baseUrl;
 					$album_path = 'public/album/'.$album_id;
 					
-					if($photoNoTag != null) {						
+					if($photoNoTag != null) {
 						if($photoNoTag[0]->media != '' && file_exists($album_path.'/'.$photoNoTag[0]->media)) {
 							$titleTag = 'Lainnya';
 							$album_photo = $album_url.'/'.$album_path.'/'.$photoNoTag[0]->media;
@@ -337,7 +337,7 @@ class GalleryController extends ControllerApi
 	 */
 	protected function performAjaxValidation($model) 
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='articles-form') {
+		if(isset($_POST['ajax']) && $_POST['ajax']==='albums-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

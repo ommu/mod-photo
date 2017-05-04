@@ -6,12 +6,16 @@
 		$i=0;
 		foreach($model as $key => $val) {
 		$i++;
-			if($i == 1) {
-				if($val->media_id != 0)
-					$images = Yii::app()->request->baseUrl.'/public/album/'.$val->album_id.'/'.$val->cover->media;?>
-				<li <?php echo $val->media_id != 0 ? 'class="solid"' : '';?>>
+			$image = Yii::app()->request->baseUrl.'/public/album/album_default.png';
+			$photos = $val->photos;
+			if(!empty($photos)) {
+				$media = $val->view->photo_cover ? $val->view->photo_cover : $photos[0]->media;
+				$image = Yii::app()->request->baseUrl.'/public/album/'.$val->album_id.'/'.$media;
+			}
+			if($i == 1) {?>
+				<li <?php echo !empty($photos) ? 'class="solid"' : '';?>>
 					<a href="<?php echo Yii::app()->createUrl('album/site/view', array('id'=>$val->album_id, 't'=>Utility::getUrlTitle($val->title)))?>" title="<?php echo $val->title?>">
-						<?php if($val->media_id != 0) {?><img src="<?php echo Utility::getTimThumb($images, 230, 100, 1)?>" alt="<?php echo $val->title?>" /><?php }?>
+						<?php if(!empty($photos)) {?><img src="<?php echo Utility::getTimThumb($image, 230, 100, 1)?>" alt="<?php echo $val->title?>" /><?php }?>
 						<?php echo $val->title?>
 					</a>
 				</li>

@@ -16,7 +16,7 @@
  
 	$cs = Yii::app()->getClientScript();
 $js=<<<EOP
-	$('#AlbumCategory_default_setting').live('change', function() {
+	$('#AlbumCategory_default_setting').on('change', function() {
 		var id = $(this).prop('checked');		
 		if(id == true) {
 			$('div#default-setting').slideUp();
@@ -24,7 +24,7 @@ $js=<<<EOP
 			$('div#default-setting').slideDown();
 		}
 	});
-	$('input[name="AlbumCategory[photo_resize]"]').live('change', function() {
+	$('input[name="AlbumCategory[photo_resize]"]').on('change', function() {
 		var id = $(this).val();
 		if(id == '1') {
 			$('div#resize_size').slideDown();
@@ -54,7 +54,7 @@ EOP;
 		<?php echo $form->labelEx($model,'title'); ?>
 		<div class="desc">
 			<?php 
-			$model->title = Phrase::trans($model->name, 2);
+			$model->title = Phrase::trans($model->name);
 			echo $form->textField($model,'title',array('maxlength'=>32)); ?>
 			<?php echo $form->error($model,'title'); ?>
 			<?php /*<div class="small-px silent"></div>*/?>
@@ -65,7 +65,7 @@ EOP;
 		<?php echo $form->labelEx($model,'description'); ?>
 		<div class="desc">
 			<?php 
-			$model->description = Phrase::trans($model->desc, 2);
+			$model->description = Phrase::trans($model->desc);
 			echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50, 'maxlength'=>128, 'class'=>'span-7 smaller')); ?>
 			<?php echo $form->error($model,'description'); ?>
 			<?php /*<div class="small-px silent"></div>*/?>

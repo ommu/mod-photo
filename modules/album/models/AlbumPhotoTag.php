@@ -35,7 +35,7 @@
 class AlbumPhotoTag extends CActiveRecord
 {
 	public $defaultColumns = array();
-	public $body;
+	public $tag_i;
 	
 	// Variable Search
 	public $photo_search;
@@ -71,6 +71,8 @@ class AlbumPhotoTag extends CActiveRecord
 		return array(
 			array('media_id, tag_id', 'required'),
 			array('media_id, tag_id, creation_id', 'length', 'max'=>11),
+			array('
+				tag_i', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, media_id, tag_id, creation_date, creation_id,
@@ -293,16 +295,16 @@ class AlbumPhotoTag extends CActiveRecord
 				if($this->tag_id == 0) {
 					$tag = OmmuTags::model()->find(array(
 						'select' => 'tag_id, body',
-						'condition' => 'publish = 1 AND body = :body',
+						'condition' => 'body = :body',
 						'params' => array(
-							':body' => $this->body,
+							':body' => Utility::getUrlTitle(strtolower(trim($this->tag_i))),
 						),
 					));
 					if($tag != null)
 						$this->tag_id = $tag->tag_id;
 					else {
 						$data = new OmmuTags;
-						$data->body = $this->body;
+						$data->body = $this->tag_i;
 						if($data->save())
 							$this->tag_id = $data->tag_id;
 					}					

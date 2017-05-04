@@ -26,13 +26,11 @@
  * @property integer $publish
  * @property string $cat_id
  * @property string $user_id
- * @property string $media_id
  * @property integer $headline
  * @property integer $comment_code
  * @property string $title
  * @property string $body
  * @property string $quote
- * @property integer $view
  * @property string $creation_date
  * @property string $creation_id
  * @property string $modified_date
@@ -45,9 +43,8 @@
 class Albums extends CActiveRecord
 {
 	public $defaultColumns = array();
-	public $media;
-	public $old_media;
-	public $keyword;
+	public $media_i;
+	public $keyword_i;
 	
 	// Variable Search
 	public $photo_search;
@@ -83,18 +80,18 @@ class Albums extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('cat_id, title', 'required'),
-			array('publish, headline, comment_code, view, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
+			array('publish, headline, comment_code, creation_id, modified_id', 'numerical', 'integerOnly'=>true),
 			array('cat_id', 'length', 'max'=>5),
-			array('user_id, media_id', 'length', 'max'=>11),
+			array('user_id', 'length', 'max'=>11),
 			array('
-				keyword', 'length', 'max'=>32),
+				keyword_i', 'length', 'max'=>32),
 			array('title', 'length', 'max'=>128),
-			//array('media', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
-			array('media_id, body, quote,
-				media, old_media, keyword', 'safe'),
+			//array('media_i', 'file', 'types' => 'jpg, jpeg, png, gif', 'allowEmpty' => true),
+			array('body, quote,
+				media_i, keyword_i', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('album_id, publish, cat_id, user_id, media_id, headline, comment_code, title, body, quote, view, creation_date, creation_id, modified_date, modified_id,
+			array('album_id, publish, cat_id, user_id, headline, comment_code, title, body, quote, creation_date, creation_id, modified_date, modified_id,
 				photo_search, user_search, creation_search, modified_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -107,16 +104,14 @@ class Albums extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'views' => array(self::BELONGS_TO, 'ViewAlbums', 'album_id'),
+			'view' => array(self::BELONGS_TO, 'ViewAlbums', 'album_id'),
 			'category' => array(self::BELONGS_TO, 'AlbumCategory', 'cat_id'),
-			'cover' => array(self::BELONGS_TO, 'AlbumPhoto', 'media_id'),
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 			'modified' => array(self::BELONGS_TO, 'Users', 'modified_id'),
 			'likes' => array(self::HAS_MANY, 'AlbumLikes', 'album_id'),
-			'photo' => array(self::HAS_MANY, 'AlbumPhoto', 'album_id'),
-			'tag_MANY' => array(self::HAS_MANY, 'AlbumTag', 'album_id'),
-			'tag_ONE' => array(self::HAS_ONE, 'AlbumTag', 'album_id'),
+			'photos' => array(self::HAS_MANY, 'AlbumPhoto', 'album_id'),
+			'tags' => array(self::HAS_MANY, 'AlbumTag', 'album_id'),
 		);
 	}
 
@@ -130,20 +125,17 @@ class Albums extends CActiveRecord
 			'publish' => Yii::t('attribute', 'Publish'),
 			'cat_id' => Yii::t('attribute', 'Category'),
 			'user_id' => Yii::t('attribute', 'User'),
-			'media_id' => Yii::t('attribute', 'Photo'),
 			'headline' => Yii::t('attribute', 'Headline'),
 			'comment_code' => Yii::t('attribute', 'Comment'),
 			'title' => Yii::t('attribute', 'Title'),
 			'body' => Yii::t('attribute', 'Body'),
 			'quote' => Yii::t('attribute', 'Quote'),
-			'view' => Yii::t('attribute', 'View'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation ID'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified ID'),
-			'media' => Yii::t('attribute', 'Photo'),
-			'old_media' => Yii::t('attribute', 'Old Photo'),
-			'keyword' => Yii::t('attribute', 'Tags'),
+			'media_i' => Yii::t('attribute', 'Photo Cover'),
+			'keyword_i' => Yii::t('attribute', 'Tags'),
 			'photo_search' => Yii::t('attribute', 'Photos'),
 			'user_search' => Yii::t('attribute', 'User'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
@@ -188,13 +180,11 @@ class Albums extends CActiveRecord
 			$criteria->compare('t.user_id',$_GET['user']);
 		else
 			$criteria->compare('t.user_id',$this->user_id);
-		$criteria->compare('t.media_id',$this->media_id);
 		$criteria->compare('t.headline',$this->headline);
 		$criteria->compare('t.comment_code',$this->comment_code);
 		$criteria->compare('t.title',$this->title,true);
 		$criteria->compare('t.body',$this->body,true);
 		$criteria->compare('t.quote',$this->quote,true);
-		$criteria->compare('t.view',$this->view);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
 		$criteria->compare('t.creation_id',$this->creation_id);
@@ -204,8 +194,8 @@ class Albums extends CActiveRecord
 		
 		// Custom Search
 		$criteria->with = array(
-			'views' => array(
-				'alias'=>'views',
+			'view' => array(
+				'alias'=>'view',
 			),
 			'user' => array(
 				'alias'=>'user',
@@ -258,13 +248,11 @@ class Albums extends CActiveRecord
 			$this->defaultColumns[] = 'publish';
 			$this->defaultColumns[] = 'cat_id';
 			$this->defaultColumns[] = 'user_id';
-			$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'headline';
 			$this->defaultColumns[] = 'comment_code';
 			$this->defaultColumns[] = 'title';
 			$this->defaultColumns[] = 'body';
 			$this->defaultColumns[] = 'quote';
-			$this->defaultColumns[] = 'view';
 			$this->defaultColumns[] = 'creation_date';
 			$this->defaultColumns[] = 'creation_id';
 			$this->defaultColumns[] = 'modified_date';
@@ -280,6 +268,9 @@ class Albums extends CActiveRecord
 	protected function afterConstruct() 
 	{
 		$controller = strtolower(Yii::app()->controller->id);
+		$setting = AlbumSetting::model()->findByPk(1, array(
+			'select' => 'headline',
+		));
 		if(count($this->defaultColumns) == 0) 
 		{
 			/*
@@ -305,14 +296,14 @@ class Albums extends CActiveRecord
 			if(!isset($_GET['category'])) {
 				$this->defaultColumns[] = array(
 					'name' => 'cat_id',
-					'value' => 'Phrase::trans($data->cat->name, 2)',
+					'value' => 'Phrase::trans($data->category->name)',
 					'filter'=> AlbumCategory::getCategory(),
 					'type' => 'raw',
 				);
 			}
 			$this->defaultColumns[] = array(
 				'name' => 'photo_search',
-				'value' => 'CHtml::link($data->views->photos." photo", Yii::app()->controller->createUrl("o/photo/manage",array("album"=>$data->album_id)))',
+				'value' => 'CHtml::link($data->view->photos ? $data->view->photos : 0, Yii::app()->controller->createUrl("o/photo/manage",array("album"=>$data->album_id)))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -348,10 +339,10 @@ class Albums extends CActiveRecord
 					),
 				), true),
 			);
-			if($controller == 'o/admin' && OmmuSettings::getInfo('site_headline') == 1) {
+			if($setting->headline == 1) {
 				$this->defaultColumns[] = array(
 					'name' => 'headline',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("headline",array("id"=>$data->album_id)), $data->headline, 1)',
+					'value' => 'in_array($data->cat_id, AlbumSetting::getHeadlineCategory()) ? ($data->headline == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Utility::getPublish(Yii::app()->controller->createUrl("headline",array("id"=>$data->album_id)), $data->headline, 1)) : \'-\'',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -398,6 +389,39 @@ class Albums extends CActiveRecord
 	}
 
 	/**
+	 * Articles get information
+	 */
+	public static function getHeadline()
+	{
+		$setting = AlbumSetting::model()->findByPk(1, array(
+			'select' => 'headline_limit, headline_category',
+		));
+		$headline_category = unserialize($setting->headline_category);
+		if(empty($headline_category))
+			$headline_category = array();
+		
+		$criteria=new CDbCriteria;
+		$criteria->compare('t.publish', 1);
+		$criteria->addInCondition('t.cat_id', $headline_category);
+		$criteria->compare('t.headline', 1);
+		$criteria->order = 't.headline_date DESC';
+		
+		$model = self::model()->findAll($criteria);
+		
+		$headline = array();
+		if(!empty($model)) {
+			$i=0;
+			foreach($model as $key => $val) {
+				$i++;
+				if($i <= $setting->headline_limit)
+					$headline[] = $val->album_id;
+			}
+		}
+		
+		return $headline;
+	}
+
+	/**
 	 * Albums get information
 	 */
 	public function searchIndexing($index)
@@ -410,14 +434,15 @@ class Albums extends CActiveRecord
 		//$criteria->limit = 10;
 		$model = Albums::model()->findAll($criteria);
 		foreach($model as $key => $item) {
-			if($item->media_id != 0)
-				$images = Yii::app()->request->baseUrl.'/public/album/'.$item->album_id.'/'.$item->cover->media;
-			else
-				$images = '';
-				
+			$photos = $item->photos;
+			if(!empty($photos)) {
+				$media = $item->view->photo_cover ? $item->view->photo_cover : $photos[0]->media;
+				$image = Yii::app()->request->baseUrl.'/public/album/'.$item->album_id.'/'.$media;
+			} else 
+				$image = '';
 			$doc = new Zend_Search_Lucene_Document();
 			$doc->addField(Zend_Search_Lucene_Field::UnIndexed('id', CHtml::encode($item->album_id), 'utf-8')); 
-			$doc->addField(Zend_Search_Lucene_Field::Text('media', CHtml::encode($images), 'utf-8'));
+			$doc->addField(Zend_Search_Lucene_Field::Text('media', CHtml::encode($image), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::Text('title', CHtml::encode($item->title), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::Text('body', CHtml::encode(Utility::hardDecode(Utility::softDecode($item->body))), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::Text('url', CHtml::encode(Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->createUrl('album/site/view', array('id'=>$item->album_id,'t'=>Utility::getUrlTitle($item->title)))), 'utf-8'));
@@ -442,11 +467,11 @@ class Albums extends CActiveRecord
 			if($this->headline == 1 && $this->publish == 0)
 				$this->addError('publish', Yii::t('phrase', 'Publish cannot be blank.'));
 			
-			$media = CUploadedFile::getInstance($this, 'media');
-			if($media->name != '') {
-				$extension = pathinfo($media->name, PATHINFO_EXTENSION);
+			$media_i = CUploadedFile::getInstance($this, 'media_i');
+			if($media_i->name != '') {
+				$extension = pathinfo($media_i->name, PATHINFO_EXTENSION);
 				if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
-					$this->addError('media', 'The file "'.$media->name.'" cannot be uploaded. Only files with these extensions are allowed: bmp, gif, jpg, png.');
+					$this->addError('media_i', 'The file "'.$media_i->name.'" cannot be uploaded. Only files with these extensions are allowed: bmp, gif, jpg, png.');
 			}
 		}
 		return true;
@@ -455,24 +480,29 @@ class Albums extends CActiveRecord
 	/**
 	 * After save attributes
 	 */
-	protected function afterSave() {
+	protected function afterSave() 
+	{
 		parent::afterSave();
+		$setting = AlbumSetting::model()->findByPk(1, array(
+			'select' => 'headline, photo_limit, photo_resize, photo_resize_size',
+		));
+		
+		// Add album directory
+		$album_path = "public/album/".$this->album_id;
+		if(!file_exists($album_path)) {
+			@mkdir($album_path, 0755, true);
+
+			// Add file in album directory (index.php)
+			$newFile = $album_path.'/index.php';
+			$FileHandle = fopen($newFile, 'w');
+		} else
+			@chmod($album_path, 0755, true);
+		
 		if($this->isNewRecord) {
-			// Add album directory
-			$album_path = "public/album/".$this->album_id;
-			if(!file_exists($album_path)) {
-				@mkdir($album_path, 0755, true);
-
-				// Add file in album directory (index.php)
-				$newFile = $album_path.'/index.php';
-				$FileHandle = fopen($newFile, 'w');
-			} else
-				@chmod($album_path, 0755, true);
-
-			$this->media = CUploadedFile::getInstance($this, 'media');
-			if($this->media instanceOf CUploadedFile) {
-				$fileName = time().'_'.$this->album_id.'_'.Utility::getUrlTitle($this->title).'.'.strtolower($this->media->extensionName);
-				if($this->media->saveAs($album_path.'/'.$fileName)) {
+			$this->media_i = CUploadedFile::getInstance($this, 'media_i');
+			if($this->media_i instanceOf CUploadedFile) {
+				$fileName = time().'_'.Utility::getUrlTitle($this->title).'.'.strtolower($this->media_i->extensionName);
+				if($this->media_i->saveAs($album_path.'/'.$fileName)) {
 					$images = new AlbumPhoto;
 					$images->album_id = $this->album_id;
 					$images->cover = '1';
@@ -481,43 +511,28 @@ class Albums extends CActiveRecord
 				}
 			}
 			
-		} else {
-			// Add Tags
-			if($this->keyword != '') {
-				$model = OmmuTags::model()->find(array(
-					'select' => 'tag_id, body',
-					'condition' => 'publish = 1 AND body = :body',
-					'params' => array(
-						':body' => $this->keyword,
-					),
-				));
-				$tag = new AlbumTag;
-				$tag->album_id = $this->album_id;
-				if($model != null) {
-					$tag->tag_id = $model->tag_id;
-				} else {
-					$data = new OmmuTags;
-					$data->body = $this->keyword;
-					if($data->save()) {
-						$tag->tag_id = $data->tag_id;
+			//input keyword
+			if(trim($this->keyword_i) != '') {
+				$keyword_i = Utility::formatFileType($this->keyword_i);
+				if(!empty($keyword_i)) {
+					foreach($keyword_i as $key => $val) {
+						$subject = new AlbumTag;
+						$subject->album_id = $this->album_id;
+						$subject->tag_id = 0;
+						$subject->tag_i = $val;
+						$subject->save();
 					}
 				}
-				$tag->save();
-			}			
+			}	
 		}
 		
-		if(AlbumSetting::getInfo('headline') == 1) {
-			if($this->headline == 1) {
-				self::model()->updateAll(array(
-					'headline' => 0,	
-				), array(
-					'condition'=> 'album_id != :id AND cat_id = :cat',
-					'params'=>array(
-						':id'=>$this->album_id,
-						':cat'=>$this->cat_id,
-					),
-				));
-			}
+		// Reset headline
+		if($setting->headline == 1 && $this->headline == 1) {
+			$headline = self::getHeadline();
+			
+			$criteria=new CDbCriteria;
+			$criteria->addNotInCondition('album_id', $headline);
+			self::model()->updateAll(array('headline'=>0), $criteria);
 		}
 	}
 
@@ -529,10 +544,12 @@ class Albums extends CActiveRecord
 			$album_path = "public/album/".$this->album_id;
 			
 			//delete media photos
-			$album_photo = AlbumPhoto::getPhoto($this->album_id);
-			foreach($album_photo as $val) {
-				if($val->media != '' && file_exists($album_path.'/'.$val->media))
-					rename($album_path.'/'.$val->media, 'public/album/verwijderen/'.$val->album_id.'_'.$val->media);
+			$photos = $this->photos;
+			if(!empty($photos)) {
+				foreach($photos as $val) {
+					if($val->media != '' && file_exists($album_path.'/'.$val->media))
+						rename($album_path.'/'.$val->media, 'public/album/verwijderen/'.$val->album_id.'_'.$val->media);
+				}
 			}
 		}
 		return true;			

@@ -102,6 +102,7 @@ class AlbumPhoto extends CActiveRecord
 			'album' => array(self::BELONGS_TO, 'Albums', 'album_id'),
 			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 			'modified' => array(self::BELONGS_TO, 'Users', 'modified_id'),
+			'tags' => array(self::HAS_MANY, 'AlbumPhotoTag', 'media_id'),
 		);
 	}
 

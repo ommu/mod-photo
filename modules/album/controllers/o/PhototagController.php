@@ -146,7 +146,7 @@ class PhototagController extends Controller
 		if(isset($_POST['media_id'], $_POST['tag_id'], $_POST['tag'])) {
 			$model->media_id = $_POST['media_id'];
 			$model->tag_id = $_POST['tag_id'];
-			$model->body = $_POST['tag'];
+			$model->tag_i = $_POST['tag'];
 
 			if($model->save()) {
 				if(isset($_GET['type']) && $_GET['type'] == 'photo')

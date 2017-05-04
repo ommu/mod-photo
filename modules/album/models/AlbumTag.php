@@ -34,7 +34,7 @@
 class AlbumTag extends CActiveRecord
 {
 	public $defaultColumns = array();
-	public $body;
+	public $tag_i;
 	
 	// Variable Search
 	public $album_search;
@@ -70,6 +70,8 @@ class AlbumTag extends CActiveRecord
 		return array(
 			array('album_id, tag_id', 'required'),
 			array('album_id, tag_id, creation_id', 'length', 'max'=>11),
+			array('
+				tag_i', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, album_id, tag_id, creation_date, creation_id,
@@ -85,8 +87,8 @@ class AlbumTag extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'album_relation' => array(self::BELONGS_TO, 'Albums', 'album_id'),
-			'tag_TO' => array(self::BELONGS_TO, 'OmmuTags', 'tag_id'),
+			'album' => array(self::BELONGS_TO, 'Albums', 'album_id'),
+			'tag' => array(self::BELONGS_TO, 'OmmuTags', 'tag_id'),
 			'creation' => array(self::BELONGS_TO, 'Users', 'creation_id'),
 		);
 	}
@@ -141,12 +143,12 @@ class AlbumTag extends CActiveRecord
 		
 		// Custom Search
 		$criteria->with = array(
-			'album_relation' => array(
-				'alias'=>'album_relation',
+			'album' => array(
+				'alias'=>'album',
 				'select'=>'title'
 			),
-			'tag_TO' => array(
-				'alias'=>'tag_TO',
+			'tag' => array(
+				'alias'=>'tag',
 				'select'=>'body'
 			),
 			'creation' => array(
@@ -154,8 +156,8 @@ class AlbumTag extends CActiveRecord
 				'select'=>'displayname'
 			),
 		);
-		$criteria->compare('album_relation.title',strtolower($this->album_search), true);
-		$criteria->compare('tag_TO.body',strtolower($this->tag_search), true);
+		$criteria->compare('album.title',strtolower($this->album_search), true);
+		$criteria->compare('tag.body',strtolower($this->tag_search), true);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
 
 		if(!isset($_GET['AlbumTag_sort']))
@@ -209,7 +211,7 @@ class AlbumTag extends CActiveRecord
 			if(!isset($_GET['album'])) {
 				$this->defaultColumns[] = array(
 					'name' => 'album_search',
-					'value' => '$data->album_relation->title."<br/><span>".Utility::shortText(Utility::hardDecode($data->album_relation->body),150)."</span>"',
+					'value' => '$data->album->title."<br/><span>".Utility::shortText(Utility::hardDecode($data->album->body),150)."</span>"',
 					'htmlOptions' => array(
 						'class' => 'bold',
 					),
@@ -287,7 +289,7 @@ class AlbumTag extends CActiveRecord
 		$tag = '';
 		if($model != null) {
 			foreach($model as $val) {
-				$tag .= ','.$val->tag_TO->body;
+				$tag .= ','.$val->tag->body;
 			}
 		}
 		
@@ -303,16 +305,16 @@ class AlbumTag extends CActiveRecord
 				if($this->tag_id == 0) {
 					$tag = OmmuTags::model()->find(array(
 						'select' => 'tag_id, body',
-						'condition' => 'publish = 1 AND body = :body',
+						'condition' => 'body = :body',
 						'params' => array(
-							':body' => $this->body,
+							':body' => Utility::getUrlTitle(strtolower(trim($this->tag_i))),
 						),
 					));
 					if($tag != null) {
 						$this->tag_id = $tag->tag_id;
 					} else {
 						$data = new OmmuTags;
-						$data->body = $this->body;
+						$data->body = $this->tag_i;
 						if($data->save()) {
 							$this->tag_id = $data->tag_id;
 						}

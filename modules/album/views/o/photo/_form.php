@@ -99,8 +99,9 @@
 			}?>
 			<div id="tag-suggest" class="suggest clearfix">
 				<?php if(!$model->isNewRecord) {
-					if($tag != null) {
-						foreach($tag as $key => $val) {?>
+					$tags = $model->tags;
+					if(!empty($tags)) {
+						foreach($tags as $key => $val) {?>
 						<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/phototag/delete',array('id'=>$val->id,'type'=>'photo'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 					<?php }
 					}

@@ -145,7 +145,7 @@ class TagController extends Controller
 		if(isset($_POST['album_id'], $_POST['tag_id'], $_POST['tag'])) {
 			$model->album_id = $_POST['album_id'];
 			$model->tag_id = $_POST['tag_id'];
-			$model->body = $_POST['tag'];
+			$model->tag_i = $_POST['tag'];
 
 			if($model->save()) {
 				if(isset($_GET['type']) && $_GET['type'] == 'album')
@@ -153,7 +153,7 @@ class TagController extends Controller
 				else 
 					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id));
 				echo CJSON::encode(array(
-					'data' => '<div>'.$model->tag_TO->body.'<a href="'.$url.'" title="'.Yii::t('phrase', 'Delete').'">'.Yii::t('phrase', 'Delete').'</a></div>',
+					'data' => '<div>'.$model->tag->body.'<a href="'.$url.'" title="'.Yii::t('phrase', 'Delete').'">'.Yii::t('phrase', 'Delete').'</a></div>',
 				));
 			}
 		}
