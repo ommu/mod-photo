@@ -16,11 +16,11 @@ plugin_menu		:
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 		
 	- urlTitle: Datas
-		urlRules: {siteType: "0,1", userLevel: 1}
+		urlRules: {siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: -, attr: -, icon: -}
 		submenu :
 			- urlTitle: Categories
-				urlRules: {siteType: "0,1", userLevel: "1,2"}
+				urlRules: {siteType: "0,1", userLevel: 1}
 				urlPath: {url: o/category/manage, attr: -, icon: -}
 			- urlTitle: Views
 				urlRules: {siteType: "0,1", userLevel: "1,2"}
@@ -62,7 +62,6 @@ content_menu	:
 		urlPath: {url: manage, attr: -, icon: -}
 		
 # controller o/photo
-
 	- urlTitle: Back to album manage
 		urlRules: {album, o/photo, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
@@ -71,20 +70,32 @@ content_menu	:
 		urlRules: {album, o/photo, edit, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: manage, attr: -, icon: -}
 		
-# controller o/like
-
+# controller o/views
 	- urlTitle: Back to album manage
-		urlRules: {album, o/like, manage, siteType: 1, userLevel: "1,2"}
+		urlRules: {album, o/views, manage, siteType: 1, userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
+		
+# controller o/viewdetail
+	- urlTitle: Back to views manage
+		urlRules: {album, o/viewdetail, manage, siteType: 1, userLevel: "1,2"}
+		urlPath: {url: o/views/manage, attr: -, icon: -}
+		
+# controller o/likes
+	- urlTitle: Back to album manage
+		urlRules: {album, o/likes, manage, siteType: 1, userLevel: "1,2"}
+		urlPath: {url: o/admin/manage, attr: -, icon: -}
+		
+# controller o/likedetail
+	- urlTitle: Back to likes manage
+		urlRules: {album, o/likedetail, manage, siteType: 1, userLevel: "1,2"}
+		urlPath: {url: o/likes/manage, attr: -, icon: -}
 
 # controller o/tag
-
 	- urlTitle: Back to album manage
 		urlRules: {album, o/tag, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 		
 # controller o/phototag
-
 	- urlTitle: Back to album manage
 		urlRules: {album, o/phototag, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}

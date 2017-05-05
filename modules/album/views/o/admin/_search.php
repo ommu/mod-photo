@@ -29,21 +29,6 @@
 		</li>
 
 		<li>
-			<?php echo $model->getAttributeLabel('user_id'); ?><br/>
-			<?php echo $form->textField($model,'user_id',array('size'=>11,'maxlength'=>11)); ?>
-		</li>
-
-		<li>
-			<?php echo $model->getAttributeLabel('headline'); ?><br/>
-			<?php echo $form->textField($model,'headline'); ?>
-		</li>
-
-		<li>
-			<?php echo $model->getAttributeLabel('comment_code'); ?><br/>
-			<?php echo $form->textField($model,'comment_code'); ?>
-		</li>
-
-		<li>
 			<?php echo $model->getAttributeLabel('title'); ?><br/>
 			<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>64)); ?>
 		</li>
@@ -56,6 +41,16 @@
 		<li>
 			<?php echo $model->getAttributeLabel('quote'); ?><br/>
 			<?php echo $form->textArea($model,'quote',array('rows'=>6, 'cols'=>50)); ?>
+		</li>
+
+		<li>
+			<?php echo $model->getAttributeLabel('headline'); ?><br/>
+			<?php echo $form->textField($model,'headline'); ?>
+		</li>
+
+		<li>
+			<?php echo $model->getAttributeLabel('comment_code'); ?><br/>
+			<?php echo $form->textField($model,'comment_code'); ?>
 		</li>
 
 		<li>

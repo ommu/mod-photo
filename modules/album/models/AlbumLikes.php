@@ -240,11 +240,7 @@ class AlbumLikes extends CActiveRecord
 			if(!isset($_GET['album'])) {
 				$this->defaultColumns[] = array(
 					'name' => 'album_search',
-					'value' => '$data->album->title."<br/><span>".Utility::shortText(Utility::hardDecode($data->album->body),150)."</span>"',
-					'htmlOptions' => array(
-						'class' => 'bold',
-					),
-					'type' => 'raw',
+					'value' => '$data->album->title',
 				);
 			}
 			if(!isset($_GET['user'])) {

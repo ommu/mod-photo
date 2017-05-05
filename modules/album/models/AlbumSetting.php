@@ -302,7 +302,9 @@ class AlbumSetting extends CActiveRecord
 	 * before validate attributes
 	 */
 	protected function beforeValidate() {
-		if(parent::beforeValidate()) {
+		if(parent::beforeValidate()) {			
+			$this->modified_id = Yii::app()->user->id;
+			
 			if($this->headline == 1) {
 				if($this->headline_limit != '' && $this->headline_limit <= 0)
 					$this->addError('headline_limit', Yii::t('phrase', 'Headline Limit lebih besar dari 0'));
@@ -324,8 +326,6 @@ class AlbumSetting extends CActiveRecord
 			
 			if($this->photo_view_size['small']['width'] == '' || $this->photo_view_size['small']['height'] == '')
 				$this->addError('photo_view_size[small]', Yii::t('phrase', 'Small Size cannot be blank.'));
-			
-			$this->modified_id = Yii::app()->user->id;
 		}
 		return true;
 	}
