@@ -145,8 +145,11 @@ class AdminController extends Controller
 	{
 		$model=new Albums;
 		$setting = AlbumSetting::model()->findByPk(1,array(
-			'select' => 'meta_keyword, headline',
+			'select' => 'meta_keyword, headline, photo_file_type',
 		));
+		$photo_file_type = unserialize($setting->photo_file_type);
+		if(empty($photo_file_type))
+			$photo_file_type = array();
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
@@ -166,6 +169,7 @@ class AdminController extends Controller
 		$this->render('admin_add',array(
 			'model'=>$model,
 			'setting'=>$setting,
+			'photo_file_type'=>$photo_file_type,
 		));
 	}
 
@@ -179,8 +183,11 @@ class AdminController extends Controller
 		$model=$this->loadModel($id);
 
 		$setting = AlbumSetting::model()->findByPk(1,array(
-			'select' => 'meta_keyword, headline, photo_limit',
+			'select' => 'meta_keyword, headline, photo_limit, photo_file_type',
 		));
+		$photo_file_type = unserialize($setting->photo_file_type);
+		if(empty($photo_file_type))
+			$photo_file_type = array();
 
 		// Uncomment the following line if AJAX validation is needed
 		$this->performAjaxValidation($model);
@@ -217,15 +224,16 @@ class AdminController extends Controller
 			}
 			Yii::app()->end();
 			
-		} else {
-			$this->pageTitle = Yii::t('phrase', 'Update Album').': '.$model->title;
-			$this->pageDescription = '';
-			$this->pageMeta = '';
-			$this->render('admin_edit',array(
-				'model'=>$model,
-				'setting'=>$setting,
-			));
 		}
+		
+		$this->pageTitle = Yii::t('phrase', 'Update Album').': '.$model->title;
+		$this->pageDescription = '';
+		$this->pageMeta = '';
+		$this->render('admin_edit',array(
+			'model'=>$model,
+			'setting'=>$setting,
+			'photo_file_type'=>$photo_file_type,
+		));
 	}
 
 	/**

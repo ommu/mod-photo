@@ -394,6 +394,12 @@ class AlbumPhoto extends CActiveRecord
 	{
 		$controller = strtolower(Yii::app()->controller->id);
 		$currentAction = strtolower(Yii::app()->controller->id.'/'.Yii::app()->controller->action->id);
+		$setting = AlbumSetting::model()->findByPk(1, array(
+			'select' => 'photo_file_type',
+		));
+		$photo_file_type = unserialize($setting->photo_file_type);
+		if(empty($photo_file_type))
+			$photo_file_type = array();
 		
 		if(parent::beforeValidate()) 
 		{
@@ -406,10 +412,10 @@ class AlbumPhoto extends CActiveRecord
 				$media = CUploadedFile::getInstance($this, 'media');
 				if($media != null) {
 					$extension = pathinfo($media->name, PATHINFO_EXTENSION);
-					if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
+					if(!in_array(strtolower($extension), $photo_file_type))
 						$this->addError('media', Yii::t('phrase', 'The file {name} cannot be uploaded. Only files with these extensions are allowed: {extensions}.', array(
 							'{name}'=>$media->name,
-							'{extensions}'=>'bmp, gif, jpg, png.',
+							'{extensions}'=>Utility::formatFileType($photo_file_type, false),
 						)));
 					
 				} else {

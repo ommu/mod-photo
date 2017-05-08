@@ -23,6 +23,7 @@
  *
  * The followings are the available columns in table '_view_albums':
  * @property string $album_id
+ * @property string $media_id
  * @property string $photo_cover
  * @property string $photo_caption
  * @property string $tags
@@ -73,11 +74,11 @@ class ViewAlbums extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('album_id', 'length', 'max'=>11),
+			array('album_id, media_id', 'length', 'max'=>11),
 			array('photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all, likes, like_all', 'length', 'max'=>21),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('album_id, photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all, likes, like_all', 'safe', 'on'=>'search'),
+			array('album_id, media_id, photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all, likes, like_all', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,6 +100,7 @@ class ViewAlbums extends CActiveRecord
 	{
 		return array(
 			'album_id' => Yii::t('attribute', 'Album'),
+			'media_id' => Yii::t('attribute', 'Media'),
 			'photo_cover' => Yii::t('attribute', 'Cover'),
 			'photo_caption' => Yii::t('attribute', 'Caption'),
 			'tags' => Yii::t('attribute', 'Tags'),
@@ -136,6 +138,7 @@ class ViewAlbums extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('t.album_id',$this->album_id);
+		$criteria->compare('t.media_id',$this->media_id);
 		$criteria->compare('t.photo_cover',strtolower($this->photo_cover),true);
 		$criteria->compare('t.photo_caption',strtolower($this->photo_caption),true);
 		$criteria->compare('t.tags',$this->tags);
@@ -177,6 +180,7 @@ class ViewAlbums extends CActiveRecord
 			}
 		} else {
 			$this->defaultColumns[] = 'album_id';
+			$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'photo_cover';
 			$this->defaultColumns[] = 'photo_caption';
 			$this->defaultColumns[] = 'tags';
@@ -202,6 +206,7 @@ class ViewAlbums extends CActiveRecord
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
 			//$this->defaultColumns[] = 'album_id';
+			$this->defaultColumns[] = 'media_id';
 			$this->defaultColumns[] = 'photo_cover';
 			$this->defaultColumns[] = 'photo_caption';
 			$this->defaultColumns[] = 'tags';

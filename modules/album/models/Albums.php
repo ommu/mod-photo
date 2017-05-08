@@ -442,7 +442,7 @@ class Albums extends CActiveRecord
 			$doc->addField(Zend_Search_Lucene_Field::Text('media', CHtml::encode($image), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::Text('title', CHtml::encode($item->title), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::Text('body', CHtml::encode(Utility::hardDecode(Utility::softDecode($item->body))), 'utf-8'));
-			$doc->addField(Zend_Search_Lucene_Field::Text('url', CHtml::encode(Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->createUrl('album/site/view', array('id'=>$item->album_id,'t'=>Utility::getUrlTitle($item->title)))), 'utf-8'));
+			$doc->addField(Zend_Search_Lucene_Field::Text('url', CHtml::encode(Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->createUrl('album/site/view', array('id'=>$item->album_id,'slug'=>Utility::getUrlTitle($item->title)))), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::UnIndexed('date', CHtml::encode(Utility::dateFormat($item->creation_date, true).' WIB'), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::UnIndexed('creation', CHtml::encode($item->creation->displayname), 'utf-8'));
 			$index->addDocument($doc);		
@@ -454,7 +454,15 @@ class Albums extends CActiveRecord
 	/**
 	 * before validate attributes
 	 */
-	protected function beforeValidate() {
+	protected function beforeValidate() 
+	{
+		$setting = AlbumSetting::model()->findByPk(1, array(
+			'select' => 'photo_file_type',
+		));
+		$photo_file_type = unserialize($setting->photo_file_type);
+		if(empty($photo_file_type))
+			$photo_file_type = array();
+		
 		if(parent::beforeValidate()) {
 			if($this->isNewRecord)
 				$this->creation_id = Yii::app()->user->id;
@@ -467,10 +475,10 @@ class Albums extends CActiveRecord
 			$media_i = CUploadedFile::getInstance($this, 'media_i');
 			if($media_i->name != '') {
 				$extension = pathinfo($media_i->name, PATHINFO_EXTENSION);
-				if(!in_array(strtolower($extension), array('bmp','gif','jpg','png')))
+				if(!in_array(strtolower($extension), $photo_file_type))
 					$this->addError('media_i', Yii::t('phrase', 'The file {name} cannot be uploaded. Only files with these extensions are allowed: {extensions}.', array(
 						'{name}'=>$media_i->name,
-						'{extensions}'=>'bmp, gif, jpg, png',
+						'{extensions}'=>Utility::formatFileType($photo_file_type, false),
 					)));
 			}
 		}

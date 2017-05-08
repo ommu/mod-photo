@@ -140,6 +140,13 @@ class PhotoController extends Controller
 	 */
 	public function actionEdit($id) 
 	{
+		$setting = AlbumSetting::model()->findByPk(1,array(
+			'select' => 'meta_keyword, headline, photo_limit, photo_file_type',
+		));
+		$photo_file_type = unserialize($setting->photo_file_type);
+		if(empty($photo_file_type))
+			$photo_file_type = array();
+		
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
@@ -159,6 +166,7 @@ class PhotoController extends Controller
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
 			'model'=>$model,
+			'photo_file_type'=>$photo_file_type,
 		));
 	}
 

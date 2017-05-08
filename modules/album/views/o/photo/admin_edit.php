@@ -23,5 +23,6 @@
 <div class="form">
 	<?php echo $this->renderPartial('_form', array(
 		'model'=>$model,
+		'photo_file_type'=>$photo_file_type,
 	)); ?>
 </div>

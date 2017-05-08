@@ -191,6 +191,7 @@
 					<div class="desc">
 						<?php echo $form->fileField($model,'media_i',array('maxlength'=>64)); ?>
 						<?php echo $form->error($model,'media_i'); ?>
+						<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></span>
 					</div>
 				</div>
 				<?php }?>

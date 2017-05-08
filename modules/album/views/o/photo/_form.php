@@ -47,6 +47,7 @@
 		<div class="desc">
 			<?php echo $form->fileField($model,'media'); ?>
 			<?php echo $form->error($model,'media'); ?>
+			<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></span>
 		</div>
 	</div>
 

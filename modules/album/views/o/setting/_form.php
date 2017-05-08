@@ -191,6 +191,23 @@ EOP;
 			</div>
 		</div>
 
+		<div class="clearfix">
+			<?php echo $form->labelEx($model,'photo_file_type'); ?>
+			<div class="desc">
+				<?php 
+				if(!$model->getErrors()) {
+					$photo_file_type = unserialize($model->photo_file_type);
+					if(!empty($photo_file_type))
+						$model->photo_file_type = Utility::formatFileType($photo_file_type, false);
+					else
+						$model->photo_file_type = 'jpg, png, bmp';
+				}
+				echo $form->textField($model,'photo_file_type', array('class'=>'span-6')); ?>
+				<?php echo $form->error($model,'photo_file_type'); ?>
+				<span class="small-px">pisahkan jenis file dengan koma (,). example: "jpg, png, bmp"</span>
+			</div>
+		</div>
+
 		<div class="submit clearfix">
 			<label>&nbsp;</label>
 			<div class="desc">
