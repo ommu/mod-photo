@@ -3,7 +3,7 @@
  * Album Like Details (album-like-detail)
  * @var $this LikedetailController
  * @var $model AlbumLikeDetail
- * version: 0.0.1
+ * version: 0.1.4
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)

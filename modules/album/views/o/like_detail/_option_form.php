@@ -4,7 +4,7 @@
  * @var $this LikedetailController
  * @var $model AlbumLikeDetail
  * @var $form CActiveForm
- * version: 0.0.1
+ * version: 0.1.4
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)

@@ -4,6 +4,7 @@
  * @var $this AdminController
  * @var $model Albums
  * @var $form CActiveForm
+ * version: 0.1.4
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
