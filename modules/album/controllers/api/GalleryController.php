@@ -33,42 +33,13 @@ class GalleryController extends ControllerApi
 	public $defaultAction = 'index';
 
 	/**
-	 * @return array action filters
+	 * Initialize public template
 	 */
-	public function filters() 
+	public function init() 
 	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			//'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
-
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules() 
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','main'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array(),
-				'users'=>array('@'),
-				'expression'=>'isset(Yii::app()->user->level)',
-				//'expression'=>'isset(Yii::app()->user->level) && (Yii::app()->user->level != 1)',
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array(),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
+		$arrThemes = Utility::getCurrentTemplate('public');
+		Yii::app()->theme = $arrThemes['folder'];
+		$this->layout = $arrThemes['layout'];
 	}
 	
 	/**
@@ -84,6 +55,8 @@ class GalleryController extends ControllerApi
 	 */
 	public function actionMain() 
 	{
+		$action = trim($_GET['action']);
+		
 		if(isset($_GET['action'])) {
 			if($_GET['action'] == 'pexeto_get_portfolio_items') {
 				if(isset($_GET['cat']) && $_GET['cat'] != '') {
@@ -98,10 +71,10 @@ class GalleryController extends ControllerApi
 					$criteria->compare('t.album_id', $album_id);
 					
 					$dataProvider = new CActiveDataProvider('ViewAlbumPhotoTag', array(
-						'criteria'=>$criteria,
-						'pagination'=>array(
-							'pageSize'=>$pagesize != null && $pagesize != '' ? $pagesize : 10,
-							'currentPage'=>$offset != 0 ? ($offset % $pagesize) + 1 : 0, 
+						'criteria' => $criteria,
+						'pagination' => array(
+							'pageSize' => $pagesize != null && $pagesize != '' ? $pagesize : 10,
+							'currentPage' => $offset != 0 ? ($offset % $pagesize) + 1 : 0, 
 						),
 					));
 				
@@ -109,7 +82,7 @@ class GalleryController extends ControllerApi
 					$criteriaNoTag=new CDbCriteria;
 					$criteriaNoTag->with = array(
 						'view' => array(
-							'alias'=>'view',
+							'alias' => 'view',
 						),
 					);
 					$criteriaNoTag->compare('t.publish', 1);
@@ -127,18 +100,18 @@ class GalleryController extends ControllerApi
 							$titleTag = 'Lainnya';
 							$album_photo = $album_url.'/'.$album_path.'/'.$photoNoTag[0]->media;
 							$dataPhotoNoTag = array(
-								'id'=>0,
-								'title'=>ucwords(strtolower($titleTag)),
-								'pr'=>$album_photo,
-								'col'=>1,
-								'row'=>1,
-								'image'=>Utility::getTimThumb($album_photo, 380, 235, 1),
-								'cat'=>$photoNoTag[0]->album->title,
-								'slug'=>Utility::getUrlTitle($titleTag),
-								'link'=>Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id'=>$album_id,'tag'=>0,'slug'=>Utility::getUrlTitle($titleTag))),
-								'fullwidth'=>false,
-								'slider'=>true,
-								'imgnum'=>count($photoNoTag),
+								'id' => 0,
+								'title' => ucwords(strtolower($titleTag)),
+								'pr' => $album_photo,
+								'col' => 1,
+								'row' => 1,
+								'image' => Utility::getTimThumb($album_photo, 380, 235, 1),
+								'cat' => $photoNoTag[0]->album->title,
+								'slug' => Utility::getUrlTitle($titleTag),
+								'link' => Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id' => $album_id, 'tag' => 0, 'slug' => Utility::getUrlTitle($titleTag))),
+								'fullwidth' => false,
+								'slider' => true,
+								'imgnum' => count($photoNoTag),
 							);
 						}
 					}
@@ -147,7 +120,7 @@ class GalleryController extends ControllerApi
 					
 					// pager
 					$pager = OFunction::getDataProviderPager($dataProvider);
-					$get = array_merge($_GET, array($pager['pageVar']=>$pager['nextPage']));
+					$get = array_merge($_GET, array($pager['pageVar'] => $pager['nextPage']));
 					$nextPager = $pager['nextPage'] != 0 ? OFunction::validHostURL(Yii::app()->controller->createUrl('main', $get)) : '-';
 					
 					if(!empty($model)) {
@@ -155,18 +128,18 @@ class GalleryController extends ControllerApi
 							if($val->photo->media != '' && file_exists($album_path.'/'.$val->photo->media)) {
 								$album_photo = $album_url.'/'.$album_path.'/'.$val->photo->media;
 								$data[] = array(
-									'id'=>$val->tag_id,
-									'title'=>ucwords(strtolower($val->tag->body)),
-									'pr'=>$album_photo,
-									'col'=>1,
-									'row'=>1,
-									'image'=>Utility::getTimThumb($album_photo, 380, 235, 1),
-									'cat'=>$val->album->title,
-									'slug'=>$val->tags,
-									'link'=>Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id'=>$album_id,'tag'=>$val->tag_id,'slug'=>$val->tags)),
-									'fullwidth'=>false,
-									'slider'=>true,
-									'imgnum'=>$val->photos,
+									'id' => $val->tag_id,
+									'title' => ucwords(strtolower($val->tag->body)),
+									'pr' => $album_photo,
+									'col' => 1,
+									'row' => 1,
+									'image' => Utility::getTimThumb($album_photo, 380, 235, 1),
+									'cat' => $val->album->title,
+									'slug' => $val->tags,
+									'link' => Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id' => $album_id, 'tag' => $val->tag_id, 'slug' => $val->tags)),
+									'fullwidth' => false,
+									'slider' => true,
+									'imgnum' => $val->photos,
 								);
 							}
 						}
@@ -189,12 +162,12 @@ class GalleryController extends ControllerApi
 						if($itemsMap != null) {
 							foreach($itemsMap as $key => $row) {
 								$item[] = array(
-									'slug'=>$row->tags,
+									'slug' => $row->tags,
 								);
 							}
 							if($photoNoTag != null) {
 								$item[] = array(
-									'slug'=>Utility::getUrlTitle('Lainnya'),
+									'slug' => Utility::getUrlTitle('Lainnya'),
 								);								
 							}
 						}
@@ -241,9 +214,9 @@ class GalleryController extends ControllerApi
 								if($item->photo->media != '' && file_exists($album_path.'/'.$item->photo->media)) {
 									$album_photo = $album_url.'/'.$album_path.'/'.$item->photo->media;
 									$data[] = array(
-										'img'=>$album_photo,
-										'desc'=>$item->photo->caption != '' ? $item->photo->caption : '-',
-										'thumb'=>Utility::getTimThumb($album_photo, 150, 150, 1),
+										'img' => $album_photo,
+										'desc' => $item->photo->caption != '' ? $item->photo->caption : '-',
+										'thumb' => Utility::getTimThumb($album_photo, 150, 150, 1),
 									);
 								}
 							}
@@ -255,7 +228,7 @@ class GalleryController extends ControllerApi
 						$criteria=new CDbCriteria;
 						$criteria->with = array(
 							'view' => array(
-								'alias'=>'view',
+								'alias' => 'view',
 							),
 						);
 						$criteria->compare('t.publish', 1);
@@ -269,9 +242,9 @@ class GalleryController extends ControllerApi
 								if($item->media != '' && file_exists($album_path.'/'.$item->media)) {
 									$album_photo = $album_url.'/'.$album_path.'/'.$item->media;
 									$data[] = array(
-										'img'=>$album_photo,
-										'desc'=>$item->caption != '' ? $item->caption : '-',
-										'thumb'=>Utility::getTimThumb($album_photo, 150, 150, 1),
+										'img' => $album_photo,
+										'desc' => $item->caption != '' ? $item->caption : '-',
+										'thumb' => Utility::getTimThumb($album_photo, 150, 150, 1),
 									);
 								}
 							}							
@@ -284,7 +257,7 @@ class GalleryController extends ControllerApi
 					$return = array(
 						'title' => $itemslug != 'lainnya' ? ucwords(strtolower($slug->tag->body)) : '',
 						'slug' => $itemslug,
-						'link' => Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id'=>$album_id,'tag'=>$tag_id,'slug'=>$itemslug)),
+						'link' => Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->controller->createUrl('exhibition/view', array('id' => $album_id, 'tag' => $tag_id, 'slug' => $itemslug)),
 						'fullwidth' => false,
 						'images' => $data,
 					);
@@ -302,10 +275,10 @@ class GalleryController extends ControllerApi
 		$criteria=new CDbCriteria;
 		$criteria->with = array(
 			'photo' => array(
-				'alias'=>'photo',
+				'alias' => 'photo',
 			),
 			'photo.album' => array(
-				'alias'=>'album',
+				'alias' => 'album',
 			),
 		);
 		$criteria->compare('t.tag_id', $tag);
