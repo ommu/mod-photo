@@ -77,7 +77,7 @@
 							'off_address' => '',
 							'target' => '_blank',
 						),
-						'url' => 'Yii::app()->controller->createUrl("site/view",array("id"=>$data->primaryKey,"t"=>Utility::getUrlTitle($data->title)))'),
+						'url' => 'Yii::app()->controller->createUrl("site/view",array("id"=>$data->primaryKey,"slug"=>Utility::getUrlTitle($data->title)))'),
 					'update' => array(
 						'label' => 'update',
 						'imageUrl' => false,

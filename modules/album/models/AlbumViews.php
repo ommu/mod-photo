@@ -362,10 +362,10 @@ class AlbumViews extends CActiveRecord
 	public static function insertView($album_id)
 	{
 		$criteria=new CDbCriteria;
-		$criteria->select = 't.view_id, t.publish, t.album_id, t.user_id, t.views';
-		$criteria->compare('t.publish', 1);
-		$criteria->compare('t.album_id', $album_id);
-		$criteria->compare('t.user_id', !Yii::app()->user->isGuest ? Yii::app()->user->id : '0');
+		$criteria->select = 'view_id, publish, album_id, user_id, views';
+		$criteria->compare('publish', 1);
+		$criteria->compare('album_id', $album_id);
+		$criteria->compare('user_id', !Yii::app()->user->isGuest ? Yii::app()->user->id : '0');
 		$findView = self::model()->find($criteria);
 		
 		if($findView != null)

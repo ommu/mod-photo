@@ -54,7 +54,8 @@ EOP;
 		<?php echo $form->labelEx($model,'title_i'); ?>
 		<div class="desc">
 			<?php 
-			$model->title_i = Phrase::trans($model->name);
+			if(!$model->getErrors())
+				$model->title_i = Phrase::trans($model->name);
 			echo $form->textField($model,'title_i',array('maxlength'=>32)); ?>
 			<?php echo $form->error($model,'title_i'); ?>
 			<?php /*<div class="small-px silent"></div>*/?>
@@ -65,7 +66,8 @@ EOP;
 		<?php echo $form->labelEx($model,'description_i'); ?>
 		<div class="desc">
 			<?php 
-			$model->description_i = Phrase::trans($model->desc);
+			if(!$model->getErrors())
+				$model->description_i = Phrase::trans($model->desc);
 			echo $form->textArea($model,'description_i',array('rows'=>6, 'cols'=>50, 'maxlength'=>128, 'class'=>'span-7 smaller')); ?>
 			<?php echo $form->error($model,'description_i'); ?>
 			<?php /*<div class="small-px silent"></div>*/?>
