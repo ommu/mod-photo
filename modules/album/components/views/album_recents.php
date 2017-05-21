@@ -1,4 +1,17 @@
-<?php if($model != null) {?>
+<?php 
+/**
+ * @var $this AlbumRecentsComponent
+ * @var $model Albums
+ * version: 0.1.4
+ *
+ * @author Putra Sudaryanto <putra@sudaryanto.id>
+ * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @link https://github.com/ommu/mod-photo-album
+ * @contact (+62)856-299-4114
+ *
+ */
+
+if($model != null) {?>
 <div class="box recent-news-album">
 	<h3>Photo Album Terbaru</h3>
 	<ul>

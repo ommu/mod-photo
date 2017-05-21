@@ -6,7 +6,7 @@
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
  * @created date 3 September 2016, 20:18 WIB
- * @link https://github.com/ommu/Photo-Albums
+ * @link https://github.com/ommu/mod-photo-album
  * @contact (+62)856-299-4114
  *
  * This is the template for generating the model class of a specified table.
