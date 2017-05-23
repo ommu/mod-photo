@@ -1,6 +1,6 @@
 <?php
 /**
- * AlbumRecents
+ * WidgetAlbumPhoto
  * version: 0.1.4
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
@@ -10,7 +10,7 @@
  *
  */
 
-class AlbumRecents extends CWidget
+class WidgetAlbumPhoto extends CWidget
 {
 
 	public function init() {
@@ -39,13 +39,9 @@ class AlbumRecents extends CWidget
 			':publish'=>1,
 		);
 		$criteria->order = 'creation_date DESC';
-		//$criteria->addInCondition('cat_id',array(2,3,5,6,7));
-		//$criteria->compare('cat_id',18);
-		$criteria->limit = 3;
-			
-		$model = Albums::model()->findAll($criteria);
+		$model = AlbumPhoto::model()->findAll($criteria);
 
-		$this->render('album_recents',array(
+		$this->render('album_photo',array(
 			'model' => $model,
 			'module'=>$module,
 			'controller'=>$controller,
@@ -53,6 +49,6 @@ class AlbumRecents extends CWidget
 			'currentAction'=>$currentAction,
 			'currentModule'=>$currentModule,
 			'currentModuleAction'=>$currentModuleAction,
-		));	
+		));
 	}
 }
