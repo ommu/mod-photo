@@ -3,7 +3,7 @@
  * Album Tags (album-tag)
  * @var $this TagController
  * @var $model AlbumTag
- * version: 0.1.4
+ * version: 0.0.1
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2015 Ommu Platform (opensource.ommu.co)

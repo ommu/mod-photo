@@ -4,7 +4,7 @@
  * @var $this ViewsController
  * @var $model AlbumViews
  * @var $form CActiveForm
- * version: 0.1.4
+ * version: 0.0.1
  * Reference start
  *
  * TOC :

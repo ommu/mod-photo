@@ -3,7 +3,7 @@
  * Albums (albums)
  * @var $this AdminController
  * @var $model Albums
- * version: 0.1.4
+ * version: 0.0.1
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
