@@ -107,8 +107,14 @@ class PhotoController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($album=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Album Photos');
+		if($album != null) {
+			$data = Albums::model()->findByPk($album);
+			$pageTitle = Yii::t('phrase', 'Album Photos: {album_title} from category {category_name}', array ('{album_title}'=>$data->title, '{category_name}'=>Phrase::trans($data->category->name)));
+		}
+		
 		$model=new AlbumPhoto('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['AlbumPhoto'])) {
@@ -125,7 +131,7 @@ class PhotoController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = 'Album Photos Manage';
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -157,12 +163,12 @@ class PhotoController extends Controller
 			$model->attributes=$_POST['AlbumPhoto'];
 			
 			if($model->save()) {
-				Yii::app()->user->setFlash('success', 'AlbumPhoto success updated.');
+				Yii::app()->user->setFlash('success', 'Album Photo success updated.');
 				$this->redirect(array('manage'));
 			}
 		}
-
-		$this->pageTitle = 'Update Album Photos';
+		
+		$this->pageTitle = Yii::t('phrase', 'Update Photo: {photo_media} from album {album_title}', array('{photo_media}'=>$model->media, '{album_title}'=>$model->album->title));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
@@ -179,7 +185,7 @@ class PhotoController extends Controller
 	{
 		$model=$this->loadModel($id);
 
-		$this->pageTitle = Yii::t('phrase', 'View Photo: {title}', array('{title}'=>$model->album->title));
+		$this->pageTitle = Yii::t('phrase', 'View Photo: {photo_media} from album {album_title}', array('{photo_media}'=>$model->media, '{album_title}'=>$model->album->title));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_view',array(
@@ -249,7 +255,7 @@ class PhotoController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-photo',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumPhoto success deleted.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Photo success deleted.').'</strong></div>',
 					));
 				}
 			}
@@ -263,7 +269,7 @@ class PhotoController extends Controller
 			$this->dialogGroundUrl = $dialogGroundUrl;
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'Delete Photo');
+			$this->pageTitle = Yii::t('phrase', 'Delete Photo: {photo_media} from album {album_title}', array('{photo_media}'=>$model->media, '{album_title}'=>$model->album->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -286,6 +292,7 @@ class PhotoController extends Controller
 			$title = Yii::t('phrase', 'Publish');
 			$replace = 1;
 		}
+		$pageTitle = Yii::t('phrase', '{title}: {photo_media} from album {album_title}', array('{title}'=>$title, '{photo_media}'=>$model->media, '{album_title}'=>$model->album->title));
 
 		if(Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
@@ -298,7 +305,7 @@ class PhotoController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-photo',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumPhoto success updated.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Photo success updated.').'</strong></div>',
 					));
 				}
 			}
@@ -308,7 +315,7 @@ class PhotoController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = $title;
+			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_publish',array(
@@ -345,7 +352,7 @@ class PhotoController extends Controller
 							'type' => 5,
 							'get' => Yii::app()->controller->createUrl('manage'),
 							'id' => 'partial-album-photo',
-							'msg' => '<div class="errorSummary success"><strong>AlbumPhoto success updated.</strong></div>',
+							'msg' => '<div class="errorSummary success"><strong>Album Photo success updated.</strong></div>',
 						));						
 					}
 				}
@@ -360,7 +367,7 @@ class PhotoController extends Controller
 			$this->dialogGroundUrl = $dialogGroundUrl;
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'Cover Photo');
+			$this->pageTitle = Yii::t('phrase', 'Cover Photo: {photo_media} from album {album_title}', array('{photo_media}'=>$model->media, '{album_title}'=>$model->album->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_cover');

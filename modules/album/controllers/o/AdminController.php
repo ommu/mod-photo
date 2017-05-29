@@ -110,8 +110,14 @@ class AdminController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($category=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Albums');
+		if($category != null) {
+			$data = AlbumCategory::model()->findByPk($category);
+			$pageTitle = Yii::t('phrase', 'Albums: Category {category_name}', array ('{category_name}'=>Phrase::trans($data->name)));
+		}
+		
 		$model=new Albums('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Albums'])) {
@@ -128,7 +134,7 @@ class AdminController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Manage Album');
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -226,7 +232,7 @@ class AdminController extends Controller
 			
 		}
 		
-		$this->pageTitle = Yii::t('phrase', 'Update Album').': '.$model->title;
+		$this->pageTitle = Yii::t('phrase', 'Update Album: {album_title}', array('{album_title}'=>$model->title));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
@@ -299,7 +305,7 @@ class AdminController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'Delete Album');
+			$this->pageTitle = Yii::t('phrase', 'Delete Album: {album_title}', array('{album_title}'=>$model->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -322,6 +328,7 @@ class AdminController extends Controller
 			$title = Yii::t('phrase', 'Publish');
 			$replace = 1;
 		}
+		$pageTitle = Yii::t('phrase', '{title}: {album_title}', array('{title}'=>$title, '{album_title}'=>$model->title));
 
 		if(Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
@@ -344,7 +351,7 @@ class AdminController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = $title;
+			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_publish',array(
@@ -385,7 +392,7 @@ class AdminController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'Headline');
+			$this->pageTitle = Yii::t('phrase', 'Headline: {album_title}', array('{album_title}'=>$model->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_headline');

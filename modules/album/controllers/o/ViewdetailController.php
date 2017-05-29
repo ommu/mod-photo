@@ -103,8 +103,16 @@ class ViewdetailController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($view=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Album Views Data');
+		if($view != null) {
+			$data = AlbumLikes::model()->findByPk($view);
+			$pageTitle = Yii::t('phrase', 'Album Views Data: {album_title} from category {category_name} - user Guest', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name)));	
+			if($data->user->displayname)
+				$pageTitle = Yii::t('phrase', 'Album Views Data: {album_title} from category {category_name} - user {user_displayname}', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name), '{user_displayname}'=>$data->user->displayname));
+		}
+		
 		$model=new AlbumViewDetail('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['AlbumViewDetail'])) {
@@ -121,7 +129,7 @@ class ViewdetailController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Album View Details Manage');
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('/o/view_detail/admin_manage',array(

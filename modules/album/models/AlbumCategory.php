@@ -378,7 +378,7 @@ class AlbumCategory extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'default',
-				'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("default",array("id"=>$data->cat_id)), $data->default, 1)',
+				'value' => '$data->default == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),

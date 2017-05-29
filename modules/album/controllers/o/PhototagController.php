@@ -105,8 +105,14 @@ class PhototagController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($media=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Album Photos Data');
+		if($media != null) {
+			$data = AlbumPhoto::model()->findByPk($media);
+			$pageTitle = Yii::t('phrase', 'Album Photos Data: {photo_media} from album {album_title} category {category_name}', array ('{photo_media}'=>$data->media,'{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name)));
+		}
+		
 		$model=new AlbumPhotoTag('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['AlbumPhotoTag'])) {
@@ -123,7 +129,7 @@ class PhototagController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Album Photo Tags Manage');
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('/o/photo_tag/admin_manage',array(
@@ -182,7 +188,7 @@ class PhototagController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-photo-tag',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumPhotoTag success deleted.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Photo Tag success deleted.').'</strong></div>',
 					));					
 				}
 				if($model->delete()) {
@@ -198,7 +204,7 @@ class PhototagController extends Controller
 			$this->dialogGroundUrl = $url;
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'AlbumPhotoTag Delete.');
+			$this->pageTitle = Yii::t('phrase', 'Delete Photo Tag: {tag_body} from photo {photo_media} album {album_title}', array('{tag_body}'=>$model->tag->body, '{photo_media}'=>$model->photo->media, '{album_title}'=>$model->photo->album->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('/o/photo_tag/admin_delete');

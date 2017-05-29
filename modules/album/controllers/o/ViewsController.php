@@ -106,14 +106,12 @@ class ViewsController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($album=null) 
 	{
-		$id = $_GET['album'];
-		$title = '';
-		if(isset($id) && $id != '') {
-			$album = Albums::model()->findByPk($id);
-			if($album != null)
-				$title = ': '.$album->title;
+		$pageTitle = Yii::t('phrase', 'Album Views');
+		if($album != null) {
+			$data = Albums::model()->findByPk($album);
+			$pageTitle = Yii::t('phrase', 'Album Views: {album_title} from category {category_name}', array ('{album_title}'=>$data->title, '{category_name}'=>Phrase::trans($data->category->name)));
 		}
 		
 		$model=new AlbumViews('search');
@@ -132,7 +130,7 @@ class ViewsController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Album Views Manage').$title;
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -194,7 +192,7 @@ class ViewsController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-views',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumViews success deleted.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Views success deleted.').'</strong></div>',
 					));
 				}
 			}
@@ -204,7 +202,7 @@ class ViewsController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'AlbumViews Delete.');
+			$this->pageTitle = Yii::t('phrase', 'Delete View: {album_title}', array('{album_title}'=>$model->album->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -227,6 +225,7 @@ class ViewsController extends Controller
 			$title = Yii::t('phrase', 'Publish');
 			$replace = 1;
 		}
+		$pageTitle = Yii::t('phrase', '{title}: {album_title}', array('{title}'=>$title, '{album_title}'=>$model->album->title));
 
 		if(Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
@@ -239,7 +238,7 @@ class ViewsController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-views',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumViews success updated.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Views success updated.').'</strong></div>',
 					));
 				}
 			}
@@ -249,7 +248,7 @@ class ViewsController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = $title;
+			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_publish',array(

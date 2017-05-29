@@ -104,8 +104,14 @@ class TagController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($album=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Album Tags');
+		if($album != null) {
+			$data = Albums::model()->findByPk($album);
+			$pageTitle = Yii::t('phrase', 'Album Tags: {album_title} from category {category_name}', array ('{album_title}'=>$data->title, '{category_name}'=>Phrase::trans($data->category->name)));
+		}
+		
 		$model=new AlbumTag('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['AlbumTag'])) {
@@ -122,7 +128,7 @@ class TagController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = 'Album Tags Manage';
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -181,7 +187,7 @@ class TagController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-tag',
-						'msg' => '<div class="errorSummary success"><strong>AlbumTag success deleted.</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>Album Tag success deleted.</strong></div>',
 					));					
 				}
 			}
@@ -195,7 +201,7 @@ class TagController extends Controller
 			$this->dialogGroundUrl = $url;
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = 'AlbumTag Delete.';
+			$this->pageTitle = Yii::t('phrase', 'Delete Tag: {tag_body} from album {album_title}', array('{tag_body}'=>$model->tag->body, '{album_title}'=>$model->album->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');

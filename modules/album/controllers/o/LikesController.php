@@ -106,8 +106,14 @@ class LikesController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage() 
+	public function actionManage($album=null) 
 	{
+		$pageTitle = Yii::t('phrase', 'Album Likes');
+		if($album != null) {
+			$data = Albums::model()->findByPk($album);
+			$pageTitle = Yii::t('phrase', 'Album Likes: {album_title} from category {category_name}', array ('{album_title}'=>$data->title, '{category_name}'=>Phrase::trans($data->category->name)));
+		}
+		
 		$model=new AlbumLikes('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['AlbumLikes'])) {
@@ -123,15 +129,8 @@ class LikesController extends Controller
 			}
 		}
 		$columns = $model->getGridColumn($columnTemp);
-		
-		if(isset($_GET['album'])) {
-			$album = Albums::model()->findByPk($_GET['album']);
-			$title = ': '.$album->title.' '.Yii::t('phrase', 'by').' '.$album->user->displayname;
-		} else {
-			$title = '';
-		}
 
-		$this->pageTitle = Yii::t('phrase', 'Album Likes Manage').$title;
+		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -183,11 +182,12 @@ class LikesController extends Controller
 	 */
 	public function actionDelete($id) 
 	{
+		$model=$this->loadModel($id);
+		
 		if(Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
 			if(isset($id)) {
-				$this->loadModel($id)->delete();
-
+				$model->delete();
 				echo CJSON::encode(array(
 					'type' => 5,
 					'get' => Yii::app()->controller->createUrl('manage'),
@@ -201,7 +201,7 @@ class LikesController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'Delete Likes');
+			$this->pageTitle = Yii::t('phrase', 'Delete Like: {album_title}', array('{album_title}'=>$model->album->title));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -224,6 +224,7 @@ class LikesController extends Controller
 			$title = Yii::t('phrase', 'Publish');
 			$replace = 1;
 		}
+		$pageTitle = Yii::t('phrase', '{title}: {album_title}', array('{title}'=>$title, '{album_title}'=>$model->album->title));
 
 		if(Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
@@ -236,7 +237,7 @@ class LikesController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-likes',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumLikes success updated.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Likes success updated.').'</strong></div>',
 					));
 				}
 			}
@@ -246,7 +247,7 @@ class LikesController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = $title;
+			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_publish',array(

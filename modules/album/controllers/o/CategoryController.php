@@ -127,7 +127,7 @@ class CategoryController extends Controller
 		}
 		$columns = $model->getGridColumn($columnTemp);
 
-		$this->pageTitle = Yii::t('phrase', 'Album Categories Manage');
+		$this->pageTitle = Yii::t('phrase', 'Album Categories');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_manage',array(
@@ -153,7 +153,7 @@ class CategoryController extends Controller
 			$jsonError = CActiveForm::validate($model);
 			if(strlen($jsonError) > 2) {
 				$errors = $model->getErrors();
-				$summary['msg'] = "<div class='errorSummary'><strong>Please fix the following input errors:</strong>";
+				$summary['msg'] = "<div class='errorSummary'><strong>".Yii::t('phrase', 'Please fix the following input errors:')."</strong>";
 				$summary['msg'] .= "<ul>";
 				foreach($errors as $key => $value) {
 					$summary['msg'] .= "<li>{$value[0]}</li>";
@@ -172,7 +172,7 @@ class CategoryController extends Controller
 							'type' => 5,
 							'get' => Yii::app()->controller->createUrl('manage'),
 							'id' => 'partial-album-category',
-							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumCategory success created.').'</strong></div>',
+							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Category success created.').'</strong></div>',
 						));
 					} else {
 						print_r($model->getErrors());
@@ -182,7 +182,7 @@ class CategoryController extends Controller
 			Yii::app()->end();
 		}
 
-		$this->pageTitle = Yii::t('phrase', 'Create Album Categories');
+		$this->pageTitle = Yii::t('phrase', 'Create Category');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_add',array(
@@ -208,7 +208,7 @@ class CategoryController extends Controller
 			$jsonError = CActiveForm::validate($model);
 			if(strlen($jsonError) > 2) {
 				$errors = $model->getErrors();
-				$summary['msg'] = "<div class='errorSummary'><strong>Please fix the following input errors:</strong>";
+				$summary['msg'] = "<div class='errorSummary'><strong>".Yii::t('phrase', 'Please fix the following input errors:')."</strong>";
 				$summary['msg'] .= "<ul>";
 				foreach($errors as $key => $value) {
 					$summary['msg'] .= "<li>{$value[0]}</li>";
@@ -225,7 +225,7 @@ class CategoryController extends Controller
 					if($model->save()) {
 						echo CJSON::encode(array(
 							'type' => 0,
-							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumCategory success updated.').'</strong></div>',
+							'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Category success updated.').'</strong></div>',
 						));
 					} else {
 						print_r($model->getErrors());
@@ -235,7 +235,7 @@ class CategoryController extends Controller
 			Yii::app()->end();
 		}
 
-		$this->pageTitle = Yii::t('phrase', 'Update Album Categories');
+		$this->pageTitle = Yii::t('phrase', 'Update Category: {category_name}', array('{category_name}'=>Phrase::trans($model->name)));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_edit',array(
@@ -251,7 +251,7 @@ class CategoryController extends Controller
 	{
 		$model=$this->loadModel($id);
 
-		$this->pageTitle = Yii::t('phrase', 'View Album Categories');
+		$this->pageTitle = Yii::t('phrase', 'View Category: {category_name}', array('{category_name}'=>Phrase::trans($model->name)));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
 		$this->render('admin_view',array(
@@ -312,7 +312,7 @@ class CategoryController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-category',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumCategory success deleted.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Category success deleted.').'</strong></div>',
 					));
 				}
 			}
@@ -322,7 +322,7 @@ class CategoryController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = Yii::t('phrase', 'AlbumCategory Delete.');
+			$this->pageTitle = Yii::t('phrase', 'Delete Category: {category_name}', array('{category_name}'=>Phrase::trans($model->name)));
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_delete');
@@ -345,6 +345,7 @@ class CategoryController extends Controller
 			$title = Yii::t('phrase', 'Publish');
 			$replace = 1;
 		}
+		$pageTitle = Yii::t('phrase', '{title}: {category_name}', array('{title}'=>$title, '{category_name}'=>Phrase::trans($model->name)));
 
 		if(Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
@@ -357,7 +358,7 @@ class CategoryController extends Controller
 						'type' => 5,
 						'get' => Yii::app()->controller->createUrl('manage'),
 						'id' => 'partial-album-category',
-						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'AlbumCategory success updated.').'</strong></div>',
+						'msg' => '<div class="errorSummary success"><strong>'.Yii::t('phrase', 'Album Category success updated.').'</strong></div>',
 					));
 				}
 			}
@@ -367,7 +368,7 @@ class CategoryController extends Controller
 			$this->dialogGroundUrl = Yii::app()->controller->createUrl('manage');
 			$this->dialogWidth = 350;
 
-			$this->pageTitle = $title;
+			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
 			$this->render('admin_publish',array(
