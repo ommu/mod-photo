@@ -19,60 +19,52 @@
 	);
 ?>
 
-<div class="dialog-content">
+<div class="box">
 	<?php $this->widget('application.components.system.FDetailView', array(
 		'data'=>$model,
 		'attributes'=>array(
 			array(
 				'name'=>'cat_id',
 				'value'=>$model->cat_id,
-				//'value'=>$model->cat_id != '' ? $model->cat_id : '-',
 			),
 			array(
 				'name'=>'publish',
 				'value'=>$model->publish == '1' ? Chtml::image(Yii::app()->theme->baseUrl.'/images/icons/publish.png') : Chtml::image(Yii::app()->theme->baseUrl.'/images/icons/unpublish.png'),
-				//'value'=>$model->publish,
+				'type'=>'raw',
 			),
 			array(
 				'name'=>'name',
-				'value'=>$model->name,
-				//'value'=>$model->name != '' ? $model->name : '-',
+				'value'=>Phrase::trans($model->name),
 			),
 			array(
 				'name'=>'desc',
-				'value'=>$model->desc,
-				//'value'=>$model->desc != '' ? $model->desc : '-',
+				'value'=>Phrase::trans($model->desc),
 			),
 			array(
 				'name'=>'default',
-				'value'=>$model->default,
-				//'value'=>$model->default != '' ? $model->default : '-',
+				'value'=>$model->default == 1 ? Yii::t('phrase', 'Yes') : Yii::t('phrase', 'No'),
+				'type'=>'raw',
 			),
 			array(
 				'name'=>'default_setting',
 				'value'=>$model->default_setting,
-				//'value'=>$model->default_setting != '' ? $model->default_setting : '-',
 			),
 			array(
 				'name'=>'photo_limit',
 				'value'=>$model->photo_limit,
-				//'value'=>$model->photo_limit != '' ? $model->photo_limit : '-',
 			),
 			array(
 				'name'=>'photo_resize',
-				'value'=>$model->photo_resize,
-				//'value'=>$model->photo_resize != '' ? $model->photo_resize : '-',
+				'value'=>$model->photo_resize == 1 ? Yii::t('phrase', 'Yes') : Yii::t('phrase', 'No'),
 			),
 			array(
 				'name'=>'photo_resize_size',
-				'value'=>$model->photo_resize_size != '' ? $model->photo_resize_size : '-',
-				//'value'=>$model->photo_resize_size != '' ? CHtml::link($model->photo_resize_size, Yii::app()->request->baseUrl.'/public/visit/'.$model->photo_resize_size, array('target' => '_blank')) : '-',
+				'value'=>$model->photo_resize_size ? $model->photo_resize_size : '-',
 				'type'=>'raw',
 			),
 			array(
 				'name'=>'photo_view_size',
-				'value'=>$model->photo_view_size != '' ? $model->photo_view_size : '-',
-				//'value'=>$model->photo_view_size != '' ? CHtml::link($model->photo_view_size, Yii::app()->request->baseUrl.'/public/visit/'.$model->photo_view_size, array('target' => '_blank')) : '-',
+				'value'=>$model->photo_view_size ? $model->photo_view_size : '-',
 				'type'=>'raw',
 			),
 			array(
@@ -81,8 +73,7 @@
 			),
 			array(
 				'name'=>'creation_id',
-				'value'=>$model->creation_id,
-				//'value'=>$model->creation_id != 0 ? $model->creation_id : '-',
+				'value'=>$model->creation->displayname ? $model->creation->displayname : '-',
 			),
 			array(
 				'name'=>'modified_date',
@@ -90,12 +81,8 @@
 			),
 			array(
 				'name'=>'modified_id',
-				'value'=>$model->modified_id,
-				//'value'=>$model->modified_id != 0 ? $model->modified_id : '-',
+				'value'=>$model->modified->displayname ? $model->modified->displayname : '-',
 			),
 		),
 	)); ?>
-</div>
-<div class="dialog-submit">
-	<?php echo CHtml::button(Yii::t('phrase', 'Close'), array('id'=>'closed')); ?>
 </div>

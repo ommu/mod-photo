@@ -11,6 +11,7 @@
  *	Index
  *	Manage
  *	Edit
+ *	View
  *	RunAction
  *	Delete
  *	Publish
@@ -81,7 +82,7 @@ class PhotoController extends Controller
 				'expression'=>'isset(Yii::app()->user->level)',
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('manage','edit','runaction','delete','publish','setcover'),
+				'actions'=>array('manage','edit','view','runaction','delete','publish','setcover'),
 				'users'=>array('@'),
 				'expression'=>'isset(Yii::app()->user->level) && in_array(Yii::app()->user->level, array(1,2))',
 			),
@@ -167,6 +168,22 @@ class PhotoController extends Controller
 		$this->render('admin_edit',array(
 			'model'=>$model,
 			'photo_file_type'=>$photo_file_type,
+		));
+	}
+	
+	/**
+	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
+	 */
+	public function actionView($id) 
+	{
+		$model=$this->loadModel($id);
+
+		$this->pageTitle = Yii::t('phrase', 'View Photo: {title}', array('{title}'=>$model->album->title));
+		$this->pageDescription = '';
+		$this->pageMeta = '';
+		$this->render('admin_view',array(
+			'model'=>$model,
 		));
 	}
 

@@ -32,12 +32,17 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('name'); ?><br/>
-			<?php echo $form->textField($model,'name',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'name'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('desc'); ?><br/>
-			<?php echo $form->textField($model,'desc',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'desc'); ?>
+		</li>
+
+		<li>
+			<?php echo $model->getAttributeLabel('default'); ?><br/>
+			<?php echo $form->textField($model,'default'); ?>
 		</li>
 
 		<li>
@@ -57,12 +62,12 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('photo_resize_size'); ?><br/>
-			<?php echo $form->textArea($model,'photo_resize_size',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'photo_resize_size'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('photo_view_size'); ?><br/>
-			<?php echo $form->textArea($model,'photo_view_size',array('rows'=>6, 'cols'=>50)); ?>
+			<?php echo $form->textArea($model,'photo_view_size'); ?>
 		</li>
 
 		<li>
@@ -72,7 +77,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('creation_id'); ?><br/>
-			<?php echo $form->textField($model,'creation_id',array('size'=>10,'maxlength'=>10)); ?>
+			<?php echo $form->textField($model,'creation_id'); ?>
 		</li>
 
 		<li>
@@ -82,7 +87,12 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('modified_id'); ?><br/>
-			<?php echo $form->textField($model,'modified_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'modified_id'); ?>
+		</li>
+
+		<li>
+			<?php echo $model->getAttributeLabel('slug'); ?><br/>
+			<?php echo $form->textField($model,'slug'); ?>
 		</li>
 
 		<li class="submit">

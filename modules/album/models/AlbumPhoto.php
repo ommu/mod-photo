@@ -43,6 +43,7 @@ class AlbumPhoto extends CActiveRecord
 	public $old_media_i;
 	
 	// Variable Search
+	public $category_search;
 	public $album_search;
 	public $photo_caption_search;
 	public $photo_tag_search;
@@ -86,7 +87,7 @@ class AlbumPhoto extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('media_id, publish, album_id, cover, media, caption, creation_date, creation_id, modified_date, modified_id,
-				album_search, photo_caption_search, photo_tag_search, creation_search', 'safe', 'on'=>'search'),
+				category_search, album_search, photo_caption_search, photo_tag_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -122,8 +123,10 @@ class AlbumPhoto extends CActiveRecord
 			'creation_id' => Yii::t('attribute', 'Creation'),
 			'modified_date' => Yii::t('attribute', 'Modified Date'),
 			'modified_id' => Yii::t('attribute', 'Modified'),
+			'media_filename' => Yii::t('attribute', 'Photo (Filename)'),
 			'keyword_i' => Yii::t('attribute', 'Tags'),
 			'old_media_i' => Yii::t('attribute', 'Old Photo'),
+			'category_search' => Yii::t('attribute', 'Category'),
 			'album_search' => Yii::t('attribute', 'Album'),
 			'photo_caption_search' => Yii::t('attribute', 'Caption'),
 			'photo_tag_search' => Yii::t('attribute', 'Tag'),
@@ -157,7 +160,7 @@ class AlbumPhoto extends CActiveRecord
 			),
 			'album' => array(
 				'alias'=>'album',
-				'select'=>'title'
+				'select'=>'cat_id, title'
 			),
 			'creation' => array(
 				'alias'=>'creation',
@@ -200,6 +203,7 @@ class AlbumPhoto extends CActiveRecord
 		else
 			$criteria->compare('t.modified_id',$this->modified_id);
 		
+		$criteria->compare('album.cat_id',$this->category_search);
 		$criteria->compare('album.title',strtolower($this->album_search), true);
 		$criteria->compare('view.photo_caption',strtolower($this->photo_caption_search), true);
 		$criteria->compare('view.photo_tag',strtolower($this->photo_tag_search), true);
@@ -261,6 +265,12 @@ class AlbumPhoto extends CActiveRecord
 			);
 			if(!isset($_GET['album'])) {
 				$this->defaultColumns[] = array(
+					'name' => 'category_search',
+					'value' => 'Phrase::trans($data->album->category->name)',
+					'filter'=> AlbumCategory::getCategory(),
+					'type' => 'raw',
+				);
+				$this->defaultColumns[] = array(
 					'name' => 'album_search',
 					'value' => '$data->album->title',
 				);
@@ -270,9 +280,10 @@ class AlbumPhoto extends CActiveRecord
 				'value' => 'CHtml::link($data->media, Yii::app()->request->baseUrl.\'/public/album/\'.$data->album_id.\'/\'.$data->media, array(\'target\' => \'_blank\'))',
 				'type' => 'raw',
 			);
+			/*
 			$this->defaultColumns[] = array(
 				'name' => 'creation_search',
-				'value' => '$data->creation_id != 0 ? $data->creation->displayname : "-"',
+				'value' => '$data->creation->displayname',
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'creation_date',
@@ -300,6 +311,7 @@ class AlbumPhoto extends CActiveRecord
 					),
 				), true),
 			);
+			*/
 			$this->defaultColumns[] = array(
 				'name' => 'photo_caption_search',
 				'value' => '$data->view->photo_caption == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',

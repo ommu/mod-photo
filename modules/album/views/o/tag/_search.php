@@ -21,17 +21,17 @@
 	<ul>
 		<li>
 			<?php echo $model->getAttributeLabel('id'); ?><br/>
-			<?php echo $form->textField($model,'id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'id'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('album_id'); ?><br/>
-			<?php echo $form->textField($model,'album_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'album_id'); ?>
 		</li>
 
 		<li>
 			<?php echo $model->getAttributeLabel('tag_id'); ?><br/>
-			<?php echo $form->textField($model,'tag_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'tag_id'); ?>
 		</li>
 
 		<li>
@@ -41,7 +41,7 @@
 
 		<li>
 			<?php echo $model->getAttributeLabel('creation_id'); ?><br/>
-			<?php echo $form->textField($model,'creation_id',array('size'=>11,'maxlength'=>11)); ?>
+			<?php echo $form->textField($model,'creation_id'); ?>
 		</li>
 
 		<li class="submit">
