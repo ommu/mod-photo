@@ -129,11 +129,11 @@ class ViewAlbumPhotoTag extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('t.tag_id',strtolower($this->tag_id),true);
-		$criteria->compare('t.album_id',strtolower($this->album_id),true);
-		$criteria->compare('t.media_id',strtolower($this->media_id),true);
-		$criteria->compare('t.tags',strtolower($this->tags),true);
-		$criteria->compare('t.photos',strtolower($this->photos),true);
+		$criteria->compare('t.tag_id',$this->tag_id);
+		$criteria->compare('t.album_id',$this->album_id);
+		$criteria->compare('t.media_id',$this->media_id);
+		$criteria->compare('t.tags',$this->tags);
+		$criteria->compare('t.photos',$this->photos);
 
 		if(!isset($_GET['ViewAlbumPhotoTag_sort']))
 			$criteria->order = 't.tag_id DESC';

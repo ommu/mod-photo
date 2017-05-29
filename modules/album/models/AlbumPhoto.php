@@ -45,10 +45,10 @@ class AlbumPhoto extends CActiveRecord
 	// Variable Search
 	public $category_search;
 	public $album_search;
-	public $photo_caption_search;
-	public $photo_tag_search;
 	public $creation_search;
 	public $modified_search;
+	public $photo_caption_search;
+	public $photo_tag_search;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -87,7 +87,7 @@ class AlbumPhoto extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('media_id, publish, album_id, cover, media, caption, creation_date, creation_id, modified_date, modified_id,
-				category_search, album_search, photo_caption_search, photo_tag_search, creation_search', 'safe', 'on'=>'search'),
+				category_search, album_search, creation_search, modified_search, photo_caption_search, photo_tag_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -128,10 +128,10 @@ class AlbumPhoto extends CActiveRecord
 			'old_media_i' => Yii::t('attribute', 'Old Photo'),
 			'category_search' => Yii::t('attribute', 'Category'),
 			'album_search' => Yii::t('attribute', 'Album'),
-			'photo_caption_search' => Yii::t('attribute', 'Caption'),
-			'photo_tag_search' => Yii::t('attribute', 'Tag'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
+			'photo_caption_search' => Yii::t('attribute', 'Caption'),
+			'photo_tag_search' => Yii::t('attribute', 'Tag'),
 		);
 	}
 
@@ -204,11 +204,11 @@ class AlbumPhoto extends CActiveRecord
 			$criteria->compare('t.modified_id',$this->modified_id);
 		
 		$criteria->compare('album.cat_id',$this->category_search);
-		$criteria->compare('album.title',strtolower($this->album_search), true);
-		$criteria->compare('view.photo_caption',strtolower($this->photo_caption_search), true);
-		$criteria->compare('view.photo_tag',strtolower($this->photo_tag_search), true);
-		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
-		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
+		$criteria->compare('album.title',strtolower($this->album_search),true);
+		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
+		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
+		$criteria->compare('view.photo_caption',$this->photo_caption_search);
+		$criteria->compare('view.photo_tag',$this->photo_tag_search);
 
 		if(!isset($_GET['AlbumPhoto_sort']))
 			$criteria->order = 't.media_id DESC';

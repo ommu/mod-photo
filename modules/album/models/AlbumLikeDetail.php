@@ -37,7 +37,9 @@ class AlbumLikeDetail extends CActiveRecord
 	public $defaultColumns = array();
 	
 	// Variable Search
+	public $category_search;
 	public $album_search;
+	public $user_search;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -74,7 +76,7 @@ class AlbumLikeDetail extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, publish, like_id, likes_date, likes_ip,
-				album_search', 'safe', 'on'=>'search'),
+				category_search, album_search, user_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -101,7 +103,9 @@ class AlbumLikeDetail extends CActiveRecord
 			'like_id' => Yii::t('attribute', 'Like'),
 			'likes_date' => Yii::t('attribute', 'Likes Date'),
 			'likes_ip' => Yii::t('attribute', 'Likes Ip'),
+			'category_search' => Yii::t('attribute', 'Category'),
 			'album_search' => Yii::t('attribute', 'Album'),
+			'user_search' => Yii::t('attribute', 'User'),
 		);
 		/*
 			'ID' => 'ID',
@@ -137,12 +141,16 @@ class AlbumLikeDetail extends CActiveRecord
 				'alias'=>'like',
 			),
 			'like.album' => array(
-				'alias'=>'album',
-				'select'=>'title'
+				'alias'=>'like_album',
+				'select'=>'cat_id, title'
+			),
+			'like.user' => array(
+				'alias'=>'like_user',
+				'select'=>'displayname'
 			),
 		);
 
-		$criteria->compare('t.id',strtolower($this->id),true);
+		$criteria->compare('t.id',$this->id);
 		if(isset($_GET['type']) && $_GET['type'] == 'publish')
 			$criteria->compare('t.publish',1);
 		elseif(isset($_GET['type']) && $_GET['type'] == 'unpublish')
@@ -161,7 +169,9 @@ class AlbumLikeDetail extends CActiveRecord
 			$criteria->compare('date(t.likes_date)',date('Y-m-d', strtotime($this->likes_date)));
 		$criteria->compare('t.likes_ip',strtolower($this->likes_ip),true);
 
-		$criteria->compare('album.title',strtolower($this->album_search), true);
+		$criteria->compare('like_album.cat_id',$this->category_search);
+		$criteria->compare('like_album.title',strtolower($this->album_search),true);
+		$criteria->compare('like_user.displayname',strtolower($this->user_search),true);
 
 		if(!isset($_GET['AlbumLikeDetail_sort']))
 			$criteria->order = 't.id DESC';
@@ -213,13 +223,23 @@ class AlbumLikeDetail extends CActiveRecord
 			);
 			if(!isset($_GET['like'])) {
 				$this->defaultColumns[] = array(
+					'name' => 'category_search',
+					'value' => 'Phrase::trans($data->like->album->category->name)',
+					'filter'=> AlbumCategory::getCategory(),
+					'type' => 'raw',
+				);
+				$this->defaultColumns[] = array(
 					'name' => 'album_search',
 					'value' => '$data->like->album->title',
-				);				
+				);
+				$this->defaultColumns[] = array(
+					'name' => 'user_search',
+					'value' => '$data->like->user->displayname',
+				);
 			}
 			$this->defaultColumns[] = array(
 				'name' => 'likes_date',
-				'value' => 'Utility::dateFormat($data->likes_date)',
+				'value' => 'Utility::dateFormat($data->likes_date, true)',
 				'htmlOptions' => array(
 					//'class' => 'center',
 				),
@@ -254,7 +274,7 @@ class AlbumLikeDetail extends CActiveRecord
 				'name' => 'publish',
 				'value' => '$data->publish == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
 				'htmlOptions' => array(
-					//'class' => 'center',
+					'class' => 'center',
 				),
 				'type' => 'raw',
 			);

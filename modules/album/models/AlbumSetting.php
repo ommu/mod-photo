@@ -27,6 +27,7 @@
  * @property integer $permission
  * @property string $meta_keyword
  * @property string $meta_description
+ * @property string $gridview_column
  * @property integer $headline
  * @property integer $headline_limit
  * @property string $headline_category
@@ -72,14 +73,14 @@ class AlbumSetting extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('license, permission, meta_keyword, meta_description, headline, headline_limit, photo_limit, photo_resize, photo_file_type', 'required'),
+			array('license, permission, meta_keyword, meta_description, gridview_column, headline, headline_limit, photo_limit, photo_resize, photo_file_type', 'required'),
 			array('permission, headline, headline_limit, photo_limit, photo_resize, modified_id', 'numerical', 'integerOnly'=>true),
 			array('license', 'length', 'max'=>32),
 			array('headline_limit', 'length', 'max'=>3),
 			array('headline_category, photo_resize_size, photo_view_size, photo_file_type', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, license, permission, meta_keyword, meta_description, headline, headline_limit, headline_category, photo_limit, photo_resize, photo_resize_size, photo_view_size, photo_file_type, modified_date, modified_id,
+			array('id, license, permission, meta_keyword, meta_description, gridview_column, headline, headline_limit, headline_category, photo_limit, photo_resize, photo_resize_size, photo_view_size, photo_file_type, modified_date, modified_id,
 				modified_search', 'safe', 'on'=>'search'),
 		);
 	}
@@ -107,6 +108,7 @@ class AlbumSetting extends CActiveRecord
 			'permission' => Yii::t('attribute', 'Public Permission Defaults'),
 			'meta_keyword' => Yii::t('attribute', 'Meta Keyword'),
 			'meta_description' => Yii::t('attribute', 'Meta Description'),
+			'gridview_column' => Yii::t('attribute', 'Gridview Column'),
 			'headline' => Yii::t('attribute', 'Headline'),
 			'headline_limit' => Yii::t('attribute', 'Headline Limit'),
 			'headline_category' => Yii::t('attribute', 'Headline Category'),
@@ -152,6 +154,7 @@ class AlbumSetting extends CActiveRecord
 		$criteria->compare('t.permission',$this->permission);
 		$criteria->compare('t.meta_keyword',$this->meta_keyword,true);
 		$criteria->compare('t.meta_description',$this->meta_description,true);
+		$criteria->compare('t.gridview_column',$this->gridview_column,true);
 		$criteria->compare('t.headline',$this->headline);
 		$criteria->compare('t.headline_limit',$this->headline_limit);
 		$criteria->compare('t.headline_category',$this->headline_category,true);
@@ -164,7 +167,7 @@ class AlbumSetting extends CActiveRecord
 			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
 		$criteria->compare('t.modified_id',$this->modified_id);
 		
-		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
+		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
 
 		if(!isset($_GET['AlbumSetting_sort']))
 			$criteria->order = 't.id DESC';
@@ -200,6 +203,7 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'permission';
 			$this->defaultColumns[] = 'meta_keyword';
 			$this->defaultColumns[] = 'meta_description';
+			$this->defaultColumns[] = 'gridview_column';
 			$this->defaultColumns[] = 'headline';
 			$this->defaultColumns[] = 'headline_limit';
 			$this->defaultColumns[] = 'headline_category';
@@ -228,6 +232,7 @@ class AlbumSetting extends CActiveRecord
 			$this->defaultColumns[] = 'permission';
 			$this->defaultColumns[] = 'meta_keyword';
 			$this->defaultColumns[] = 'meta_description';
+			$this->defaultColumns[] = 'gridview_column';
 			$this->defaultColumns[] = 'headline';
 			$this->defaultColumns[] = 'headline_limit';
 			$this->defaultColumns[] = 'headline_category';
@@ -344,6 +349,7 @@ class AlbumSetting extends CActiveRecord
 	 */
 	protected function beforeSave() {
 		if(parent::beforeSave()) {
+			$this->gridview_column = serialize($this->gridview_column);
 			$this->headline_category = serialize($this->headline_category);
 			$this->photo_resize_size = serialize($this->photo_resize_size);
 			$this->photo_view_size = serialize($this->photo_view_size);

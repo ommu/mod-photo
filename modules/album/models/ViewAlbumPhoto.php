@@ -122,7 +122,7 @@ class ViewAlbumPhoto extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('t.media_id',strtolower($this->media_id),true);
+		$criteria->compare('t.media_id',$this->media_id);
 		$criteria->compare('t.photo_caption',$this->photo_caption);
 		$criteria->compare('t.photo_tag',$this->photo_tag);
 		$criteria->compare('t.tags',$this->tags);

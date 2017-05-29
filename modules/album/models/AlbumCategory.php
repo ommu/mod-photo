@@ -46,6 +46,7 @@ class AlbumCategory extends CActiveRecord
 	// Variable Search
 	public $creation_search;
 	public $modified_search;
+	public $album_search;
 
 	/**
 	 * Behaviors for this model
@@ -101,7 +102,7 @@ class AlbumCategory extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('cat_id, publish, name, desc, default, default_setting, photo_limit, photo_resize, photo_resize_size, photo_view_size, creation_date, creation_id, modified_date, modified_id,
-				title_i, description_i, creation_search, modified_search', 'safe', 'on'=>'search'),
+				title_i, description_i, creation_search, modified_search, album_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -145,6 +146,7 @@ class AlbumCategory extends CActiveRecord
 			'description_i' => Yii::t('attribute', 'Description'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
+			'album_search' => Yii::t('attribute', 'Albums'),
 		);
 		/*
 			'Cat' => 'Cat',
@@ -222,8 +224,8 @@ class AlbumCategory extends CActiveRecord
 			$criteria->addInCondition('t.publish',array(0,1));
 			$criteria->compare('t.publish',$this->publish);
 		}
-		$criteria->compare('t.name',strtolower($this->name),true);
-		$criteria->compare('t.desc',strtolower($this->desc),true);
+		$criteria->compare('t.name',$this->name);
+		$criteria->compare('t.desc',$this->desc);
 		$criteria->compare('t.default',$this->default);
 		$criteria->compare('t.default_setting',$this->default_setting);
 		$criteria->compare('t.photo_limit',$this->photo_limit);
@@ -243,10 +245,11 @@ class AlbumCategory extends CActiveRecord
 		else
 			$criteria->compare('t.modified_id',$this->modified_id);
 		
-		$criteria->compare('title.'.$language,strtolower($this->title_i), true);
-		$criteria->compare('description.'.$language,strtolower($this->description_i), true);
-		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
-		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
+		$criteria->compare('title.'.$language,strtolower($this->title_i),true);
+		$criteria->compare('description.'.$language,strtolower($this->description_i),true);
+		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
+		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
+		$criteria->compare('view.albums',$this->album_search);
 
 		if(!isset($_GET['AlbumCategory_sort']))
 			$criteria->order = 't.cat_id DESC';
@@ -317,10 +320,12 @@ class AlbumCategory extends CActiveRecord
 				'name' => 'title_i',
 				'value' => 'Phrase::trans($data->name)',
 			);
+			/*
 			$this->defaultColumns[] = array(
 				'name' => 'description_i',
 				'value' => 'Phrase::trans($data->desc)',
 			);
+			*/
 			$this->defaultColumns[] = array(
 				'name' => 'creation_search',
 				'value' => '$data->creation->displayname',
@@ -351,33 +356,39 @@ class AlbumCategory extends CActiveRecord
 					),
 				), true),
 			);
+			$this->defaultColumns[] = array(
+				'name' => 'default_setting',
+				'value' => '$data->default_setting == 1 ? Yii::t("phrase", "Default") : Yii::t("phrase", "Custom")',					
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'filter'=>array(
+					1=>Yii::t('phrase', 'Default'),
+					0=>Yii::t('phrase', 'Custom'),
+				),
+				'type' => 'raw',
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'album_search',
+				'value' => 'CHtml::link($data->view->albums ? $data->view->albums : 0, Yii::app()->controller->createUrl("o/admin/manage",array("category"=>$data->cat_id)))',
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'type' => 'raw',
+			);
+			$this->defaultColumns[] = array(
+				'name' => 'default',
+				'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("default",array("id"=>$data->cat_id)), $data->default, 1)',
+				'htmlOptions' => array(
+					'class' => 'center',
+				),
+				'filter'=>array(
+					1=>Yii::t('phrase', 'Yes'),
+					0=>Yii::t('phrase', 'No'),
+				),
+				'type' => 'raw',
+			);
 			if(!isset($_GET['type'])) {
-				$this->defaultColumns[] = array(
-					'name' => 'default_setting',
-					'value' => '$data->default_setting == 1 ? Yii::t("phrase", "Default") : Yii::t("phrase", "Custom")',					
-					'htmlOptions' => array(
-						'class' => 'center',
-					),
-					'filter'=>array(
-						1=>Yii::t('phrase', 'Default'),
-						0=>Yii::t('phrase', 'Custom'),
-					),
-					'type' => 'raw',
-				);
-			}
-			if(!isset($_GET['type'])) {
-				$this->defaultColumns[] = array(
-					'name' => 'default',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("default",array("id"=>$data->cat_id)), $data->default, 1)',
-					'htmlOptions' => array(
-						'class' => 'center',
-					),
-					'filter'=>array(
-						1=>Yii::t('phrase', 'Yes'),
-						0=>Yii::t('phrase', 'No'),
-					),
-					'type' => 'raw',
-				);
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
 					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->cat_id)), $data->publish, 1)',

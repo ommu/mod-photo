@@ -76,7 +76,7 @@
 						'options' => array(							
 							'class' => 'view',
 						),
-						'url' => 'Yii::app()->controller->createUrl("site/view",array("id"=>$data->primaryKey))'),
+						'url' => 'Yii::app()->controller->createUrl("view",array("id"=>$data->primaryKey))'),
 					'update' => array(
 						'label' => 'update',
 						'imageUrl' => false,

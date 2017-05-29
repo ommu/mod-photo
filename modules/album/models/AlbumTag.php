@@ -37,6 +37,7 @@ class AlbumTag extends CActiveRecord
 	public $tag_i;
 	
 	// Variable Search
+	public $category_search;
 	public $album_search;
 	public $tag_search;
 	public $creation_search;
@@ -75,7 +76,7 @@ class AlbumTag extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, album_id, tag_id, creation_date, creation_id,
-				album_search, tag_search, creation_search', 'safe', 'on'=>'search'),
+				category_search, album_search, tag_search, creation_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -104,6 +105,7 @@ class AlbumTag extends CActiveRecord
 			'tag_id' => Yii::t('attribute', 'Tag'),
 			'creation_date' => Yii::t('attribute', 'Creation Date'),
 			'creation_id' => Yii::t('attribute', 'Creation'),
+			'category_search' => Yii::t('attribute', 'Category'),
 			'album_search' => Yii::t('attribute', 'Album'),
 			'tag_search' => Yii::t('attribute', 'Tag'),
 			'creation_search' => Yii::t('attribute', 'Creation'),
@@ -132,7 +134,7 @@ class AlbumTag extends CActiveRecord
 		$criteria->with = array(
 			'album' => array(
 				'alias'=>'album',
-				'select'=>'title'
+				'select'=>'cat_id, title'
 			),
 			'tag' => array(
 				'alias'=>'tag',
@@ -144,12 +146,15 @@ class AlbumTag extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.id',strtolower($this->id),true);
+		$criteria->compare('t.id',$this->id);
 		if(isset($_GET['album']))
 			$criteria->compare('t.album_id',$_GET['album']);
 		else
 			$criteria->compare('t.album_id',$this->album_id);
-		$criteria->compare('t.tag_id',strtolower($this->tag_id),true);
+		if(isset($_GET['tag']))
+			$criteria->compare('t.tag_id',$_GET['tag']);
+		else
+			$criteria->compare('t.tag_id',$this->tag_id);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
 		if(isset($_GET['creation']))
@@ -157,9 +162,10 @@ class AlbumTag extends CActiveRecord
 		else
 			$criteria->compare('t.creation_id',$this->creation_id);
 		
-		$criteria->compare('album.title',strtolower($this->album_search), true);
-		$criteria->compare('tag.body',strtolower($this->tag_search), true);
-		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
+		$criteria->compare('album.cat_id',$this->category_search);
+		$criteria->compare('album.title',strtolower($this->album_search),true);
+		$criteria->compare('tag.body',strtolower($this->tag_search),true);
+		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
 
 		if(!isset($_GET['AlbumTag_sort']))
 			$criteria->order = 't.id DESC';
@@ -210,6 +216,12 @@ class AlbumTag extends CActiveRecord
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
 			if(!isset($_GET['album'])) {
+				$this->defaultColumns[] = array(
+					'name' => 'category_search',
+					'value' => 'Phrase::trans($data->album->category->name)',
+					'filter'=> AlbumCategory::getCategory(),
+					'type' => 'raw',
+				);
 				$this->defaultColumns[] = array(
 					'name' => 'album_search',
 					'value' => '$data->album->title',

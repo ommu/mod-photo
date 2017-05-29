@@ -23,5 +23,6 @@
 <div class="form" name="post-on">
 	<?php echo $this->renderPartial('_form', array(
 		'model'=>$model,
+		'album'=>$album,
 	)); ?>
 </div>

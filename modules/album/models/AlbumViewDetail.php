@@ -36,7 +36,9 @@ class AlbumViewDetail extends CActiveRecord
 	public $defaultColumns = array();
 	
 	// Variable Search
+	public $category_search;
 	public $album_search;
+	public $user_search;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -72,7 +74,7 @@ class AlbumViewDetail extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, view_id, view_date, view_ip,
-				album_search', 'safe', 'on'=>'search'),
+				category_search, album_search, user_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -98,7 +100,9 @@ class AlbumViewDetail extends CActiveRecord
 			'view_id' => Yii::t('attribute', 'View'),
 			'view_date' => Yii::t('attribute', 'View Date'),
 			'view_ip' => Yii::t('attribute', 'View Ip'),
+			'category_search' => Yii::t('attribute', 'Category'),
 			'album_search' => Yii::t('attribute', 'Album'),
+			'user_search' => Yii::t('attribute', 'User'),
 		);
 		/*
 			'ID' => 'ID',
@@ -133,12 +137,16 @@ class AlbumViewDetail extends CActiveRecord
 				'alias'=>'view',
 			),
 			'view.album' => array(
-				'alias'=>'album',
-				'select'=>'title'
+				'alias'=>'view_album',
+				'select'=>'cat_id, title'
+			),
+			'view.user' => array(
+				'alias'=>'view_user',
+				'select'=>'displayname'
 			),
 		);
 
-		$criteria->compare('t.id',strtolower($this->id),true);
+		$criteria->compare('t.id',$this->id);
 		if(isset($_GET['view']))
 			$criteria->compare('t.view_id',$_GET['view']);
 		else
@@ -147,7 +155,9 @@ class AlbumViewDetail extends CActiveRecord
 			$criteria->compare('date(t.view_date)',date('Y-m-d', strtotime($this->view_date)));
 		$criteria->compare('t.view_ip',strtolower($this->view_ip),true);
 
-		$criteria->compare('album.title',strtolower($this->album_search), true);
+		$criteria->compare('view_album.cat_id',$this->category_search);
+		$criteria->compare('view_album.title',strtolower($this->album_search),true);
+		$criteria->compare('view_user.displayname',strtolower($this->user_search),true);
 
 		if(!isset($_GET['AlbumViewDetail_sort']))
 			$criteria->order = 't.id DESC';
@@ -206,13 +216,23 @@ class AlbumViewDetail extends CActiveRecord
 			);
 			if(!isset($_GET['view'])) {
 				$this->defaultColumns[] = array(
+					'name' => 'category_search',
+					'value' => 'Phrase::trans($data->view->album->category->name)',
+					'filter'=> AlbumCategory::getCategory(),
+					'type' => 'raw',
+				);
+				$this->defaultColumns[] = array(
 					'name' => 'album_search',
 					'value' => '$data->view->album->title',
+				);
+				$this->defaultColumns[] = array(
+					'name' => 'user_search',
+					'value' => '$data->view->user->displayname',
 				);
 			}
 			$this->defaultColumns[] = array(
 				'name' => 'view_date',
-				'value' => 'Utility::dateFormat($data->view_date)',
+				'value' => 'Utility::dateFormat($data->view_date, true)',
 				'htmlOptions' => array(
 					//'class' => 'center',
 				),

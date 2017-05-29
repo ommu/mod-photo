@@ -49,6 +49,9 @@ class Albums extends CActiveRecord
 	public $creation_search;
 	public $modified_search;
 	public $photo_search;
+	public $view_search;
+	public $like_search;
+	public $tag_search;
 
 	/**
 	 * Behaviors for this model
@@ -105,7 +108,7 @@ class Albums extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('album_id, publish, cat_id, title, body, quote, headline, comment_code, creation_date, creation_id, modified_date, modified_id,
-				creation_search, modified_search, photo_search', 'safe', 'on'=>'search'),
+				creation_search, modified_search, photo_search, view_search, like_search, tag_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -150,6 +153,9 @@ class Albums extends CActiveRecord
 			'creation_search' => Yii::t('attribute', 'Creation'),
 			'modified_search' => Yii::t('attribute', 'Modified'),
 			'photo_search' => Yii::t('attribute', 'Photos'),
+			'view_search' => Yii::t('attribute', 'Views'),
+			'like_search' => Yii::t('attribute', 'Likes'),
+			'tag_search' => Yii::t('attribute', 'Tags'),
 		);
 	}
 
@@ -186,7 +192,7 @@ class Albums extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.album_id',$this->album_id,true);
+		$criteria->compare('t.album_id',$this->album_id);
 		if(isset($_GET['type']) && $_GET['type'] == 'publish') {
 			$criteria->compare('t.publish',1);
 		} elseif(isset($_GET['type']) && $_GET['type'] == 'unpublish') {
@@ -197,8 +203,8 @@ class Albums extends CActiveRecord
 			$criteria->addInCondition('t.publish',array(0,1));
 			$criteria->compare('t.publish',$this->publish);
 		}
-		if(isset($_GET['categoty']))
-			$criteria->compare('t.cat_id',$_GET['categoty']);
+		if(isset($_GET['category']))
+			$criteria->compare('t.cat_id',$_GET['category']);
 		else
 			$criteria->compare('t.cat_id',$this->cat_id);
 		$criteria->compare('t.title',$this->title,true);
@@ -213,9 +219,12 @@ class Albums extends CActiveRecord
 			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
 		$criteria->compare('t.modified_id',$this->modified_id);		
 		
-		$criteria->compare('creation.displayname',strtolower($this->creation_search), true);
-		$criteria->compare('modified.displayname',strtolower($this->modified_search), true);
+		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
+		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
 		$criteria->compare('view.photos',$this->photo_search);
+		$criteria->compare('view.views',$this->view_search);
+		$criteria->compare('view.likes',$this->like_search);
+		$criteria->compare('view.tags',$this->tag_search);
 
 		if(!isset($_GET['Albums_sort']))
 			$criteria->order = 't.album_id DESC';
@@ -268,12 +277,14 @@ class Albums extends CActiveRecord
 	 */
 	protected function afterConstruct() 
 	{
-		$controller = strtolower(Yii::app()->controller->id);
 		$setting = AlbumSetting::model()->findByPk(1, array(
-			'select' => 'headline',
+			'select' => 'gridview_column, headline',
 		));
-		if(count($this->defaultColumns) == 0) 
-		{
+		$gridview_column = unserialize($setting->gridview_column);		
+		if(empty($gridview_column))
+			$gridview_column = array();
+		
+		if(count($this->defaultColumns) == 0) {
 			/*
 			$this->defaultColumns[] = array(
 				'class' => 'CCheckBoxColumn',
@@ -298,44 +309,80 @@ class Albums extends CActiveRecord
 					'type' => 'raw',
 				);
 			}
-			$this->defaultColumns[] = array(
-				'name' => 'photo_search',
-				'value' => 'CHtml::link($data->view->photos ? $data->view->photos : 0, Yii::app()->controller->createUrl("o/photo/manage",array("album"=>$data->album_id)))',
-				'htmlOptions' => array(
-					'class' => 'center',
-				),
-				'type' => 'raw',
-			);			
-			$this->defaultColumns[] = array(
-				'name' => 'creation_search',
-				'value' => '$data->creation->displayname',
-			);
-			$this->defaultColumns[] = array(
-				'name' => 'creation_date',
-				'value' => 'Utility::dateFormat($data->creation_date)',
-				'htmlOptions' => array(
-					'class' => 'center',
-				),
-				'filter' => Yii::app()->controller->widget('application.components.system.CJuiDatePicker', array(
-					'model'=>$this,
-					'attribute'=>'creation_date',
-					'language' => 'en',
-					'i18nScriptFile' => 'jquery-ui-i18n.min.js',
-					//'mode'=>'datetime',
+			if(in_array('creation_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'creation_search',
+					'value' => '$data->creation->displayname',
+				);
+			}
+			if(in_array('creation_date', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'creation_date',
+					'value' => 'Utility::dateFormat($data->creation_date)',
 					'htmlOptions' => array(
-						'id' => 'creation_date_filter',
+						'class' => 'center',
 					),
-					'options'=>array(
-						'showOn' => 'focus',
-						'dateFormat' => 'dd-mm-yy',
-						'showOtherMonths' => true,
-						'selectOtherMonths' => true,
-						'changeMonth' => true,
-						'changeYear' => true,
-						'showButtonPanel' => true,
+					'filter' => Yii::app()->controller->widget('application.components.system.CJuiDatePicker', array(
+						'model'=>$this,
+						'attribute'=>'creation_date',
+						'language' => 'en',
+						'i18nScriptFile' => 'jquery-ui-i18n.min.js',
+						//'mode'=>'datetime',
+						'htmlOptions' => array(
+							'id' => 'creation_date_filter',
+						),
+						'options'=>array(
+							'showOn' => 'focus',
+							'dateFormat' => 'dd-mm-yy',
+							'showOtherMonths' => true,
+							'selectOtherMonths' => true,
+							'changeMonth' => true,
+							'changeYear' => true,
+							'showButtonPanel' => true,
+						),
+					), true),
+				);
+			}
+			if(in_array('photo_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'photo_search',
+					'value' => 'CHtml::link($data->view->photos ? $data->view->photos : 0, Yii::app()->controller->createUrl("o/photo/manage",array("album"=>$data->album_id)))',
+					'htmlOptions' => array(
+						'class' => 'center',
 					),
-				), true),
-			);
+					'type' => 'raw',
+				);
+			}
+			if(in_array('view_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'view_search',
+					'value' => 'CHtml::link($data->view->views ? $data->view->views : 0, Yii::app()->controller->createUrl("o/views/manage",array("album"=>$data->album_id)))',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
+				);	
+			}
+			if(in_array('like_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'like_search',
+					'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("o/likes/manage",array("album"=>$data->album_id)))',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
+				);
+			}
+			if(in_array('tag_search', $gridview_column)) {
+				$this->defaultColumns[] = array(
+					'name' => 'tag_search',
+					'value' => 'CHtml::link($data->view->tags ? $data->view->tags : 0, Yii::app()->controller->createUrl("o/tag/manage",array("album"=>$data->album_id)))',
+					'htmlOptions' => array(
+						'class' => 'center',
+					),
+					'type' => 'raw',
+				);
+			}
 			if($setting->headline == 1) {
 				$this->defaultColumns[] = array(
 					'name' => 'headline',

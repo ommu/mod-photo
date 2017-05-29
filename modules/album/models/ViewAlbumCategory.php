@@ -125,8 +125,8 @@ class ViewAlbumCategory extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('t.cat_id',$this->cat_id);
-		$criteria->compare('t.albums',strtolower($this->albums),true);
-		$criteria->compare('t.album_all',strtolower($this->album_all),true);
+		$criteria->compare('t.albums',$this->albums);
+		$criteria->compare('t.album_all',$this->album_all);
 
 		if(!isset($_GET['ViewAlbumCategory_sort']))
 			$criteria->order = 't.cat_id DESC';
