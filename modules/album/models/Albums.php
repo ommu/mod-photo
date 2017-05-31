@@ -140,7 +140,7 @@ class Albums extends CActiveRecord
 			'publish' => Yii::t('attribute', 'Publish'),
 			'cat_id' => Yii::t('attribute', 'Category'),
 			'title' => Yii::t('attribute', 'Title'),
-			'body' => Yii::t('attribute', 'Body'),
+			'body' => Yii::t('attribute', 'Description'),
 			'quote' => Yii::t('attribute', 'Quote'),
 			'headline' => Yii::t('attribute', 'Headline'),
 			'comment_code' => Yii::t('attribute', 'Comment'),

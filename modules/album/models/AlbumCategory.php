@@ -128,9 +128,9 @@ class AlbumCategory extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'cat_id' => Yii::t('attribute', 'Cat'),
+			'cat_id' => Yii::t('attribute', 'Category'),
 			'publish' => Yii::t('attribute', 'Publish'),
-			'name' => Yii::t('attribute', 'Title'),
+			'name' => Yii::t('attribute', 'Category'),
 			'desc' => Yii::t('attribute', 'Description'),
 			'default' => Yii::t('attribute', 'Default'),
 			'default_setting' => Yii::t('attribute', 'Setting'),
