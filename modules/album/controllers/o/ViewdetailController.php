@@ -107,7 +107,7 @@ class ViewdetailController extends Controller
 	{
 		$pageTitle = Yii::t('phrase', 'Album Views Data');
 		if($view != null) {
-			$data = AlbumLikes::model()->findByPk($view);
+			$data = AlbumViews::model()->findByPk($view);
 			$pageTitle = Yii::t('phrase', 'Album Views Data: {album_title} from category {category_name} - user Guest', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name)));	
 			if($data->user->displayname)
 				$pageTitle = Yii::t('phrase', 'Album Views Data: {album_title} from category {category_name} - user {user_displayname}', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name), '{user_displayname}'=>$data->user->displayname));
