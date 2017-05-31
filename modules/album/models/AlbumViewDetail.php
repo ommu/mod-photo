@@ -227,7 +227,7 @@ class AlbumViewDetail extends CActiveRecord
 				);
 				$this->defaultColumns[] = array(
 					'name' => 'user_search',
-					'value' => '$data->view->user->displayname',
+					'value' => '$data->view->user->displayname ? $data->view->user->displayname : "-"',
 				);
 			}
 			$this->defaultColumns[] = array(
