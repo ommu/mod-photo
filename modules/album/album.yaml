@@ -25,18 +25,18 @@ plugin_menu		:
 			- urlTitle: Photos
 				urlRules: {siteType: "0,1", userLevel: "1,2"}
 				urlPath: {url: o/photo/manage, attr: -, icon: -}
-			- urlTitle: Views
-				urlRules: {siteType: "0,1", userLevel: "1,2"}
-				urlPath: {url: o/views/manage, attr: -, icon: -}
-			- urlTitle: Likes
-				urlRules: {siteType: 1, userLevel: "1,2"}
-				urlPath: {url: o/likes/manage, attr: -, icon: -}
 			- urlTitle: Album Tags
 				urlRules: {siteType: "0,1", userLevel: "1,2"}
 				urlPath: {url: o/tag/manage, attr: -, icon: -}
 			- urlTitle: Photo Tags
 				urlRules: {siteType: "0,1", userLevel: "1,2"}
 				urlPath: {url: o/phototag/manage, attr: -, icon: -}
+			- urlTitle: Views
+				urlRules: {siteType: "0,1", userLevel: "1,2"}
+				urlPath: {url: o/views/manage, attr: -, icon: -}
+			- urlTitle: Likes
+				urlRules: {siteType: 1, userLevel: "1,2"}
+				urlPath: {url: o/likes/manage, attr: -, icon: -}
 		
 	- urlTitle: Settings
 		urlRules: {siteType: "0,1", userLevel: 1}
@@ -84,6 +84,16 @@ content_menu	:
 	- urlTitle: Delete Photo
 		urlRules: {album, o/photo, "edit,view", siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: delete, attr: id=$_GET*id, icon: -}
+
+# controller o/tag
+	- urlTitle: Back to Albums
+		urlRules: {album, o/tag, manage, siteType: "0,1", userLevel: "1,2"}
+		urlPath: {url: o/admin/manage, attr: -, icon: -}
+		
+# controller o/phototag
+	- urlTitle: Back to Albums
+		urlRules: {album, o/phototag, manage, siteType: "0,1", userLevel: "1,2"}
+		urlPath: {url: o/admin/manage, attr: -, icon: -}
 		
 # controller o/views
 	- urlTitle: Back to Albums
@@ -110,13 +120,3 @@ content_menu	:
 	- urlTitle: Back to Album Likes
 		urlRules: {album, o/likedetail, manage, siteType: 1, userLevel: "1,2"}
 		urlPath: {url: o/likes/manage, attr: -, icon: -}
-
-# controller o/tag
-	- urlTitle: Back to Albums
-		urlRules: {album, o/tag, manage, siteType: "0,1", userLevel: "1,2"}
-		urlPath: {url: o/admin/manage, attr: -, icon: -}
-		
-# controller o/phototag
-	- urlTitle: Back to Albums
-		urlRules: {album, o/phototag, manage, siteType: "0,1", userLevel: "1,2"}
-		urlPath: {url: o/admin/manage, attr: -, icon: -}
