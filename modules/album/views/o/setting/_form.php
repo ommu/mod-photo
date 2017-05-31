@@ -85,18 +85,18 @@ EOP;
 		</div>
 
 		<div class="clearfix">
-			<?php echo $form->labelEx($model,'meta_keyword'); ?>
-			<div class="desc">
-				<?php echo $form->textArea($model,'meta_keyword',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
-				<?php echo $form->error($model,'meta_keyword'); ?>
-			</div>
-		</div>
-
-		<div class="clearfix">
 			<?php echo $form->labelEx($model,'meta_description'); ?>
 			<div class="desc">
 				<?php echo $form->textArea($model,'meta_description',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
 				<?php echo $form->error($model,'meta_description'); ?>
+			</div>
+		</div>
+
+		<div class="clearfix">
+			<?php echo $form->labelEx($model,'meta_keyword'); ?>
+			<div class="desc">
+				<?php echo $form->textArea($model,'meta_keyword',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
+				<?php echo $form->error($model,'meta_keyword'); ?>
 			</div>
 		</div>
 
