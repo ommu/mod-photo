@@ -143,7 +143,7 @@ class AlbumLikes extends CActiveRecord
 			),
 			'album' => array(
 				'alias'=>'album',
-				'select'=>'cat_id, title'
+				'select'=>'publish, cat_id, title'
 			),
 			'user' => array(
 				'alias'=>'user',
@@ -178,6 +178,8 @@ class AlbumLikes extends CActiveRecord
 		
 		$criteria->compare('album.cat_id',$this->category_search);
 		$criteria->compare('album.title',strtolower($this->album_search),true);
+		if(isset($_GET['album']) && isset($_GET['publish']))
+			$criteria->compare('album.publish',$_GET['publish']);
 		$criteria->compare('user.displayname',strtolower($this->user_search),true);
 		$criteria->compare('view.likes',$this->like_search);
 		$criteria->compare('view.unlikes',$this->unlike_search);

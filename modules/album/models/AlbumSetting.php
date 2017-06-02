@@ -165,7 +165,10 @@ class AlbumSetting extends CActiveRecord
 		$criteria->compare('t.photo_file_type',$this->photo_file_type,true);
 		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
-		$criteria->compare('t.modified_id',$this->modified_id);
+		if(isset($_GET['modified']))
+			$criteria->compare('t.modified_id',$_GET['modified']);
+		else
+			$criteria->compare('t.modified_id',$this->modified_id);
 		
 		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
 

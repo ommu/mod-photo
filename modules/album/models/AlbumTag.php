@@ -134,7 +134,7 @@ class AlbumTag extends CActiveRecord
 		$criteria->with = array(
 			'album' => array(
 				'alias'=>'album',
-				'select'=>'cat_id, title'
+				'select'=>'publish, cat_id, title'
 			),
 			'tag' => array(
 				'alias'=>'tag',
@@ -164,6 +164,8 @@ class AlbumTag extends CActiveRecord
 		
 		$criteria->compare('album.cat_id',$this->category_search);
 		$criteria->compare('album.title',strtolower($this->album_search),true);
+		if(isset($_GET['album']) && isset($_GET['publish']))
+			$criteria->compare('album.publish',$_GET['publish']);
 		$criteria->compare('tag.body',strtolower($this->tag_search),true);
 		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
 
