@@ -42,7 +42,7 @@ plugin_menu		:
 		urlRules: {siteType: "0,1", userLevel: 1}
 		urlPath: {url: o/setting/edit, attr: -, icon: -}
                 
-	- urlTitle: Download Manual Book
+	- urlTitle: Album Manual
 		urlRules: {siteType: "0,1", userLevel: 2}
 		urlPath: {url: o/setting/manual, attr: -, icon: -}
 
@@ -54,22 +54,19 @@ content_menu	:
 	- urlTitle: Back to Manage
 		urlRules: {album, o/admin, "add,edit", siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: manage, attr: -, icon: -}
-	- urlTitle: Download Manual Book
-		urlRules: {album, o/admin, manage, siteType: "0,1", userLevel: "1,2"}
-		urlPath: {url: o/setting/manual, attr: -, icon: -}
 		
 # controller o/category
 	- urlTitle: Add Category
-		urlRules: {album, o/category, manage, siteType: "0,1", userLevel: "1,2"}
+		urlRules: {album, o/category, manage, siteType: "0,1", userLevel: 1}
 		urlPath: {url: add, attr: -, icon: -}
 	- urlTitle: Back to Manage
-		urlRules: {album, o/category, "add,edit,view", siteType: "0,1", userLevel: "1,2"}
+		urlRules: {album, o/category, "add,edit,view", siteType: "0,1", userLevel: 1}
 		urlPath: {url: manage, attr: -, icon: -}
 	- urlTitle: View Category
-		urlRules: {album, o/category, edit, siteType: "0,1", userLevel: "1,2"}
+		urlRules: {album, o/category, edit, siteType: "0,1", userLevel: 1}
 		urlPath: {url: view, attr: id=$_GET*id, icon: -}
 	- urlTitle: Update Category
-		urlRules: {album, o/category, view, siteType: "0,1", userLevel: "1,2"}
+		urlRules: {album, o/category, view, siteType: "0,1", userLevel: 1}
 		urlPath: {url: edit, attr: id=$_GET*id, icon: -}
 		
 # controller o/photo
@@ -124,3 +121,8 @@ content_menu	:
 	- urlTitle: Back to Album Likes
 		urlRules: {album, o/likedetail, manage, siteType: 1, userLevel: "1,2"}
 		urlPath: {url: o/likes/manage, attr: -, icon: -}
+
+# controller o/setting
+	- urlTitle: Album Manual
+		urlRules: {album, o/setting, edit, siteType: "0,1", userLevel: 1}
+		urlPath: {url: manual, attr: -, icon: -}
