@@ -100,14 +100,6 @@ class ViewAlbumLikes extends CActiveRecord
 			'unlikes' => Yii::t('attribute', 'Unlikes'),
 			'like_all' => Yii::t('attribute', 'Like All'),
 		);
-		/*
-			'Like' => 'Like',
-			'Album' => 'Album',
-			'Likes' => 'Likes',
-			'Unlikes' => 'Unlikes',
-			'Like All' => 'Like All',
-		
-		*/
 	}
 
 	/**

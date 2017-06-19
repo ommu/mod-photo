@@ -104,13 +104,6 @@ class AlbumViewDetail extends CActiveRecord
 			'album_search' => Yii::t('attribute', 'Album'),
 			'user_search' => Yii::t('attribute', 'User'),
 		);
-		/*
-			'ID' => 'ID',
-			'View' => 'View',
-			'View Date' => 'View Date',
-			'View Ip' => 'View Ip',
-		
-		*/
 	}
 
 	/**

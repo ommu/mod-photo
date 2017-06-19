@@ -103,12 +103,6 @@ class ViewAlbumPhotoTag extends CActiveRecord
 			'tags' => Yii::t('attribute', 'Tags'),
 			'photos' => Yii::t('attribute', 'Photos'),
 		);
-		/*
-			'Tag' => 'Tag',
-			'Album' => 'Album',
-			'Tags' => 'Tags',
-		
-		*/
 	}
 
 	/**

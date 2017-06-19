@@ -95,15 +95,6 @@ class ViewAlbumCategory extends CActiveRecord
 			'albums' => Yii::t('attribute', 'Albums'),
 			'album_all' => Yii::t('attribute', 'Album All'),
 		);
-		/*
-			'Cat' => 'Cat',
-			'Category Name' => 'Category Name',
-			'Category Desc' => 'Category Desc',
-			'Album Publish' => 'Album Publish',
-			'Album Unpublish' => 'Album Unpublish',
-			'Albums' => 'Albums',
-		
-		*/
 	}
 
 	/**

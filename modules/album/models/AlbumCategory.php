@@ -148,22 +148,6 @@ class AlbumCategory extends CActiveRecord
 			'modified_search' => Yii::t('attribute', 'Modified'),
 			'album_search' => Yii::t('attribute', 'Albums'),
 		);
-		/*
-			'Cat' => 'Cat',
-			'Publish' => 'Publish',
-			'Name' => 'Name',
-			'Desc' => 'Desc',
-			'Default Setting' => 'Default Setting',
-			'Photo Limit' => 'Photo Limit',
-			'Photo Resize' => 'Photo Resize',
-			'Photo Resize Size' => 'Photo Resize Size',
-			'Photo View Size' => 'Photo View Size',
-			'Creation Date' => 'Creation Date',
-			'Creation' => 'Creation',
-			'Modified Date' => 'Modified Date',
-			'Modified' => 'Modified',
-		
-		*/
 	}
 
 	/**

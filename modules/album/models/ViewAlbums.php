@@ -112,11 +112,6 @@ class ViewAlbums extends CActiveRecord
 			'likes' => Yii::t('attribute', 'Likes'),
 			'like_all' => Yii::t('attribute', 'Like All'),
 		);
-		/*
-			'Album' => 'Album',
-			'Photos' => 'Photos',
-		
-		*/
 	}
 
 	/**
