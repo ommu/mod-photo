@@ -34,7 +34,7 @@
  * @property string $modified_id
  *
  * The followings are the available model relations:
- * @property OmmuAlbums $album
+ * @property Albums $album
  */
 class AlbumPhoto extends CActiveRecord
 {

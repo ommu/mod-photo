@@ -31,7 +31,7 @@
  * @property string $updated_date
  *
  * The followings are the available model relations:
- * @property OmmuAlbums $album
+ * @property Albums $album
  */
 class AlbumLikes extends CActiveRecord
 {

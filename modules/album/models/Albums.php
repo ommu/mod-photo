@@ -36,8 +36,8 @@
  * @property string $modified_id
  *
  * The followings are the available model relations:
- * @property OmmuAlbumLikes[] $ommuAlbumLikes
- * @property OmmuAlbumPhoto[] $ommuAlbumPhotos
+ * @property AlbumLikes[] $AlbumLikes
+ * @property AlbumPhoto[] $AlbumPhotos
  */
 class Albums extends CActiveRecord
 {

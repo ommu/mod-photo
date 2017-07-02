@@ -30,7 +30,7 @@
  * @property string $creation_id
  *
  * The followings are the available model relations:
- * @property OmmuAlbumPhoto $media
+ * @property AlbumPhoto $media
  */
 class AlbumPhotoTag extends CActiveRecord
 {
