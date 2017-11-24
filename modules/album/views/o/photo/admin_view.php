@@ -26,12 +26,12 @@
 			'media_id',
 			array(
 				'name'=>'publish',
-				'value'=>$model->publish == 1 ? Chtml::image(Yii::app()->theme->baseUrl.'/images/icons/publish.png') : Chtml::image(Yii::app()->theme->baseUrl.'/images/icons/unpublish.png'),
+				'value'=>$model->publish == 1 ? CHtml::image(Yii::app()->theme->baseUrl.'/images/icons/publish.png') : CHtml::image(Yii::app()->theme->baseUrl.'/images/icons/unpublish.png'),
 				'type' => 'raw',
 			),
 			array(
 				'name'=>'cover',
-				'value'=>$model->cover == 1 ? Chtml::image(Yii::app()->theme->baseUrl.'/images/icons/publish.png') : Chtml::image(Yii::app()->theme->baseUrl.'/images/icons/unpublish.png'),
+				'value'=>$model->cover == 1 ? CHtml::image(Yii::app()->theme->baseUrl.'/images/icons/publish.png') : CHtml::image(Yii::app()->theme->baseUrl.'/images/icons/unpublish.png'),
 				'type' => 'raw',
 			),
 			'parent',
@@ -41,7 +41,7 @@
 			),
 			array(
 				'name'=>'media',
-				'value'=>$model->media ? Chtml::image(Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/'.$model->album_id.'/'.$model->media, 600, 600, 3)) : '-',
+				'value'=>$model->media ? CHtml::image(Utility::getTimThumb(Yii::app()->request->baseUrl.'/public/album/'.$model->album_id.'/'.$model->media, 600, 600, 3)) : '-',
 				'type' => 'raw',
 			),
 			array(

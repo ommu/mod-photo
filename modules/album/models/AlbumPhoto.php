@@ -316,7 +316,7 @@ class AlbumPhoto extends CActiveRecord
 			*/
 			$this->defaultColumns[] = array(
 				'name' => 'photo_caption_search',
-				'value' => '$data->view->photo_caption == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'value' => '$data->view->photo_caption == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -328,7 +328,7 @@ class AlbumPhoto extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'photo_tag_search',
-				'value' => '$data->view->photo_tag == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'value' => '$data->view->photo_tag == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -340,7 +340,7 @@ class AlbumPhoto extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'cover',
-				'value' => '$data->cover == 1 ? Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Chtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'value' => '$data->cover == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
