@@ -20,7 +20,7 @@
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)
  * @created date 4 May 2017, 16:57 WIB
- * @link https://github.com/ommu/mod-photo-album
+ * @link https://github.com/ommu/ommu-photo
  * @contact (+62)856-299-4114
  *
  *----------------------------------------------------------------------------------------------------------
