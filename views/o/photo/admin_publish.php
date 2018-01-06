@@ -4,13 +4,12 @@
  * @var $this PhotoController
  * @var $model AlbumPhoto
  * @var $form CActiveForm
- * version: 0.0.1
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
+ * @contact (+62)856-299-4114
  * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
  * @created date 7 November 2016, 09:56 WIB
  * @link https://github.com/ommu/ommu-photo
- * @contact (+62)856-299-4114
  *
  */
 
