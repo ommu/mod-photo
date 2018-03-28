@@ -289,6 +289,8 @@ class AlbumLikes extends CActiveRecord
 					//'mode'=>'datetime',
 					'htmlOptions' => array(
 						'id' => 'likes_date_filter',
+						'on_datepicker' => 'on',
+						'placeholder' => Yii::t('phrase', 'filter'),
 					),
 					'options'=>array(
 						'showOn' => 'focus',

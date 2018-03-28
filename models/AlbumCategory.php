@@ -319,6 +319,8 @@ class AlbumCategory extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
+				'filter' => 'native-datepicker',
+				/*
 				'filter' => Yii::app()->controller->widget('application.libraries.core.components.system.CJuiDatePicker', array(
 					'model'=>$this,
 					'attribute'=>'creation_date',
@@ -327,6 +329,8 @@ class AlbumCategory extends CActiveRecord
 					//'mode'=>'datetime',
 					'htmlOptions' => array(
 						'id' => 'creation_date_filter',
+						'on_datepicker' => 'on',
+						'placeholder' => Yii::t('phrase', 'filter'),
 					),
 					'options'=>array(
 						'showOn' => 'focus',
@@ -338,6 +342,7 @@ class AlbumCategory extends CActiveRecord
 						'showButtonPanel' => true,
 					),
 				), true),
+				*/
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'default_setting',
