@@ -192,7 +192,7 @@ EOP;
 					<?php echo $form->error($model,'photo_resize_size'); ?>
 				</div>
 				
-				<p><?php echo Yii::t('phrase', 'Large Size');?></p>				
+				<p><?php echo Yii::t('phrase', 'Large Size');?></p>
 				<?php echo Yii::t('phrase', 'Width').': ';?><?php echo $form->textField($model,'photo_view_size[large][width]',array('maxlength'=>4,'class'=>'span-2')); ?>&nbsp;&nbsp;&nbsp;
 				<?php echo Yii::t('phrase', 'Height').': ';?><?php echo $form->textField($model,'photo_view_size[large][height]',array('maxlength'=>4,'class'=>'span-2')); ?>
 				<?php echo $form->error($model,'photo_view_size[large]'); ?>
@@ -205,7 +205,7 @@ EOP;
 				<p><?php echo Yii::t('phrase', 'Small Size');?></p>
 				<?php echo Yii::t('phrase', 'Width').': ';?><?php echo $form->textField($model,'photo_view_size[small][width]',array('maxlength'=>3,'class'=>'span-2')); ?>&nbsp;&nbsp;&nbsp;
 				<?php echo Yii::t('phrase', 'Height').': ';?><?php echo $form->textField($model,'photo_view_size[small][height]',array('maxlength'=>3,'class'=>'span-2')); ?>
-				<?php echo $form->error($model,'photo_view_size[small]'); ?>				
+				<?php echo $form->error($model,'photo_view_size[small]'); ?>
 			</div>
 		</div>
 

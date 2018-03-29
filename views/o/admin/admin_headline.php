@@ -25,7 +25,7 @@
 )); ?>
 
 	<div class="dialog-content">
-		<?php echo Yii::t('phrase', 'Are you sure you want to headline this item?');?>	</div>
+		<?php echo Yii::t('phrase', 'Are you sure you want to headline this item?');?></div>
 	<div class="dialog-submit">
 		<?php echo CHtml::submitButton(Yii::t('phrase', 'Headline'), array('onclick' => 'setEnableSave()')); ?>
 		<?php echo CHtml::button(Yii::t('phrase', 'Cancel'), array('id'=>'closed')); ?>

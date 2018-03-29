@@ -229,7 +229,7 @@
 						<?php echo $form->error($model,'publish'); ?>
 					</div>
 				</div>
-			</div>		
+			</div>
 		</div>
 
 		<div class="submit clearfix">
