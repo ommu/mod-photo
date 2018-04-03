@@ -25,7 +25,6 @@
  * @property string $tag_id
  * @property string $album_id
  * @property string $media_id
- * @property string $tags
  * @property string $photos
  */
 class ViewAlbumPhotoTag extends CActiveRecord
@@ -69,10 +68,9 @@ class ViewAlbumPhotoTag extends CActiveRecord
 		return array(
 			array('tag_id, album_id, media_id, photos', 'required'),
 			array('tag_id, album_id, media_id, photos', 'length', 'max'=>11),
-			array('tags', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('tag_id, album_id, media_id, tags, photos', 'safe', 'on'=>'search'),
+			array('tag_id, album_id, media_id, photos', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,7 +97,6 @@ class ViewAlbumPhotoTag extends CActiveRecord
 			'tag_id' => Yii::t('attribute', 'Tag'),
 			'album_id' => Yii::t('attribute', 'Album'),
 			'media_id' => Yii::t('attribute', 'Photo'),
-			'tags' => Yii::t('attribute', 'Tags'),
 			'photos' => Yii::t('attribute', 'Photos'),
 		);
 	}
@@ -125,7 +122,6 @@ class ViewAlbumPhotoTag extends CActiveRecord
 		$criteria->compare('t.tag_id',$this->tag_id);
 		$criteria->compare('t.album_id',$this->album_id);
 		$criteria->compare('t.media_id',$this->media_id);
-		$criteria->compare('t.tags',$this->tags);
 		$criteria->compare('t.photos',$this->photos);
 
 		if(!isset($_GET['ViewAlbumPhotoTag_sort']))
@@ -160,7 +156,6 @@ class ViewAlbumPhotoTag extends CActiveRecord
 			$this->defaultColumns[] = 'tag_id';
 			$this->defaultColumns[] = 'album_id';
 			$this->defaultColumns[] = 'media_id';
-			$this->defaultColumns[] = 'tags';
 			$this->defaultColumns[] = 'photos';
 		}
 
@@ -179,7 +174,6 @@ class ViewAlbumPhotoTag extends CActiveRecord
 			$this->defaultColumns[] = 'tag_id';
 			$this->defaultColumns[] = 'album_id';
 			$this->defaultColumns[] = 'media_id';
-			$this->defaultColumns[] = 'tags';
 			$this->defaultColumns[] = 'photos';
 		}
 		parent::afterConstruct();

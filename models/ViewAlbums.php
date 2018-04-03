@@ -22,12 +22,11 @@
  *
  * The followings are the available columns in table '_view_albums':
  * @property string $album_id
+ * @property string $album_cover
  * @property string $media_id
- * @property string $photo_cover
- * @property string $photo_caption
- * @property string $tags
  * @property string $photos
  * @property string $photo_all
+ * @property string $tags
  * @property string $photo_tags
  * @property string $views
  * @property string $view_all
@@ -74,10 +73,10 @@ class ViewAlbums extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('album_id, media_id', 'length', 'max'=>11),
-			array('photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all, likes, like_all', 'length', 'max'=>21),
+			array('album_cover, photos, photo_all, tags, photo_tags, views, view_all, likes, like_all', 'length', 'max'=>21),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('album_id, media_id, photo_cover, photo_caption, tags, photos, photo_all, photo_tags, views, view_all, likes, like_all', 'safe', 'on'=>'search'),
+			array('album_id, album_cover, media_id, photos, photo_all, tags, photo_tags, views, view_all, likes, like_all', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,12 +98,11 @@ class ViewAlbums extends CActiveRecord
 	{
 		return array(
 			'album_id' => Yii::t('attribute', 'Album'),
+			'album_cover' => Yii::t('attribute', 'Cover'),
 			'media_id' => Yii::t('attribute', 'Media'),
-			'photo_cover' => Yii::t('attribute', 'Cover'),
-			'photo_caption' => Yii::t('attribute', 'Caption'),
-			'tags' => Yii::t('attribute', 'Tags'),
 			'photos' => Yii::t('attribute', 'Photos'),
 			'photo_all' => Yii::t('attribute', 'Photo All'),
+			'tags' => Yii::t('attribute', 'Tags'),
 			'photo_tags' => Yii::t('attribute', 'Photo Tags'),
 			'views' => Yii::t('attribute', 'Views'),
 			'view_all' => Yii::t('attribute', 'View All'),
@@ -132,12 +130,11 @@ class ViewAlbums extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('t.album_id',$this->album_id);
+		$criteria->compare('t.album_cover',strtolower($this->album_cover),true);
 		$criteria->compare('t.media_id',$this->media_id);
-		$criteria->compare('t.photo_cover',strtolower($this->photo_cover),true);
-		$criteria->compare('t.photo_caption',strtolower($this->photo_caption),true);
-		$criteria->compare('t.tags',$this->tags);
 		$criteria->compare('t.photos',$this->photos);
 		$criteria->compare('t.photo_all',$this->photo_all);
+		$criteria->compare('t.tags',$this->tags);
 		$criteria->compare('t.photo_tags',$this->photo_tags);
 		$criteria->compare('t.views',$this->views);
 		$criteria->compare('t.view_all',$this->view_all);
@@ -174,12 +171,11 @@ class ViewAlbums extends CActiveRecord
 			}
 		} else {
 			$this->defaultColumns[] = 'album_id';
+			$this->defaultColumns[] = 'album_cover';
 			$this->defaultColumns[] = 'media_id';
-			$this->defaultColumns[] = 'photo_cover';
-			$this->defaultColumns[] = 'photo_caption';
-			$this->defaultColumns[] = 'tags';
 			$this->defaultColumns[] = 'photos';
 			$this->defaultColumns[] = 'photo_all';
+			$this->defaultColumns[] = 'tags';
 			$this->defaultColumns[] = 'photo_tags';
 			$this->defaultColumns[] = 'views';
 			$this->defaultColumns[] = 'view_all';
@@ -200,12 +196,11 @@ class ViewAlbums extends CActiveRecord
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
 			//$this->defaultColumns[] = 'album_id';
+			$this->defaultColumns[] = 'album_cover';
 			$this->defaultColumns[] = 'media_id';
-			$this->defaultColumns[] = 'photo_cover';
-			$this->defaultColumns[] = 'photo_caption';
-			$this->defaultColumns[] = 'tags';
 			$this->defaultColumns[] = 'photos';
 			$this->defaultColumns[] = 'photo_all';
+			$this->defaultColumns[] = 'tags';
 			$this->defaultColumns[] = 'photo_tags';
 			$this->defaultColumns[] = 'views';
 			$this->defaultColumns[] = 'view_all';
