@@ -355,7 +355,7 @@ class AlbumViews extends CActiveRecord
 	protected function beforeValidate() {
 		if(parent::beforeValidate()) {
 			if($this->isNewRecord)
-				$this->user_id = !Yii::app()->user->isGuest ? Yii::app()->user->id : 0;
+				$this->user_id = !Yii::app()->user->isGuest ? Yii::app()->user->id : null;
 			
 			$this->view_ip = $_SERVER['REMOTE_ADDR'];
 		}
