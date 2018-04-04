@@ -33,10 +33,10 @@ plugin_menu		:
 				urlPath: {url: o/phototag/manage, attr: -, icon: -}
 			- urlTitle: Views
 				urlRules: {siteType: "0,1", userLevel: "1,2"}
-				urlPath: {url: o/views/manage, attr: -, icon: -}
+				urlPath: {url: o/view/manage, attr: -, icon: -}
 			- urlTitle: Likes
 				urlRules: {siteType: 1, userLevel: "1,2"}
-				urlPath: {url: o/likes/manage, attr: -, icon: -}
+				urlPath: {url: o/like/manage, attr: -, icon: -}
 		
 	- urlTitle: Settings
 		urlRules: {siteType: "0,1", userLevel: 1}
@@ -96,31 +96,31 @@ content_menu	:
 		urlRules: {album, o/phototag, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 		
-# controller o/views
+# controller o/view
 	- urlTitle: Back to Albums
-		urlRules: {album, o/views, manage, siteType: "0,1", userLevel: "1,2"}
+		urlRules: {album, o/view, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 	- urlTitle: View Album Views Data
-		urlRules: {album, o/views, manage, siteType: "0,1", userLevel: "1,2"}
+		urlRules: {album, o/view, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: history/view/manage, attr: -, icon: -}
 		
 # controller history/view
 	- urlTitle: Back to Album Views
 		urlRules: {album, history/view, manage, siteType: "0,1", userLevel: "1,2"}
-		urlPath: {url: o/views/manage, attr: -, icon: -}
+		urlPath: {url: o/view/manage, attr: -, icon: -}
 		
-# controller o/likes
+# controller o/like
 	- urlTitle: Back to Albums
-		urlRules: {album, o/likes, manage, siteType: 1, userLevel: "1,2"}
+		urlRules: {album, o/like, manage, siteType: 1, userLevel: "1,2"}
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 	- urlTitle: View Album Likes Data
-		urlRules: {album, o/likes, manage, siteType: 1, userLevel: "1,2"}
+		urlRules: {album, o/like, manage, siteType: 1, userLevel: "1,2"}
 		urlPath: {url: history/like/manage, attr: -, icon: -}
 		
 # controller history/like
 	- urlTitle: Back to Album Likes
 		urlRules: {album, history/like, manage, siteType: 1, userLevel: "1,2"}
-		urlPath: {url: o/likes/manage, attr: -, icon: -}
+		urlPath: {url: o/like/manage, attr: -, icon: -}
 
 # controller o/setting
 	- urlTitle: Album Manual Book

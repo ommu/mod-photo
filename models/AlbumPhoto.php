@@ -208,8 +208,8 @@ class AlbumPhoto extends CActiveRecord
 			$criteria->compare('album.publish',Yii::app()->getRequest()->getParam('publish'));
 		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
 		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
-		$criteria->compare('view.photo_caption',$this->photo_caption_search);
-		$criteria->compare('view.photo_tag',$this->photo_tag_search);
+		$criteria->compare('view.caption',$this->photo_caption_search);
+		$criteria->compare('view.tag',$this->photo_tag_search);
 
 		if(!isset($_GET['AlbumPhoto_sort']))
 			$criteria->order = 't.media_id DESC';
@@ -317,7 +317,7 @@ class AlbumPhoto extends CActiveRecord
 			*/
 			$this->defaultColumns[] = array(
 				'name' => 'photo_caption_search',
-				'value' => '$data->view->photo_caption == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'value' => '$data->view->caption == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -329,7 +329,7 @@ class AlbumPhoto extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'photo_tag_search',
-				'value' => '$data->view->photo_tag == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
+				'value' => '$data->view->tag == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/unpublish.png\')',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),

@@ -21,7 +21,7 @@ if($model != null) {?>
 			$image = Yii::app()->request->baseUrl.'/public/album/album_default.png';
 			$photos = $val->photos;
 			if(!empty($photos)) {
-				$media = $val->view->photo_cover ? $val->view->photo_cover : $photos[0]->media;
+				$media = $val->view->album_cover ? $val->view->album_cover : $photos[0]->media;
 				$image = Yii::app()->request->baseUrl.'/public/album/'.$val->album_id.'/'.$media;
 			}
 			if($i == 1) {?>

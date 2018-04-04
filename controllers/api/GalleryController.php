@@ -86,7 +86,7 @@ class GalleryController extends ControllerApi
 					);
 					$criteriaNoTag->compare('t.publish', 1);
 					$criteriaNoTag->compare('t.album_id', $album_id);
-					$criteriaNoTag->compare('view.photo_tag', 0);
+					$criteriaNoTag->compare('view.tag', 0);
 					
 					$photoNoTag = AlbumPhoto::model()->findAll($criteriaNoTag);
 					
@@ -232,7 +232,7 @@ class GalleryController extends ControllerApi
 						);
 						$criteria->compare('t.publish', 1);
 						$criteria->compare('t.album_id', $album_id);
-						$criteria->compare('view.photo_tag', 0);
+						$criteria->compare('view.tag', 0);
 						
 						$model = AlbumPhoto::model()->findAll($criteria);
 					

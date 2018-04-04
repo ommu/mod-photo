@@ -361,7 +361,7 @@ class Albums extends CActiveRecord
 			if(in_array('view_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'view_search',
-					'value' => 'CHtml::link($data->view->views ? $data->view->views : 0, Yii::app()->controller->createUrl("o/views/manage",array("album"=>$data->album_id)))',
+					'value' => 'CHtml::link($data->view->views ? $data->view->views : 0, Yii::app()->controller->createUrl("o/view/manage",array("album"=>$data->album_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -371,7 +371,7 @@ class Albums extends CActiveRecord
 			if(in_array('like_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'like_search',
-					'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("o/likes/manage",array("album"=>$data->album_id)))',
+					'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("o/like/manage",array("album"=>$data->album_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -485,7 +485,7 @@ class Albums extends CActiveRecord
 		foreach($model as $key => $item) {
 			$photos = $item->photos;
 			if(!empty($photos)) {
-				$media = $item->view->photo_cover ? $item->view->photo_cover : $photos[0]->media;
+				$media = $item->view->album_cover ? $item->view->album_cover : $photos[0]->media;
 				$image = Yii::app()->request->baseUrl.'/public/album/'.$item->album_id.'/'.$media;
 			} else 
 				$image = '';
