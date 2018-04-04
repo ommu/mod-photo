@@ -1,8 +1,8 @@
 <?php
 /**
- * LikedetailController
- * @var $this LikedetailController
- * @var $model AlbumLikeHistory
+ * ViewController
+ * @var $this ViewController
+ * @var $model AlbumViewHistory
  * @var $form CActiveForm
  *
  * Reference start
@@ -15,14 +15,14 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)
- * @created date 4 May 2017, 16:57 WIB
+ * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co) 
+ * @created date 4 May 2017, 12:55 WIB
  * @link https://github.com/ommu/ommu-photo
  *
  *----------------------------------------------------------------------------------------------------------
  */
 
-class LikedetailController extends Controller
+class ViewController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -102,20 +102,20 @@ class LikedetailController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionManage($like=null) 
+	public function actionManage($view=null) 
 	{
-		$pageTitle = Yii::t('phrase', 'Album Likes Data');
-		if($like != null) {
-			$data = AlbumLikes::model()->findByPk($like);
-			$pageTitle = Yii::t('phrase', 'Album Likes Data: {album_title} from category {category_name} - user Guest', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name)));	
+		$pageTitle = Yii::t('phrase', 'Album Views Data');
+		if($view != null) {
+			$data = AlbumViews::model()->findByPk($view);
+			$pageTitle = Yii::t('phrase', 'Album Views Data: {album_title} from category {category_name} - user Guest', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name)));	
 			if($data->user->displayname)
-				$pageTitle = Yii::t('phrase', 'Album Likes Data: {album_title} from category {category_name} - user {user_displayname}', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name), '{user_displayname}'=>$data->user->displayname));
+				$pageTitle = Yii::t('phrase', 'Album Views Data: {album_title} from category {category_name} - user {user_displayname}', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name), '{user_displayname}'=>$data->user->displayname));
 		}
 		
-		$model=new AlbumLikeHistory('search');
+		$model=new AlbumViewHistory('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['AlbumLikeHistory'])) {
-			$model->attributes=$_GET['AlbumLikeHistory'];
+		if(isset($_GET['AlbumViewHistory'])) {
+			$model->attributes=$_GET['AlbumViewHistory'];
 		}
 
 		$columnTemp = array();
@@ -131,7 +131,7 @@ class LikedetailController extends Controller
 		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('/o/like_detail/admin_manage',array(
+		$this->render('admin_manage',array(
 			'model'=>$model,
 			'columns' => $columns,
 		));
@@ -144,7 +144,7 @@ class LikedetailController extends Controller
 	 */
 	public function loadModel($id) 
 	{
-		$model = AlbumLikeHistory::model()->findByPk($id);
+		$model = AlbumViewHistory::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404, Yii::t('phrase', 'The requested page does not exist.'));
 		return $model;
@@ -156,7 +156,7 @@ class LikedetailController extends Controller
 	 */
 	protected function performAjaxValidation($model) 
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='album-like-detail-form') {
+		if(isset($_POST['ajax']) && $_POST['ajax']==='album-view-history-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

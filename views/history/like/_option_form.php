@@ -1,7 +1,7 @@
 <?php
 /**
- * Album Like Details (album-like-detail)
- * @var $this LikedetailController
+ * Album Like Histories (album-like-history)
+ * @var $this LikeController
  * @var $model AlbumLikeHistory
  * @var $form CActiveForm
  *

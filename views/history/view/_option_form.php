@@ -1,7 +1,7 @@
 <?php
 /**
- * Album View Details (album-view-detail)
- * @var $this ViewdetailController
+ * Album View Histories (album-view-history)
+ * @var $this ViewController
  * @var $model AlbumViewHistory
  * @var $form CActiveForm
  *
