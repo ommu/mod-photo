@@ -2,7 +2,7 @@
 /**
  * LikedetailController
  * @var $this LikedetailController
- * @var $model AlbumLikeDetail
+ * @var $model AlbumLikeHistory
  * @var $form CActiveForm
  *
  * Reference start
@@ -112,10 +112,10 @@ class LikedetailController extends Controller
 				$pageTitle = Yii::t('phrase', 'Album Likes Data: {album_title} from category {category_name} - user {user_displayname}', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name), '{user_displayname}'=>$data->user->displayname));
 		}
 		
-		$model=new AlbumLikeDetail('search');
+		$model=new AlbumLikeHistory('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['AlbumLikeDetail'])) {
-			$model->attributes=$_GET['AlbumLikeDetail'];
+		if(isset($_GET['AlbumLikeHistory'])) {
+			$model->attributes=$_GET['AlbumLikeHistory'];
 		}
 
 		$columnTemp = array();
@@ -144,7 +144,7 @@ class LikedetailController extends Controller
 	 */
 	public function loadModel($id) 
 	{
-		$model = AlbumLikeDetail::model()->findByPk($id);
+		$model = AlbumLikeHistory::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404, Yii::t('phrase', 'The requested page does not exist.'));
 		return $model;

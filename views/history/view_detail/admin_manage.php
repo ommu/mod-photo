@@ -1,8 +1,8 @@
 <?php
 /**
- * Album Views (album-views)
- * @var $this ViewsController
- * @var $model AlbumViews
+ * Album View Details (album-view-detail)
+ * @var $this ViewdetailController
+ * @var $model AlbumViewHistory
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
@@ -13,7 +13,7 @@
  */
 
 	$this->breadcrumbs=array(
-		'Album Views'=>array('manage'),
+		'Album View Details'=>array('manage'),
 		'Manage',
 	);
 	$this->menu=array(
@@ -35,7 +35,7 @@
 
 <?php //begin.Search ?>
 <div class="search-form">
-<?php $this->renderPartial('_search',array(
+<?php $this->renderPartial('/o/view_detail/_search',array(
 	'model'=>$model,
 )); ?>
 </div>
@@ -43,13 +43,13 @@
 
 <?php //begin.Grid Option ?>
 <div class="grid-form">
-<?php $this->renderPartial('_option_form',array(
+<?php $this->renderPartial('/o/view_detail/_option_form',array(
 	'model'=>$model,
 )); ?>
 </div>
 <?php //end.Grid Option ?>
 
-<div id="partial-album-views">
+<div id="partial-album-view-detail">
 	<?php //begin.Messages ?>
 	<div id="ajax-message">
 	<?php
@@ -95,7 +95,7 @@
 			));
 
 			$this->widget('application.libraries.core.components.system.OGridView', array(
-				'id'=>'album-views-grid',
+				'id'=>'album-view-detail-grid',
 				'dataProvider'=>$model->search(),
 				'filter'=>$model,
 				'afterAjaxUpdate' => 'reinstallDatePicker',

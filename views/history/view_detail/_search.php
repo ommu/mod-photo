@@ -2,7 +2,7 @@
 /**
  * Album View Details (album-view-detail)
  * @var $this ViewdetailController
- * @var $model AlbumViewDetail
+ * @var $model AlbumViewHistory
  * @var $form CActiveForm
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>

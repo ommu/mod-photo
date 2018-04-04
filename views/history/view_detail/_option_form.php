@@ -1,8 +1,8 @@
 <?php
 /**
- * Album Views (album-views)
- * @var $this ViewsController
- * @var $model AlbumViews
+ * Album View Details (album-view-detail)
+ * @var $this ViewdetailController
+ * @var $model AlbumViewHistory
  * @var $form CActiveForm
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>

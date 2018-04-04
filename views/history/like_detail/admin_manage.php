@@ -1,19 +1,19 @@
 <?php
 /**
- * Album View Details (album-view-detail)
- * @var $this ViewdetailController
- * @var $model AlbumViewDetail
+ * Album Like Details (album-like-detail)
+ * @var $this LikedetailController
+ * @var $model AlbumLikeHistory
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co) 
- * @created date 4 May 2017, 12:55 WIB
+ * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)
+ * @created date 4 May 2017, 16:57 WIB
  * @link https://github.com/ommu/ommu-photo
  *
  */
 
 	$this->breadcrumbs=array(
-		'Album View Details'=>array('manage'),
+		'Album Like Details'=>array('manage'),
 		'Manage',
 	);
 	$this->menu=array(
@@ -35,7 +35,7 @@
 
 <?php //begin.Search ?>
 <div class="search-form">
-<?php $this->renderPartial('/o/view_detail/_search',array(
+<?php $this->renderPartial('/o/like_detail/_search',array(
 	'model'=>$model,
 )); ?>
 </div>
@@ -43,13 +43,13 @@
 
 <?php //begin.Grid Option ?>
 <div class="grid-form">
-<?php $this->renderPartial('/o/view_detail/_option_form',array(
+<?php $this->renderPartial('/o/like_detail/_option_form',array(
 	'model'=>$model,
 )); ?>
 </div>
 <?php //end.Grid Option ?>
 
-<div id="partial-album-view-detail">
+<div id="partial-album-like-detail">
 	<?php //begin.Messages ?>
 	<div id="ajax-message">
 	<?php
@@ -95,7 +95,7 @@
 			));
 
 			$this->widget('application.libraries.core.components.system.OGridView', array(
-				'id'=>'album-view-detail-grid',
+				'id'=>'album-like-detail-grid',
 				'dataProvider'=>$model->search(),
 				'filter'=>$model,
 				'afterAjaxUpdate' => 'reinstallDatePicker',

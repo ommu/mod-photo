@@ -1,6 +1,6 @@
 <?php
 /**
- * AlbumLikeDetail
+ * AlbumLikeHistory
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
@@ -19,9 +19,9 @@
  *
  * --------------------------------------------------------------------------------------
  *
- * This is the model class for table "ommu_album_like_detail".
+ * This is the model class for table "ommu_album_like_history".
  *
- * The followings are the available columns in table 'ommu_album_like_detail':
+ * The followings are the available columns in table 'ommu_album_like_history':
  * @property string $id
  * @property integer $publish
  * @property string $like_id
@@ -31,7 +31,7 @@
  * The followings are the available model relations:
  * @property AlbumLikes $like
  */
-class AlbumLikeDetail extends CActiveRecord
+class AlbumLikeHistory extends CActiveRecord
 {
 	public $defaultColumns = array();
 	
@@ -44,7 +44,7 @@ class AlbumLikeDetail extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return AlbumLikeDetail the static model class
+	 * @return AlbumLikeHistory the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -56,7 +56,7 @@ class AlbumLikeDetail extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'ommu_album_like_detail';
+		return 'ommu_album_like_history';
 	}
 
 	/**

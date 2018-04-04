@@ -2,7 +2,7 @@
 /**
  * Album Like Details (album-like-detail)
  * @var $this LikedetailController
- * @var $model AlbumLikeDetail
+ * @var $model AlbumLikeHistory
  * @var $form CActiveForm
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>

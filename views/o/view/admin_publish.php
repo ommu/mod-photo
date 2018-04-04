@@ -1,7 +1,7 @@
 <?php
 /**
  * Album Views (album-views)
- * @var $this ViewsController
+ * @var $this ViewController
  * @var $model AlbumViews
  * @var $form CActiveForm
  *

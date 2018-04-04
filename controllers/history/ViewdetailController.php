@@ -2,7 +2,7 @@
 /**
  * ViewdetailController
  * @var $this ViewdetailController
- * @var $model AlbumViewDetail
+ * @var $model AlbumViewHistory
  * @var $form CActiveForm
  *
  * Reference start
@@ -112,10 +112,10 @@ class ViewdetailController extends Controller
 				$pageTitle = Yii::t('phrase', 'Album Views Data: {album_title} from category {category_name} - user {user_displayname}', array ('{album_title}'=>$data->album->title, '{category_name}'=>Phrase::trans($data->album->category->name), '{user_displayname}'=>$data->user->displayname));
 		}
 		
-		$model=new AlbumViewDetail('search');
+		$model=new AlbumViewHistory('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['AlbumViewDetail'])) {
-			$model->attributes=$_GET['AlbumViewDetail'];
+		if(isset($_GET['AlbumViewHistory'])) {
+			$model->attributes=$_GET['AlbumViewHistory'];
 		}
 
 		$columnTemp = array();
@@ -144,7 +144,7 @@ class ViewdetailController extends Controller
 	 */
 	public function loadModel($id) 
 	{
-		$model = AlbumViewDetail::model()->findByPk($id);
+		$model = AlbumViewHistory::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404, Yii::t('phrase', 'The requested page does not exist.'));
 		return $model;

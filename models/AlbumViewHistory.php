@@ -1,6 +1,6 @@
 <?php
 /**
- * AlbumViewDetail
+ * AlbumViewHistory
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
@@ -19,18 +19,18 @@
  *
  * --------------------------------------------------------------------------------------
  *
- * This is the model class for table "ommu_album_view_detail".
+ * This is the model class for table "ommu_album_view_history".
  *
- * The followings are the available columns in table 'ommu_album_view_detail':
+ * The followings are the available columns in table 'ommu_album_view_history':
  * @property string $id
  * @property string $view_id
  * @property string $view_date
  * @property string $view_ip
  *
  * The followings are the available model relations:
- * @property AlbumViewDetail $view
+ * @property AlbumViewHistory $view
  */
-class AlbumViewDetail extends CActiveRecord
+class AlbumViewHistory extends CActiveRecord
 {
 	public $defaultColumns = array();
 	
@@ -43,7 +43,7 @@ class AlbumViewDetail extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return AlbumViewDetail the static model class
+	 * @return AlbumViewHistory the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -55,7 +55,7 @@ class AlbumViewDetail extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'ommu_album_view_detail';
+		return 'ommu_album_view_history';
 	}
 
 	/**
