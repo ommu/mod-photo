@@ -475,7 +475,7 @@ class Albums extends CActiveRecord
 	 */
 	public function searchIndexing($index)
 	{
-		Yii::import('application.modules.album.models.*');
+		Yii::import('application.vendor.ommu.album.models.*');
 		
 		$criteria=new CDbCriteria;
 		$criteria->compare('publish', 1);
