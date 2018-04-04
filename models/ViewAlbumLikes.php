@@ -19,9 +19,9 @@
  *
  * --------------------------------------------------------------------------------------
  *
- * This is the model class for table "_view_album_likes".
+ * This is the model class for table "_album_likes".
  *
- * The followings are the available columns in table '_view_album_likes':
+ * The followings are the available columns in table '_album_likes':
  * @property string $like_id
  * @property string $album_id
  * @property string $likes
@@ -48,7 +48,7 @@ class ViewAlbumLikes extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '_view_album_likes';
+		return '_album_likes';
 	}
 
 	/**

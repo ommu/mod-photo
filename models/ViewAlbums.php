@@ -18,9 +18,9 @@
  *
  * --------------------------------------------------------------------------------------
  *
- * This is the model class for table "_view_albums".
+ * This is the model class for table "_albums".
  *
- * The followings are the available columns in table '_view_albums':
+ * The followings are the available columns in table '_albums':
  * @property string $album_id
  * @property string $album_cover
  * @property string $media_id
@@ -53,7 +53,7 @@ class ViewAlbums extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '_view_albums';
+		return '_albums';
 	}
 
 	/**

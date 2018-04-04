@@ -19,9 +19,9 @@
  *
  * --------------------------------------------------------------------------------------
  *
- * This is the model class for table "_view_album_category".
+ * This is the model class for table "_album_category".
  *
- * The followings are the available columns in table '_view_album_category':
+ * The followings are the available columns in table '_album_category':
  * @property integer $cat_id
  * @property string $albums
  * @property string $album_all
@@ -46,7 +46,7 @@ class ViewAlbumCategory extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '_view_album_category';
+		return '_album_category';
 	}
 
 	/**

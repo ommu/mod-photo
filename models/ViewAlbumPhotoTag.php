@@ -19,9 +19,9 @@
  *
  * --------------------------------------------------------------------------------------
  *
- * This is the model class for table "_view_album_photo_tag".
+ * This is the model class for table "_album_photo_tag".
  *
- * The followings are the available columns in table '_view_album_photo_tag':
+ * The followings are the available columns in table '_album_photo_tag':
  * @property string $tag_id
  * @property string $album_id
  * @property string $media_id
@@ -47,7 +47,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '_view_album_photo_tag';
+		return '_album_photo_tag';
 	}
 
 	/**

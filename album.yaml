@@ -42,7 +42,7 @@ plugin_menu		:
 		urlRules: {siteType: "0,1", userLevel: 1}
 		urlPath: {url: o/setting/edit, attr: -, icon: -}
                 
-	- urlTitle: Album Manual
+	- urlTitle: Album Manual Book
 		urlRules: {siteType: "0,1", userLevel: 2}
 		urlPath: {url: o/setting/manual, attr: -, icon: -}
 
@@ -123,6 +123,6 @@ content_menu	:
 		urlPath: {url: o/likes/manage, attr: -, icon: -}
 
 # controller o/setting
-	- urlTitle: Album Manual
+	- urlTitle: Album Manual Book
 		urlRules: {album, o/setting, edit, siteType: "0,1", userLevel: 1}
 		urlPath: {url: manual, attr: -, icon: -}
