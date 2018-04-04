@@ -130,7 +130,7 @@ class SiteController extends Controller
 		));
 
 		$model=$this->loadModel($id);
-		Albums::model()->updateByPk($id, array('view'=>$model->view + 1));
+		AlbumViews::insertView($model->album_id);
 
 		$photo = AlbumPhoto::model()->findAll(array(
 			'condition' => 'album_id = :id',

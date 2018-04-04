@@ -336,7 +336,10 @@ class AlbumViews extends CActiveRecord
 		$criteria->select = 'view_id, publish, album_id, user_id, views';
 		$criteria->compare('publish', 1);
 		$criteria->compare('album_id', $album_id);
-		$criteria->compare('user_id', !Yii::app()->user->isGuest ? Yii::app()->user->id : '0');
+		if(!Yii::app()->user->isGuest)
+			$criteria->compare('user_id', Yii::app()->user->id);
+		else
+			$criteria->addCondition('user_id IS NULL');
 		$findView = self::model()->find($criteria);
 		
 		if($findView != null)
