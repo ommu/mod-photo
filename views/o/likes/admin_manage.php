@@ -1,7 +1,7 @@
 <?php
 /**
  * Album Likes (album-likes)
- * @var $this LikesController
+ * @var $this LikeController
  * @var $model AlbumLikes
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>

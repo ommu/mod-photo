@@ -1,7 +1,7 @@
 <?php
 /**
- * LikesController
- * @var $this LikesController
+ * LikeController
+ * @var $this LikeController
  * @var $model AlbumLikes
  * @var $form CActiveForm
  *
@@ -25,7 +25,7 @@
  *----------------------------------------------------------------------------------------------------------
  */
 
-class LikesController extends Controller
+class LikeController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning

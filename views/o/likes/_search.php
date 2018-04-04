@@ -1,7 +1,7 @@
 <?php
 /**
  * Album Likes (album-likes)
- * @var $this LikesController
+ * @var $this LikeController
  * @var $model AlbumLikes
  * @var $form CActiveForm
  *

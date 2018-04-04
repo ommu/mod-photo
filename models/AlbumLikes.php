@@ -261,7 +261,7 @@ class AlbumLikes extends CActiveRecord
 			}
 			$this->defaultColumns[] = array(
 				'name' => 'like_search',
-				'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("o/likedetail/manage",array(\'like\'=>$data->like_id,\'type\'=>\'subscribe\')))',
+				'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("history/like/manage",array(\'like\'=>$data->like_id,\'type\'=>\'subscribe\')))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -269,7 +269,7 @@ class AlbumLikes extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'unlike_search',
-				'value' => 'CHtml::link($data->view->unlikes ? $data->view->unlikes : 0, Yii::app()->controller->createUrl("o/likedetail/manage",array(\'like\'=>$data->like_id,\'type\'=>\'unsubscribe\')))',
+				'value' => 'CHtml::link($data->view->unlikes ? $data->view->unlikes : 0, Yii::app()->controller->createUrl("history/like/manage",array(\'like\'=>$data->like_id,\'type\'=>\'unsubscribe\')))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),

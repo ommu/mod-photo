@@ -102,11 +102,11 @@ content_menu	:
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 	- urlTitle: View Album Views Data
 		urlRules: {album, o/views, manage, siteType: "0,1", userLevel: "1,2"}
-		urlPath: {url: o/viewdetail/manage, attr: -, icon: -}
+		urlPath: {url: history/view/manage, attr: -, icon: -}
 		
-# controller o/viewdetail
+# controller history/view
 	- urlTitle: Back to Album Views
-		urlRules: {album, o/viewdetail, manage, siteType: "0,1", userLevel: "1,2"}
+		urlRules: {album, history/view, manage, siteType: "0,1", userLevel: "1,2"}
 		urlPath: {url: o/views/manage, attr: -, icon: -}
 		
 # controller o/likes
@@ -115,11 +115,11 @@ content_menu	:
 		urlPath: {url: o/admin/manage, attr: -, icon: -}
 	- urlTitle: View Album Likes Data
 		urlRules: {album, o/likes, manage, siteType: 1, userLevel: "1,2"}
-		urlPath: {url: o/likedetail/manage, attr: -, icon: -}
+		urlPath: {url: history/like/manage, attr: -, icon: -}
 		
-# controller o/likedetail
+# controller history/like
 	- urlTitle: Back to Album Likes
-		urlRules: {album, o/likedetail, manage, siteType: 1, userLevel: "1,2"}
+		urlRules: {album, history/like, manage, siteType: 1, userLevel: "1,2"}
 		urlPath: {url: o/likes/manage, attr: -, icon: -}
 
 # controller o/setting
