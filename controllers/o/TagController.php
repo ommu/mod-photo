@@ -153,7 +153,7 @@ class TagController extends Controller
 			$model->tag_i = $_POST['tag'];
 
 			if($model->save()) {
-				if(isset($_GET['type']) && $_GET['type'] == 'album')
+				if(Yii::app()->getRequest()->getParam('type') == 'album')
 					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id,'type'=>'album'));
 				else 
 					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id));
@@ -177,7 +177,7 @@ class TagController extends Controller
 			// we only allow deletion via POST request
 			if(isset($id)) {
 				$model->delete();
-				if(isset($_GET['type']) && $_GET['type'] == 'album') {
+				if(Yii::app()->getRequest()->getParam('type') == 'album') {
 					echo CJSON::encode(array(
 						'type' => 4,
 					));
@@ -193,7 +193,7 @@ class TagController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			if(isset($_GET['type']) && $_GET['type'] == 'album')
+			if(Yii::app()->getRequest()->getParam('type') == 'album')
 				$url = Yii::app()->controller->createUrl('o/admin/edit', array('id'=>$model->album_id));
 			else
 				$url = Yii::app()->controller->createUrl('manage');

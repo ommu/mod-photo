@@ -143,22 +143,22 @@ class AlbumViews extends CActiveRecord
 		);
 
 		$criteria->compare('t.view_id',$this->view_id);
-		if(isset($_GET['type']) && $_GET['type'] == 'publish')
+		if(Yii::app()->getRequest()->getParam('type') == 'publish')
 			$criteria->compare('t.publish',1);
-		elseif(isset($_GET['type']) && $_GET['type'] == 'unpublish')
+		elseif(Yii::app()->getRequest()->getParam('type') == 'unpublish')
 			$criteria->compare('t.publish',0);
-		elseif(isset($_GET['type']) && $_GET['type'] == 'trash')
+		elseif(Yii::app()->getRequest()->getParam('type') == 'trash')
 			$criteria->compare('t.publish',2);
 		else {
 			$criteria->addInCondition('t.publish',array(0,1));
 			$criteria->compare('t.publish',$this->publish);
 		}
-		if(isset($_GET['album']))
-			$criteria->compare('t.album_id',$_GET['album']);
+		if(Yii::app()->getRequest()->getParam('album'))
+			$criteria->compare('t.album_id',Yii::app()->getRequest()->getParam('album'));
 		else
 			$criteria->compare('t.album_id',$this->album_id);
-		if(isset($_GET['user']))
-			$criteria->compare('t.user_id',$_GET['user']);
+		if(Yii::app()->getRequest()->getParam('user'))
+			$criteria->compare('t.user_id',Yii::app()->getRequest()->getParam('user'));
 		else
 			$criteria->compare('t.user_id',$this->user_id);
 		$criteria->compare('t.views',$this->views);
@@ -170,8 +170,8 @@ class AlbumViews extends CActiveRecord
 		
 		$criteria->compare('album.cat_id',$this->category_search);
 		$criteria->compare('album.title',strtolower($this->album_search),true);
-		if(isset($_GET['album']) && isset($_GET['publish']))
-			$criteria->compare('album.publish',$_GET['publish']);
+		if(Yii::app()->getRequest()->getParam('album') && Yii::app()->getRequest()->getParam('publish'))
+			$criteria->compare('album.publish',Yii::app()->getRequest()->getParam('publish'));
 		$criteria->compare('user.displayname',strtolower($this->user_search),true);
 
 		if(!isset($_GET['AlbumViews_sort']))
@@ -233,7 +233,7 @@ class AlbumViews extends CActiveRecord
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			if(!isset($_GET['album'])) {
+			if(!Yii::app()->getRequest()->getParam('album')) {
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => 'Phrase::trans($data->album->category->name)',
@@ -245,7 +245,7 @@ class AlbumViews extends CActiveRecord
 					'value' => '$data->album->title',
 				);
 			}
-			if(!isset($_GET['user'])) {
+			if(!Yii::app()->getRequest()->getParam('user')) {
 				$this->defaultColumns[] = array(
 					'name' => 'user_search',
 					'value' => '$data->user->displayname ? $data->user->displayname : "-"',
@@ -292,7 +292,7 @@ class AlbumViews extends CActiveRecord
 					'class' => 'center',
 				),
 			);
-			if(!isset($_GET['type'])) {
+			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
 					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->view_id)), $data->publish, 1)',

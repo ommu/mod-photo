@@ -139,8 +139,8 @@ class AlbumViewHistory extends CActiveRecord
 		);
 
 		$criteria->compare('t.id',$this->id);
-		if(isset($_GET['view']))
-			$criteria->compare('t.view_id',$_GET['view']);
+		if(Yii::app()->getRequest()->getParam('view'))
+			$criteria->compare('t.view_id',Yii::app()->getRequest()->getParam('view'));
 		else
 			$criteria->compare('t.view_id',$this->view_id);
 		if($this->view_date != null && !in_array($this->view_date, array('0000-00-00 00:00:00', '0000-00-00')))
@@ -206,7 +206,7 @@ class AlbumViewHistory extends CActiveRecord
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			if(!isset($_GET['view'])) {
+			if(!Yii::app()->getRequest()->getParam('view')) {
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => 'Phrase::trans($data->view->album->category->name)',

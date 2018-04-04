@@ -124,7 +124,7 @@ class PhotoController extends Controller
 				$data .= '</li>';
 			}
 		}
-		if(isset($_GET['replace'])) {
+		if(Yii::app()->getRequest()->getParam('replace')) {
 			// begin.Upload Button
 			$class = (count($model) == $setting->photo_limit) ? 'class="hide"' : '';
 			$url = Yii::app()->controller->createUrl('ajaxadd', array('id'=>$id));
@@ -180,7 +180,7 @@ class PhotoController extends Controller
 	 */
 	public function actionAjaxCover($id) 
 	{
-		if(!isset($_GET['type'])) {
+		if(!Yii::app()->getRequest()->getParam('type')) {
 			$arrThemes = Utility::getCurrentTemplate('public');
 			Yii::app()->theme = $arrThemes['folder'];
 			$this->layout = $arrThemes['layout'];

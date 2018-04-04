@@ -172,18 +172,18 @@ class AlbumPhoto extends CActiveRecord
 		);
 
 		$criteria->compare('t.media_id',$this->media_id);
-		if(isset($_GET['type']) && $_GET['type'] == 'publish') {
+		if(Yii::app()->getRequest()->getParam('type') == 'publish') {
 			$criteria->compare('t.publish',1);
-		} elseif(isset($_GET['type']) && $_GET['type'] == 'unpublish') {
+		} elseif(Yii::app()->getRequest()->getParam('type') == 'unpublish') {
 			$criteria->compare('t.publish',0);
-		} elseif(isset($_GET['type']) && $_GET['type'] == 'trash') {
+		} elseif(Yii::app()->getRequest()->getParam('type') == 'trash') {
 			$criteria->compare('t.publish',2);
 		} else {
 			$criteria->addInCondition('t.publish',array(0,1));
 			$criteria->compare('t.publish',$this->publish);
 		}
-		if(isset($_GET['album']))
-			$criteria->compare('t.album_id',$_GET['album']);
+		if(Yii::app()->getRequest()->getParam('album'))
+			$criteria->compare('t.album_id',Yii::app()->getRequest()->getParam('album'));
 		else
 			$criteria->compare('t.album_id',$this->album_id);
 		$criteria->compare('t.cover',$this->cover);
@@ -191,21 +191,21 @@ class AlbumPhoto extends CActiveRecord
 		$criteria->compare('t.caption',$this->caption,true);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
-		if(isset($_GET['creation']))
-			$criteria->compare('t.creation_id',$_GET['creation']);
+		if(Yii::app()->getRequest()->getParam('creation'))
+			$criteria->compare('t.creation_id',Yii::app()->getRequest()->getParam('creation'));
 		else
 			$criteria->compare('t.creation_id',$this->creation_id);
 		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
-		if(isset($_GET['modified']))
-			$criteria->compare('t.modified_id',$_GET['modified']);
+		if(Yii::app()->getRequest()->getParam('modified'))
+			$criteria->compare('t.modified_id',Yii::app()->getRequest()->getParam('modified'));
 		else
 			$criteria->compare('t.modified_id',$this->modified_id);
 		
 		$criteria->compare('album.cat_id',$this->category_search);
 		$criteria->compare('album.title',strtolower($this->album_search),true);
-		if(isset($_GET['album']) && isset($_GET['publish']))
-			$criteria->compare('album.publish',$_GET['publish']);
+		if(Yii::app()->getRequest()->getParam('album') && Yii::app()->getRequest()->getParam('publish'))
+			$criteria->compare('album.publish',Yii::app()->getRequest()->getParam('publish'));
 		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
 		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
 		$criteria->compare('view.photo_caption',$this->photo_caption_search);
@@ -264,7 +264,7 @@ class AlbumPhoto extends CActiveRecord
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			if(!isset($_GET['album'])) {
+			if(!Yii::app()->getRequest()->getParam('album')) {
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => 'Phrase::trans($data->album->category->name)',
@@ -351,7 +351,7 @@ class AlbumPhoto extends CActiveRecord
 				),
 				'type' => 'raw',
 			);
-			if(!isset($_GET['type'])) {
+			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
 					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->media_id)), $data->publish, 1)',

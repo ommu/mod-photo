@@ -54,10 +54,10 @@ class GalleryController extends ControllerApi
 	 */
 	public function actionMain() 
 	{
-		$action = trim($_GET['action']);
+		$action = trim(Yii::app()->getRequest()->getParam('action'));
 		
-		if(isset($_GET['action'])) {
-			if($_GET['action'] == 'pexeto_get_portfolio_items') {
+		if(isset(Yii::app()->getRequest()->getParam('action'))) {
+			if(Yii::app()->getRequest()->getParam('action') == 'pexeto_get_portfolio_items') {
 				if(isset($_GET['cat']) && $_GET['cat'] != '') {
 					$album_id = trim($_GET['cat']);
 					$pagesize = trim($_GET['number']);
@@ -178,7 +178,7 @@ class GalleryController extends ControllerApi
 				} else
 					$this->redirect(Yii::app()->createUrl('site/index'));
 				
-			} else if($_GET['action'] == 'pexeto_get_portfolio_content') {
+			} else if(Yii::app()->getRequest()->getParam('action') == 'pexeto_get_portfolio_content') {
 				//if(isset($_GET['cat']) && $_GET['cat'] != '') {
 					if(isset($_GET['cat']) && $_GET['cat'] != '')
 						$album_id = $_GET['cat'];

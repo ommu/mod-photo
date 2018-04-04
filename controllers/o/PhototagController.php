@@ -154,7 +154,7 @@ class PhototagController extends Controller
 			$model->tag_i = $_POST['tag'];
 
 			if($model->save()) {
-				if(isset($_GET['type']) && $_GET['type'] == 'photo')
+				if(Yii::app()->getRequest()->getParam('type') == 'photo')
 					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id,'type'=>'photo'));
 				else 
 					$url = Yii::app()->controller->createUrl('delete',array('id'=>$model->id));
@@ -178,7 +178,7 @@ class PhototagController extends Controller
 			// we only allow deletion via POST request
 			if(isset($id)) {
 				$model->delete();
-				if(isset($_GET['type']) && $_GET['type'] == 'photo') {
+				if(Yii::app()->getRequest()->getParam('type') == 'photo') {
 					echo CJSON::encode(array(
 						'type' => 4,
 					));					
@@ -196,7 +196,7 @@ class PhototagController extends Controller
 
 		} else {
 			$this->dialogDetail = true;
-			if(isset($_GET['type']) && $_GET['type'] == 'photo')
+			if(Yii::app()->getRequest()->getParam('type') == 'photo')
 				$url = Yii::app()->controller->createUrl('o/photo/edit', array('id'=>$model->media_id));
 			else
 				$url = Yii::app()->controller->createUrl('manage');

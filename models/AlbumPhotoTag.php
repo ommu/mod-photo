@@ -153,18 +153,18 @@ class AlbumPhotoTag extends CActiveRecord
 		);
 
 		$criteria->compare('t.id',$this->id);
-		if(isset($_GET['media']))
-			$criteria->compare('t.media_id',$_GET['media']);
+		if(Yii::app()->getRequest()->getParam('media'))
+			$criteria->compare('t.media_id',Yii::app()->getRequest()->getParam('media'));
 		else
 			$criteria->compare('t.media_id',$this->media_id);
-		if(isset($_GET['tag']))
-			$criteria->compare('t.tag_id',$_GET['tag']);
+		if(Yii::app()->getRequest()->getParam('tag'))
+			$criteria->compare('t.tag_id',Yii::app()->getRequest()->getParam('tag'));
 		else
 			$criteria->compare('t.tag_id',$this->tag_id);
 		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
 			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
-		if(isset($_GET['creation']))
-			$criteria->compare('t.creation_id',$_GET['creation']);
+		if(Yii::app()->getRequest()->getParam('creation'))
+			$criteria->compare('t.creation_id',Yii::app()->getRequest()->getParam('creation'));
 		else
 			$criteria->compare('t.creation_id',$this->creation_id);
 		
@@ -230,7 +230,7 @@ class AlbumPhotoTag extends CActiveRecord
 				'header' => 'No',
 				'value' => '$this->grid->dataProvider->pagination->currentPage*$this->grid->dataProvider->pagination->pageSize + $row+1'
 			);
-			if(!isset($_GET['media'])) {
+			if(!Yii::app()->getRequest()->getParam('media')) {
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => 'Phrase::trans($data->photo->album->category->name)',
@@ -246,7 +246,7 @@ class AlbumPhotoTag extends CActiveRecord
 					'value' => '$data->photo->media',
 				);
 			}
-			if(!isset($_GET['tag'])) {
+			if(!Yii::app()->getRequest()->getParam('tag')) {
 				$this->defaultColumns[] = array(
 					'name' => 'tag_search',
 					'value' => '$data->tag->body',
