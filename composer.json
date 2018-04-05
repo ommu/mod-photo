@@ -8,17 +8,17 @@
 		"platform",
 		"ommu platform"
 	],
-	"homepage": "https://github.com/ommu/ommu-photo",
+	"homepage": "https://github.com/ommu/mod-photo",
 	"type": "ommu-module",
 	"license": "Apache-2.0",
 	"support": {
-		"issues": "https://github.com/ommu/ommu-photo/issues",
-		"wiki": "https://github.com/ommu/ommu-photo/wiki",
-		"source": "https://github.com/ommu/ommu-photo"
+		"issues": "https://github.com/ommu/mod-photo/issues",
+		"wiki": "https://github.com/ommu/mod-photo/wiki",
+		"source": "https://github.com/ommu/mod-photo"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ommu/ommu-photo.git"
+		"url": "https://github.com/ommu/mod-photo.git"
 	},
 	"authors": [
 		{
