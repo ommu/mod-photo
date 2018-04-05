@@ -9,7 +9,7 @@
  * @contact (+62)856-299-4114
  * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
  * @created date 1 September 2016, 11:58 WIB
- * @link https://github.com/ommu/ommu-photo
+ * @link https://github.com/ommu/mod-photo
  *
  */
 

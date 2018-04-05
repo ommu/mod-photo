@@ -6,7 +6,7 @@
  * @contact (+62)856-299-4114
  * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
  * @created date 3 September 2016, 20:18 WIB
- * @link https://github.com/ommu/ommu-photo
+ * @link https://github.com/ommu/mod-photo
  *
  * This is the template for generating the model class of a specified table.
  * - $this: the ModelCode object
