@@ -38,14 +38,13 @@
 	<?php //begin.Messages ?>
 
 	<h3><?php echo Yii::t('phrase', 'Album Information'); ?></h3>
-	<fieldset class="clearfix">
-		<div class="clear">
-			<div class="left">
-				<div class="shadow"></div>
+	<fieldset>
+		<div class="row">
+			<div class="col-lg-8 col-md-12">
 
-				<div class="clearfix">
-					<?php echo $form->labelEx($model,'cat_id'); ?>
-					<div class="desc">
+				<div class="form-group row">
+					<?php echo $form->labelEx($model,'cat_id', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-8 col-md-9 col-sm-12">
 						<?php
 						$category = AlbumCategory::getCategory();
 
@@ -57,71 +56,28 @@
 					</div>
 				</div>
 
-				<div class="clearfix">
-					<?php echo $form->labelEx($model,'title'); ?>
-					<div class="desc">
+				<div class="form-group row">
+					<?php echo $form->labelEx($model,'title', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-8 col-md-9 col-sm-12">
 						<?php echo $form->textField($model,'title',array('maxlength'=>128, 'class'=>'span-8')); ?>
 						<?php echo $form->error($model,'title'); ?>
 					</div>
 				</div>
 
-				<div class="clearfix">
-					<?php echo $form->labelEx($model,'quote'); ?>
-					<div class="desc">
-						<?php 
-						//echo $form->textArea($model,'quote',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
-						$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
-							'model'=>$model,
-							'attribute'=>quote,
-							// Redactor options
-							'options'=>array(
-								//'lang'=>'fi',
-								'buttons'=>array(
-									'html', '|', 
-									'bold', 'italic', 'deleted', '|',
-								),
-							),
-							'plugins' => array(
-								'fontcolor' => array('js' => array('fontcolor.js')),
-								'fullscreen' => array('js' => array('fullscreen.js')),
-							),
-						)); ?>
-						<span class="small-px">Note : add {$quote} in description albums</span>
-						<?php echo $form->error($model,'quote'); ?>
+				<?php if($model->isNewRecord) {?>
+				<div class="form-group row">
+					<label class="col-form-label col-lg-4 col-md-3 col-sm-12"><?php echo $model->getAttributeLabel('media_i');?></label>
+					<div class="col-lg-8 col-md-9 col-sm-12">
+						<?php echo $form->fileField($model,'media_i',array('maxlength'=>64)); ?>
+						<?php echo $form->error($model,'media_i'); ?>
+						<div class="small-px slient">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></div>
 					</div>
 				</div>
-
-				<div class="clearfix">
-					<?php echo $form->labelEx($model,'body'); ?>
-					<div class="desc">
-						<?php 
-						//echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
-						$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
-							'model'=>$model,
-							'attribute'=>body,
-							// Redactor options
-							'options'=>array(
-								//'lang'=>'fi',
-								'buttons'=>array(
-									'html', 'formatting', '|', 
-									'bold', 'italic', 'deleted', '|',
-									'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-									'link', '|',
-								),
-							),
-							'plugins' => array(
-								'fontcolor' => array('js' => array('fontcolor.js')),
-								'table' => array('js' => array('table.js')),
-								'fullscreen' => array('js' => array('fullscreen.js')),
-							),
-						)); ?>
-						<?php echo $form->error($model,'body'); ?>
-					</div>
-				</div>
+				<?php }?>
 		
-				<div class="clearfix">
-					<?php echo $form->labelEx($model,'keyword_i'); ?>
-					<div class="desc">
+				<div class="form-group row">
+					<?php echo $form->labelEx($model,'keyword_i', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-8 col-md-9 col-sm-12">
 						<?php 
 						if($model->isNewRecord) {
 							echo $form->textArea($model,'keyword_i',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
@@ -159,6 +115,7 @@
 							));
 							echo $form->error($model,'keyword_i');
 						}?>
+						<?php if($model->isNewRecord) {?><div class="small-px slient">tambahkan tanda koma (,) jika ingin menambahkan keyword lebih dari satu</div><?php }?>
 						<div id="keyword-suggest" class="suggest clearfix">
 							<?php 
 							if($setting->meta_keyword && $setting->meta_keyword != '-') {
@@ -176,31 +133,18 @@
 								}
 							}?>
 						</div>
-						<?php if($model->isNewRecord) {?><span class="small-px">tambahkan tanda koma (,) jika ingin menambahkan keyword lebih dari satu</span><?php }?>
 					</div>
 				</div>
 
 			</div>
-
-			<div class="right">
-				<div class="shadow"></div>
-
-				<?php if($model->isNewRecord) {?>
-				<div class="clearfix">
-					<label><?php echo $model->getAttributeLabel('media_i');?></label>
-					<div class="desc">
-						<?php echo $form->fileField($model,'media_i',array('maxlength'=>64)); ?>
-						<?php echo $form->error($model,'media_i'); ?>
-						<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></span>
-					</div>
-				</div>
-				<?php }?>
+			<div class="col-lg-4 col-md-12">
 				
 				<?php if(OmmuSettings::getInfo('site_type') == '1') {?>
-				<div class="clearfix publish">
-					<?php echo $form->labelEx($model,'comment_code'); ?>
-					<div class="desc">
-						<?php echo $form->checkBox($model,'comment_code'); ?><label><?php echo $model->getAttributeLabel('comment_code');?></label>
+				<div class="form-group row publish">
+					<?php echo $form->labelEx($model,'comment_code', array('class'=>'col-form-label col-lg-12 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-12 col-md-9 col-sm-12">
+						<?php echo $form->checkBox($model,'comment_code'); ?>
+						<?php echo $form->labelEx($model, 'comment_code'); ?>
 						<?php echo $form->error($model,'comment_code'); ?>
 					</div>
 				</div>
@@ -210,10 +154,11 @@
 				}?>
 
 				<?php if($setting->headline == 1) {?>
-				<div class="clearfix publish">
-					<?php echo $form->labelEx($model,'headline'); ?>
-					<div class="desc">
-						<?php echo $form->checkBox($model,'headline'); ?><label><?php echo $model->getAttributeLabel('headline');?></label>
+				<div class="form-group row publish">
+					<?php echo $form->labelEx($model,'headline', array('class'=>'col-form-label col-lg-12 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-12 col-md-9 col-sm-12">
+						<?php echo $form->checkBox($model,'headline'); ?>
+						<?php echo $form->labelEx($model, 'headline'); ?>
 						<?php echo $form->error($model,'headline'); ?>
 					</div>
 				</div>
@@ -222,19 +167,78 @@
 					echo $form->hiddenField($model,'headline');
 				}?>
 
-				<div class="clearfix publish">
-					<?php echo $form->labelEx($model,'publish'); ?>
-					<div class="desc">
-						<?php echo $form->checkBox($model,'publish'); ?><label><?php echo $model->getAttributeLabel('publish');?></label>
+				<div class="form-group row publish">
+					<?php echo $form->labelEx($model,'publish', array('class'=>'col-form-label col-lg-12 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-12 col-md-9 col-sm-12">
+						<?php echo $form->checkBox($model,'publish'); ?>
+						<?php echo $form->labelEx($model, 'publish'); ?>
 						<?php echo $form->error($model,'publish'); ?>
 					</div>
 				</div>
 			</div>
 		</div>
 
+	</fieldset>
+
+	<fieldset>
+
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'quote', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
+				<?php 
+				//echo $form->textArea($model,'quote',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
+				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
+					'model'=>$model,
+					'attribute'=>quote,
+					// Redactor options
+					'options'=>array(
+						//'lang'=>'fi',
+						'buttons'=>array(
+							'html', '|', 
+							'bold', 'italic', 'deleted', '|',
+						),
+					),
+					'plugins' => array(
+						'fontcolor' => array('js' => array('fontcolor.js')),
+						'fullscreen' => array('js' => array('fullscreen.js')),
+					),
+				)); ?>
+				<div class="small-px slient">Note : add {$quote} in description albums</div>
+				<?php echo $form->error($model,'quote'); ?>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'body', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
+				<?php 
+				//echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
+				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
+					'model'=>$model,
+					'attribute'=>body,
+					// Redactor options
+					'options'=>array(
+						//'lang'=>'fi',
+						'buttons'=>array(
+							'html', 'formatting', '|', 
+							'bold', 'italic', 'deleted', '|',
+							'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+							'link', '|',
+						),
+					),
+					'plugins' => array(
+						'fontcolor' => array('js' => array('fontcolor.js')),
+						'table' => array('js' => array('table.js')),
+						'fullscreen' => array('js' => array('fullscreen.js')),
+					),
+				)); ?>
+				<?php echo $form->error($model,'body'); ?>
+			</div>
+		</div>
+
 		<div class="submit clearfix">
-			<label>&nbsp;</label>
-			<div class="desc">
+			<label class="col-form-label col-lg-4 col-md-3 col-sm-12">&nbsp;</label>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save'), array('onclick' => 'setEnableSave()')); ?>
 			</div>
 		</div>

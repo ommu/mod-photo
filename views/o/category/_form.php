@@ -49,9 +49,9 @@ EOP;
 
 <fieldset>
 
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'title_i'); ?>
-		<div class="desc">
+	<div class="form-group row">
+		<?php echo $form->labelEx($model,'title_i', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php 
 			if(!$model->getErrors())
 				$model->title_i = Phrase::trans($model->name);
@@ -61,9 +61,9 @@ EOP;
 		</div>
 	</div>
 
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'description_i'); ?>
-		<div class="desc">
+	<div class="form-group row">
+		<?php echo $form->labelEx($model,'description_i', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php 
 			if(!$model->getErrors())
 				$model->description_i = Phrase::trans($model->desc);
@@ -73,28 +73,29 @@ EOP;
 		</div>
 	</div>
 
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'default_setting'); ?>
-		<div class="desc">
+	<div class="form-group row publish">
+		<?php echo $form->labelEx($model,'default_setting', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo $form->checkBox($model,'default_setting'); ?>
+			<?php echo $form->labelEx($model, 'default_setting'); ?>
 			<?php echo $form->error($model,'default_setting'); ?>
 			<div class="small-px silent pt-10"><?php echo Yii::t('phrase', 'Check jika ingin menggunakan pengaturan standar');?></div>
 		</div>
 	</div>
 
 	<div id="default-setting" class="<?php echo $model->default_setting == 1 ? 'hide' : '';?>">
-		<div class="clearfix">
-			<label><?php echo $model->getAttributeLabel('photo_limit');?> <span class="required">*</span></label>
-			<div class="desc">
+		<div class="form-group row">
+			<label class="col-form-label col-lg-4 col-md-3 col-sm-12"><?php echo $model->getAttributeLabel('photo_limit');?> <span class="required">*</span></label>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php echo $form->textField($model,'photo_limit'); ?>
 				<?php echo $form->error($model,'photo_limit'); ?>
 				<?php /*<div class="small-px silent"></div>*/?>
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<label><?php echo Yii::t('phrase', 'Photo Setting');?> <span class="required">*</span></label>
-			<div class="desc">
+		<div class="form-group row">
+			<label class="col-form-label col-lg-4 col-md-3 col-sm-12"><?php echo Yii::t('phrase', 'Photo Setting');?> <span class="required">*</span></label>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<p><?php echo $model->getAttributeLabel('photo_resize');?></p>
 				<?php echo $form->radioButtonList($model, 'photo_resize', array(
 					0 => Yii::t('phrase', 'No, not resize photo after upload.'),
@@ -130,27 +131,29 @@ EOP;
 		</div>
 	</div>
 
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'default'); ?>
-		<div class="desc">
+	<div class="form-group row publish">
+		<?php echo $form->labelEx($model,'default', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo $form->checkBox($model,'default'); ?>
+			<?php echo $form->labelEx($model, 'default'); ?>
 			<?php echo $form->error($model,'default'); ?>
 			<?php /*<div class="small-px silent"></div>*/?>
 		</div>
 	</div>
 
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'publish'); ?>
-		<div class="desc">
+	<div class="form-group row publish">
+		<?php echo $form->labelEx($model,'publish', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo $form->checkBox($model,'publish'); ?>
+			<?php echo $form->labelEx($model, 'publish'); ?>
 			<?php echo $form->error($model,'publish'); ?>
 			<?php /*<div class="small-px silent"></div>*/?>
 		</div>
 	</div>
 
 	<div class="submit clearfix">
-		<label>&nbsp;</label>
-		<div class="desc">
+		<label class="col-form-label col-lg-4 col-md-3 col-sm-12">&nbsp;</label>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save'), array('onclick' => 'setEnableSave()')); ?>
 		</div>
 	</div>

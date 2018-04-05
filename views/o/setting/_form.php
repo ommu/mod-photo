@@ -49,12 +49,12 @@ EOP;
 
 	<fieldset>
 
-		<div class="clearfix">
-			<label>
+		<div class="form-group row">
+			<label class="col-form-label col-lg-4 col-md-3 col-sm-12">
 				<?php echo $model->getAttributeLabel('license');?> <span class="required">*</span><br/>
 				<span><?php echo Yii::t('phrase', 'Enter the your license key that is provided to you when you purchased this plugin. If you do not know your license key, please contact support team.');?></span>
 			</label>
-			<div class="desc">
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php 
 				if($model->isNewRecord || (!$model->isNewRecord && $model->license == ''))
 					$model->license = AlbumSetting::getLicense();
@@ -64,14 +64,14 @@ EOP;
 				else
 					echo $form->textField($model,'license',array('maxlength'=>32,'class'=>'span-4','disabled'=>'disabled'));?>
 				<?php echo $form->error($model,'license'); ?>
-				<span class="small-px"><?php echo Yii::t('phrase', 'Format: XXXX-XXXX-XXXX-XXXX');?></span>
+				<div class="small-px slient"><?php echo Yii::t('phrase', 'Format: XXXX-XXXX-XXXX-XXXX');?></div>
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<?php echo $form->labelEx($model,'permission'); ?>
-			<div class="desc">
-				<span class="small-px"><?php echo Yii::t('phrase', 'Select whether or not you want to let the public (visitors that are not logged-in) to view the following sections of your social network. In some cases (such as Profiles, Blogs, and Albums), if you have given them the option, your users will be able to make their pages private even though you have made them publically viewable here. For more permissions settings, please visit the General Settings page.');?></span>
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'permission', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
+				<div class="small-px slient"><?php echo Yii::t('phrase', 'Select whether or not you want to let the public (visitors that are not logged-in) to view the following sections of your social network. In some cases (such as Profiles, Blogs, and Albums), if you have given them the option, your users will be able to make their pages private even though you have made them publically viewable here. For more permissions settings, please visit the General Settings page.');?></div>
 				<?php 
 				if($model->isNewRecord && !$model->getErrors())
 					$model->permission = 1;
@@ -83,25 +83,25 @@ EOP;
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<?php echo $form->labelEx($model,'meta_description'); ?>
-			<div class="desc">
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'meta_description', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php echo $form->textArea($model,'meta_description',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
 				<?php echo $form->error($model,'meta_description'); ?>
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<?php echo $form->labelEx($model,'meta_keyword'); ?>
-			<div class="desc">
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'meta_keyword', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php echo $form->textArea($model,'meta_keyword',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
 				<?php echo $form->error($model,'meta_keyword'); ?>
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<?php echo $form->labelEx($model,'gridview_column'); ?>
-			<div class="desc">
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'gridview_column', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php 
 				$customField = array(
 					'creation_search' => $album->getAttributeLabel('creation_search'),
@@ -118,9 +118,9 @@ EOP;
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<?php echo $form->labelEx($model,'headline'); ?>
-			<div class="desc">
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'headline', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php 
 				if($model->isNewRecord && !$model->getErrors())
 					$model->headline = 1;
@@ -133,9 +133,9 @@ EOP;
 		</div>
 		
 		<div id="headline" class="<?php echo $model->headline == 0 ? 'hide' : '';?>">
-			<div class="clearfix">
-				<?php echo $form->labelEx($model,'headline_limit'); ?>
-				<div class="desc">
+			<div class="form-group row">
+				<?php echo $form->labelEx($model,'headline_limit', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+				<div class="col-lg-8 col-md-9 col-sm-12">
 					<?php 
 					if($model->isNewRecord && !$model->getErrors())
 						$model->headline_limit = 0;
@@ -144,9 +144,9 @@ EOP;
 				</div>
 			</div>
 
-			<div class="clearfix">
-				<?php echo $form->labelEx($model,'headline_category'); ?>
-				<div class="desc">
+			<div class="form-group row">
+				<?php echo $form->labelEx($model,'headline_category', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+				<div class="col-lg-8 col-md-9 col-sm-12">
 					<?php 
 					$parent = null;
 					$category = AlbumCategory::getCategory(1);
@@ -161,17 +161,17 @@ EOP;
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<?php echo $form->labelEx($model,'photo_limit'); ?>
-			<div class="desc">
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'photo_limit', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php echo $form->textField($model,'photo_limit', array('class'=>'span-2')); ?>
 				<?php echo $form->error($model,'photo_limit'); ?>
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<label><?php echo Yii::t('phrase', 'Photo Setting');?> <span class="required">*</span></label>
-			<div class="desc">
+		<div class="form-group row">
+			<label class="col-form-label col-lg-4 col-md-3 col-sm-12"><?php echo Yii::t('phrase', 'Photo Setting');?> <span class="required">*</span></label>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<p><?php echo $model->getAttributeLabel('photo_resize');?></p>
 				<?php 
 				if($model->isNewRecord && !$model->getErrors())
@@ -209,9 +209,9 @@ EOP;
 			</div>
 		</div>
 
-		<div class="clearfix">
-			<?php echo $form->labelEx($model,'photo_file_type'); ?>
-			<div class="desc">
+		<div class="form-group row">
+			<?php echo $form->labelEx($model,'photo_file_type', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php 
 				if(!$model->getErrors()) {
 					$photo_file_type = unserialize($model->photo_file_type);
@@ -222,13 +222,13 @@ EOP;
 				}
 				echo $form->textField($model,'photo_file_type', array('class'=>'span-6')); ?>
 				<?php echo $form->error($model,'photo_file_type'); ?>
-				<span class="small-px">pisahkan jenis file dengan koma (,). example: "jpg, png, bmp"</span>
+				<div class="small-px slient">pisahkan jenis file dengan koma (,). example: "jpg, png, bmp"</div>
 			</div>
 		</div>
 
 		<div class="submit clearfix">
-			<label>&nbsp;</label>
-			<div class="desc">
+			<label class="col-form-label col-lg-4 col-md-3 col-sm-12">&nbsp;</label>
+			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save'), array('onclick' => 'setEnableSave()')); ?>
 			</div>
 		</div>

@@ -28,9 +28,9 @@
 <fieldset>
 	
 	<?php if(!$model->isNewRecord) {?>
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'old_media_i'); ?>
-		<div class="desc">
+	<div class="form-group row">
+		<?php echo $form->labelEx($model,'old_media_i', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php 
 			if(!$model->getErrors())
 				$model->old_media_i = $model->media;
@@ -41,27 +41,27 @@
 	</div>
 	<?php }?>
 
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'media'); ?>
-		<div class="desc">
+	<div class="form-group row">
+		<?php echo $form->labelEx($model,'media', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo $form->fileField($model,'media'); ?>
 			<?php echo $form->error($model,'media'); ?>
-			<span class="small-px">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></span>
+			<div class="small-px slient">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></div>
 		</div>
 	</div>
 
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'caption'); ?>
-		<div class="desc">
+	<div class="form-group row">
+		<?php echo $form->labelEx($model,'caption', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo $form->textArea($model,'caption',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
 			<?php echo $form->error($model,'caption'); ?>
 		</div>
 	</div>
 	
 	<?php if(!$model->isNewRecord) {?>
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'keyword_i'); ?>
-		<div class="desc">
+	<div class="form-group row">
+		<?php echo $form->labelEx($model,'keyword_i', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php 
 			if(!$model->isNewRecord) {
 				//echo $form->textField($model,'keyword_i',array('maxlength'=>32,'class'=>'span-6'));
@@ -110,25 +110,27 @@
 	</div>
 	<?php }?>
 	
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'cover'); ?>
-		<div class="desc">
+	<div class="form-group row publish">
+		<?php echo $form->labelEx($model,'cover', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo $form->checkBox($model,'cover'); ?>
+			<?php echo $form->labelEx($model, 'cover'); ?>
 			<?php echo $form->error($model,'cover'); ?>
 		</div>
 	</div>
 
-	<div class="clearfix">
-		<?php echo $form->labelEx($model,'publish'); ?>
-		<div class="desc">
+	<div class="form-group row publish">
+		<?php echo $form->labelEx($model,'publish', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo $form->checkBox($model,'publish'); ?>
+			<?php echo $form->labelEx($model, 'publish'); ?>
 			<?php echo $form->error($model,'publish'); ?>
 		</div>
 	</div>
 
 	<div class="submit clearfix">
-		<label>&nbsp;</label>
-		<div class="desc">
+		<label class="col-form-label col-lg-4 col-md-3 col-sm-12">&nbsp;</label>
+		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save'), array('onclick' => 'setEnableSave()')); ?>
 		</div>
 	</div>
