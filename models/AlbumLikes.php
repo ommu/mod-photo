@@ -281,6 +281,8 @@ class AlbumLikes extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
+				'filter' => 'native-datepicker',
+				/*
 				'filter' => Yii::app()->controller->widget('application.libraries.core.components.system.CJuiDatePicker', array(
 					'model'=>$this,
 					'attribute'=>'likes_date',
@@ -302,6 +304,7 @@ class AlbumLikes extends CActiveRecord
 						'showButtonPanel' => true,
 					),
 				), true),
+				*/
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'likes_ip',

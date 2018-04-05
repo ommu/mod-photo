@@ -265,6 +265,8 @@ class AlbumViews extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
+				'filter' => 'native-datepicker',
+				/*
 				'filter' => Yii::app()->controller->widget('application.libraries.core.components.system.CJuiDatePicker', array(
 					'model'=>$this,
 					'attribute'=>'view_date',
@@ -273,6 +275,8 @@ class AlbumViews extends CActiveRecord
 					//'mode'=>'datetime',
 					'htmlOptions' => array(
 						'id' => 'view_date_filter',
+						'on_datepicker' => 'on',
+						'placeholder' => Yii::t('phrase', 'filter'),
 					),
 					'options'=>array(
 						'showOn' => 'focus',
@@ -284,6 +288,7 @@ class AlbumViews extends CActiveRecord
 						'showButtonPanel' => true,
 					),
 				), true),
+				*/
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'view_ip',

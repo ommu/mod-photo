@@ -104,7 +104,6 @@
 				'id'=>'album-likes-grid',
 				'dataProvider'=>$model->search(),
 				'filter'=>$model,
-				'afterAjaxUpdate' => 'reinstallDatePicker',
 				'columns' => $columnData,
 				'pager' => array('header' => ''),
 			));

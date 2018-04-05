@@ -262,6 +262,8 @@ class AlbumPhotoTag extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
+				'filter' => 'native-datepicker',
+				/*
 				'filter' => Yii::app()->controller->widget('application.libraries.core.components.system.CJuiDatePicker', array(
 					'model'=>$this,
 					'attribute'=>'creation_date',
@@ -283,6 +285,7 @@ class AlbumPhotoTag extends CActiveRecord
 						'showButtonPanel' => true,
 					),
 				), true),
+				*/
 			);
 		}
 		parent::afterConstruct();
