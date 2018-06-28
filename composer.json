@@ -7,7 +7,7 @@
 		"gallery",
 		"photo",
 		"ommu",
-		"ommu platform"
+		"ommu-platform"
 	],
 	"homepage": "https://github.com/ommu/mod-photo",
 	"type": "ommu-module",

@@ -253,21 +253,22 @@ class AlbumSetting extends CActiveRecord
 	}
 
 	/**
-	 * User get information
+	 * Albums get information
 	 */
-	public static function getInfo($column, $type=null)
+	public static function getInfo($column=null)
 	{
-		if($type != null && $type == 'many') {
+		if($column != null) {
 			$model = self::model()->findByPk(1,array(
-				'select' => $column
+				'select' => $column,
 			));
-			return $model;
-
+			if(count(explode(',', $column)) == 1)
+				return $model->$column;
+			else
+				return $model;
+			
 		} else {
-			$model = self::model()->findByPk(1,array(
-				'select' => $column
-			));
-			return $model->$column;
+			$model = self::model()->findByPk(1);
+			return $model;
 		}
 	}
 
