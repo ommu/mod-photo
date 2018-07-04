@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  * This is the template for generating the model class of a specified table.
@@ -148,30 +148,30 @@ class AlbumSetting extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.id',$this->id);
-		$criteria->compare('t.license',$this->license,true);
-		$criteria->compare('t.permission',$this->permission);
-		$criteria->compare('t.meta_keyword',$this->meta_keyword,true);
-		$criteria->compare('t.meta_description',$this->meta_description,true);
-		$criteria->compare('t.gridview_column',$this->gridview_column,true);
-		$criteria->compare('t.headline',$this->headline);
-		$criteria->compare('t.headline_limit',$this->headline_limit);
-		$criteria->compare('t.headline_category',$this->headline_category,true);
-		$criteria->compare('t.photo_limit',$this->photo_limit);
-		$criteria->compare('t.photo_resize',$this->photo_resize);
-		$criteria->compare('t.photo_resize_size',$this->photo_resize_size,true);
-		$criteria->compare('t.photo_view_size',$this->photo_view_size,true);
-		$criteria->compare('t.photo_file_type',$this->photo_file_type,true);
-		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+		$criteria->compare('t.id', $this->id);
+		$criteria->compare('t.license', $this->license,true);
+		$criteria->compare('t.permission', $this->permission);
+		$criteria->compare('t.meta_keyword', $this->meta_keyword,true);
+		$criteria->compare('t.meta_description', $this->meta_description,true);
+		$criteria->compare('t.gridview_column', $this->gridview_column,true);
+		$criteria->compare('t.headline', $this->headline);
+		$criteria->compare('t.headline_limit', $this->headline_limit);
+		$criteria->compare('t.headline_category', $this->headline_category,true);
+		$criteria->compare('t.photo_limit', $this->photo_limit);
+		$criteria->compare('t.photo_resize', $this->photo_resize);
+		$criteria->compare('t.photo_resize_size', $this->photo_resize_size,true);
+		$criteria->compare('t.photo_view_size', $this->photo_view_size,true);
+		$criteria->compare('t.photo_file_type', $this->photo_file_type,true);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.modified_date)', date('Y-m-d', strtotime($this->modified_date)));
 		if(Yii::app()->getRequest()->getParam('modified'))
 			$criteria->compare('t.modified_id',Yii::app()->getRequest()->getParam('modified'));
 		else
-			$criteria->compare('t.modified_id',$this->modified_id);
+			$criteria->compare('t.modified_id', $this->modified_id);
 		
-		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
+		$criteria->compare('modified.displayname', strtolower($this->modified_search), true);
 
-		if(!isset($_GET['AlbumSetting_sort']))
+		if(!Yii::app()->getRequest()->getParam('AlbumSetting_sort'))
 			$criteria->order = 't.id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -258,7 +258,7 @@ class AlbumSetting extends CActiveRecord
 	public static function getInfo($column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk(1,array(
+			$model = self::model()->findByPk(1, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)
@@ -286,33 +286,6 @@ class AlbumSetting extends CActiveRecord
 			$headline_category = array();
 		
 		return $headline_category;		
-	}
-
-	/**
-	 * get Module License
-	 */
-	public static function getLicense($source='1234567890', $length=16, $char=4)
-	{
-		$mod = $length%$char;
-		if($mod == 0)
-			$sep = ($length/$char);
-		else
-			$sep = (int)($length/$char)+1;
-		
-		$sourceLength = strlen($source);
-		$random = '';
-		for ($i = 0; $i < $length; $i++)
-			$random .= $source[rand(0, $sourceLength - 1)];
-		
-		$license = '';
-		for ($i = 0; $i < $sep; $i++) {
-			if($i != $sep-1)
-				$license .= substr($random,($i*$char),$char).'-';
-			else
-				$license .= substr($random,($i*$char),$char);
-		}
-
-		return $license;
 	}
 
 	/**

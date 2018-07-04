@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  * This is the template for generating the model class of a specified table.
@@ -171,47 +171,47 @@ class AlbumPhoto extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.media_id',$this->media_id);
+		$criteria->compare('t.media_id', $this->media_id);
 		if(Yii::app()->getRequest()->getParam('type') == 'publish') {
-			$criteria->compare('t.publish',1);
+			$criteria->compare('t.publish', 1);
 		} elseif(Yii::app()->getRequest()->getParam('type') == 'unpublish') {
-			$criteria->compare('t.publish',0);
+			$criteria->compare('t.publish', 0);
 		} elseif(Yii::app()->getRequest()->getParam('type') == 'trash') {
-			$criteria->compare('t.publish',2);
+			$criteria->compare('t.publish', 2);
 		} else {
-			$criteria->addInCondition('t.publish',array(0,1));
-			$criteria->compare('t.publish',$this->publish);
+			$criteria->addInCondition('t.publish', array(0,1));
+			$criteria->compare('t.publish', $this->publish);
 		}
 		if(Yii::app()->getRequest()->getParam('album'))
 			$criteria->compare('t.album_id',Yii::app()->getRequest()->getParam('album'));
 		else
-			$criteria->compare('t.album_id',$this->album_id);
-		$criteria->compare('t.cover',$this->cover);
-		$criteria->compare('t.media',$this->media,true);
-		$criteria->compare('t.caption',$this->caption,true);
-		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
+			$criteria->compare('t.album_id', $this->album_id);
+		$criteria->compare('t.cover', $this->cover);
+		$criteria->compare('t.media', $this->media,true);
+		$criteria->compare('t.caption', $this->caption,true);
+		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.creation_date)', date('Y-m-d', strtotime($this->creation_date)));
 		if(Yii::app()->getRequest()->getParam('creation'))
 			$criteria->compare('t.creation_id',Yii::app()->getRequest()->getParam('creation'));
 		else
-			$criteria->compare('t.creation_id',$this->creation_id);
-		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+			$criteria->compare('t.creation_id', $this->creation_id);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.modified_date)', date('Y-m-d', strtotime($this->modified_date)));
 		if(Yii::app()->getRequest()->getParam('modified'))
 			$criteria->compare('t.modified_id',Yii::app()->getRequest()->getParam('modified'));
 		else
-			$criteria->compare('t.modified_id',$this->modified_id);
+			$criteria->compare('t.modified_id', $this->modified_id);
 		
-		$criteria->compare('album.cat_id',$this->category_search);
-		$criteria->compare('album.title',strtolower($this->album_search),true);
+		$criteria->compare('album.cat_id', $this->category_search);
+		$criteria->compare('album.title', strtolower($this->album_search), true);
 		if(Yii::app()->getRequest()->getParam('album') && Yii::app()->getRequest()->getParam('publish'))
 			$criteria->compare('album.publish',Yii::app()->getRequest()->getParam('publish'));
-		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
-		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
-		$criteria->compare('view.caption',$this->photo_caption_search);
-		$criteria->compare('view.tag',$this->photo_tag_search);
+		$criteria->compare('creation.displayname', strtolower($this->creation_search), true);
+		$criteria->compare('modified.displayname', strtolower($this->modified_search), true);
+		$criteria->compare('view.caption', $this->photo_caption_search);
+		$criteria->compare('view.tag', $this->photo_tag_search);
 
-		if(!isset($_GET['AlbumPhoto_sort']))
+		if(!Yii::app()->getRequest()->getParam('AlbumPhoto_sort'))
 			$criteria->order = 't.media_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -354,7 +354,7 @@ class AlbumPhoto extends CActiveRecord
 			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->media_id)), $data->publish, 1)',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish", array("id"=>$data->media_id)), $data->publish, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -375,7 +375,7 @@ class AlbumPhoto extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

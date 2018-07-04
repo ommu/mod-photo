@@ -21,7 +21,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 26 August 2016, 23:10 WIB
  * @link https://github.com/ommu/mod-photo
  *
@@ -129,7 +129,7 @@ class CategoryController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'Album Categories');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_manage',array(
+		$this->render('admin_manage', array(
 			'model'=>$model,
 			'columns' => $columns,
 		));
@@ -184,7 +184,7 @@ class CategoryController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'Create Category');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_add',array(
+		$this->render('admin_add', array(
 			'model'=>$model,
 		));
 	}
@@ -237,7 +237,7 @@ class CategoryController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'Update Category: {category_name}', array('{category_name}'=>Phrase::trans($model->name)));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_edit',array(
+		$this->render('admin_edit', array(
 			'model'=>$model,
 		));
 	}
@@ -253,7 +253,7 @@ class CategoryController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'View Category: {category_name}', array('{category_name}'=>Phrase::trans($model->name)));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_view',array(
+		$this->render('admin_view', array(
 			'model'=>$model,
 		));
 	}	
@@ -370,7 +370,7 @@ class CategoryController extends Controller
 			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
-			$this->render('admin_publish',array(
+			$this->render('admin_publish', array(
 				'title'=>$title,
 				'model'=>$model,
 			));

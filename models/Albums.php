@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  * This is the template for generating the model class of a specified table.
@@ -59,7 +59,7 @@ class Albums extends CActiveRecord
 	{
 		return array(
 			'sluggable' => array(
-				'class'=>'ext.yii-behavior-sluggable.SluggableBehavior',
+				'class'=>'ext.yii-sluggable.SluggableBehavior',
 				'columns' => array('title'),
 				'unique' => true,
 				'update' => true,
@@ -191,47 +191,47 @@ class Albums extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.album_id',$this->album_id);
+		$criteria->compare('t.album_id', $this->album_id);
 		if(Yii::app()->getRequest()->getParam('type') == 'publish') {
-			$criteria->compare('t.publish',1);
+			$criteria->compare('t.publish', 1);
 		} elseif(Yii::app()->getRequest()->getParam('type') == 'unpublish') {
-			$criteria->compare('t.publish',0);
+			$criteria->compare('t.publish', 0);
 		} elseif(Yii::app()->getRequest()->getParam('type') == 'trash') {
-			$criteria->compare('t.publish',2);
+			$criteria->compare('t.publish', 2);
 		} else {
-			$criteria->addInCondition('t.publish',array(0,1));
-			$criteria->compare('t.publish',$this->publish);
+			$criteria->addInCondition('t.publish', array(0,1));
+			$criteria->compare('t.publish', $this->publish);
 		}
 		if(Yii::app()->getRequest()->getParam('category'))
 			$criteria->compare('t.cat_id',Yii::app()->getRequest()->getParam('category'));
 		else
-			$criteria->compare('t.cat_id',$this->cat_id);
-		$criteria->compare('t.title',$this->title,true);
-		$criteria->compare('t.body',$this->body,true);
-		$criteria->compare('t.quote',$this->quote,true);
-		$criteria->compare('t.headline',$this->headline);
-		$criteria->compare('t.comment_code',$this->comment_code);
-		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
+			$criteria->compare('t.cat_id', $this->cat_id);
+		$criteria->compare('t.title', $this->title,true);
+		$criteria->compare('t.body', $this->body,true);
+		$criteria->compare('t.quote', $this->quote,true);
+		$criteria->compare('t.headline', $this->headline);
+		$criteria->compare('t.comment_code', $this->comment_code);
+		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.creation_date)', date('Y-m-d', strtotime($this->creation_date)));
 		if(Yii::app()->getRequest()->getParam('creation'))
 			$criteria->compare('t.creation_id',Yii::app()->getRequest()->getParam('creation'));
 		else
-			$criteria->compare('t.creation_id',$this->creation_id);
-		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+			$criteria->compare('t.creation_id', $this->creation_id);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.modified_date)', date('Y-m-d', strtotime($this->modified_date)));
 		if(Yii::app()->getRequest()->getParam('modified'))
 			$criteria->compare('t.modified_id',Yii::app()->getRequest()->getParam('modified'));
 		else
-			$criteria->compare('t.modified_id',$this->modified_id);
+			$criteria->compare('t.modified_id', $this->modified_id);
 		
-		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
-		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
-		$criteria->compare('view.photos',$this->photo_search);
-		$criteria->compare('view.views',$this->view_search);
-		$criteria->compare('view.likes',$this->like_search);
-		$criteria->compare('view.tags',$this->tag_search);
+		$criteria->compare('creation.displayname', strtolower($this->creation_search), true);
+		$criteria->compare('modified.displayname', strtolower($this->modified_search), true);
+		$criteria->compare('view.photos', $this->photo_search);
+		$criteria->compare('view.views', $this->view_search);
+		$criteria->compare('view.likes', $this->like_search);
+		$criteria->compare('view.tags', $this->tag_search);
 
-		if(!isset($_GET['Albums_sort']))
+		if(!Yii::app()->getRequest()->getParam('Albums_sort'))
 			$criteria->order = 't.album_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -356,7 +356,7 @@ class Albums extends CActiveRecord
 			if(in_array('photo_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'photo_search',
-					'value' => 'CHtml::link($data->view->photos ? $data->view->photos : 0, Yii::app()->controller->createUrl("o/photo/manage",array("album"=>$data->album_id)))',
+					'value' => 'CHtml::link($data->view->photos ? $data->view->photos : 0, Yii::app()->controller->createUrl("o/photo/manage", array("album"=>$data->album_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -366,7 +366,7 @@ class Albums extends CActiveRecord
 			if(in_array('view_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'view_search',
-					'value' => 'CHtml::link($data->view->views ? $data->view->views : 0, Yii::app()->controller->createUrl("o/view/manage",array("album"=>$data->album_id)))',
+					'value' => 'CHtml::link($data->view->views ? $data->view->views : 0, Yii::app()->controller->createUrl("o/view/manage", array("album"=>$data->album_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -376,7 +376,7 @@ class Albums extends CActiveRecord
 			if(in_array('like_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'like_search',
-					'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("o/like/manage",array("album"=>$data->album_id)))',
+					'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("o/like/manage", array("album"=>$data->album_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -386,7 +386,7 @@ class Albums extends CActiveRecord
 			if(in_array('tag_search', $gridview_column)) {
 				$this->defaultColumns[] = array(
 					'name' => 'tag_search',
-					'value' => 'CHtml::link($data->view->tags ? $data->view->tags : 0, Yii::app()->controller->createUrl("o/tag/manage",array("album"=>$data->album_id)))',
+					'value' => 'CHtml::link($data->view->tags ? $data->view->tags : 0, Yii::app()->controller->createUrl("o/tag/manage", array("album"=>$data->album_id)))',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -396,7 +396,7 @@ class Albums extends CActiveRecord
 			if($setting->headline == 1) {
 				$this->defaultColumns[] = array(
 					'name' => 'headline',
-					'value' => 'in_array($data->cat_id, AlbumSetting::getHeadlineCategory()) ? ($data->headline == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Utility::getPublish(Yii::app()->controller->createUrl("headline",array("id"=>$data->album_id)), $data->headline, 1)) : \'-\'',
+					'value' => 'in_array($data->cat_id, AlbumSetting::getHeadlineCategory()) ? ($data->headline == 1 ? CHtml::image(Yii::app()->theme->baseUrl.\'/images/icons/publish.png\') : Utility::getPublish(Yii::app()->controller->createUrl("headline", array("id"=>$data->album_id)), $data->headline, 1)) : \'-\'',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -410,7 +410,7 @@ class Albums extends CActiveRecord
 			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->album_id)), $data->publish, 1)',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish", array("id"=>$data->album_id)), $data->publish, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -431,7 +431,7 @@ class Albums extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

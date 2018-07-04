@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  * This is the template for generating the model class of a specified table.
@@ -54,7 +54,7 @@ class AlbumCategory extends CActiveRecord
 	{
 		return array(
 			'sluggable' => array(
-				'class'=>'ext.yii-behavior-sluggable.SluggableBehavior',
+				'class'=>'ext.yii-sluggable.SluggableBehavior',
 				'columns' => array('title.en_us'),
 				'unique' => true,
 				'update' => true,
@@ -196,45 +196,45 @@ class AlbumCategory extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.cat_id',$this->cat_id);
+		$criteria->compare('t.cat_id', $this->cat_id);
 		if(Yii::app()->getRequest()->getParam('type') == 'publish')
-			$criteria->compare('t.publish',1);
+			$criteria->compare('t.publish', 1);
 		elseif(Yii::app()->getRequest()->getParam('type') == 'unpublish')
-			$criteria->compare('t.publish',0);
+			$criteria->compare('t.publish', 0);
 		elseif(Yii::app()->getRequest()->getParam('type') == 'trash')
-			$criteria->compare('t.publish',2);
+			$criteria->compare('t.publish', 2);
 		else {
-			$criteria->addInCondition('t.publish',array(0,1));
-			$criteria->compare('t.publish',$this->publish);
+			$criteria->addInCondition('t.publish', array(0,1));
+			$criteria->compare('t.publish', $this->publish);
 		}
-		$criteria->compare('t.name',$this->name);
-		$criteria->compare('t.desc',$this->desc);
-		$criteria->compare('t.default',$this->default);
-		$criteria->compare('t.default_setting',$this->default_setting);
-		$criteria->compare('t.photo_limit',$this->photo_limit);
-		$criteria->compare('t.photo_resize',$this->photo_resize);
-		$criteria->compare('t.photo_resize_size',strtolower($this->photo_resize_size),true);
-		$criteria->compare('t.photo_view_size',strtolower($this->photo_view_size),true);
-		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
+		$criteria->compare('t.name', $this->name);
+		$criteria->compare('t.desc', $this->desc);
+		$criteria->compare('t.default', $this->default);
+		$criteria->compare('t.default_setting', $this->default_setting);
+		$criteria->compare('t.photo_limit', $this->photo_limit);
+		$criteria->compare('t.photo_resize', $this->photo_resize);
+		$criteria->compare('t.photo_resize_size', strtolower($this->photo_resize_size), true);
+		$criteria->compare('t.photo_view_size', strtolower($this->photo_view_size), true);
+		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.creation_date)', date('Y-m-d', strtotime($this->creation_date)));
 		if(Yii::app()->getRequest()->getParam('creation'))
 			$criteria->compare('t.creation_id',Yii::app()->getRequest()->getParam('creation'));
 		else
-			$criteria->compare('t.creation_id',$this->creation_id);
-		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.modified_date)',date('Y-m-d', strtotime($this->modified_date)));
+			$criteria->compare('t.creation_id', $this->creation_id);
+		if($this->modified_date != null && !in_array($this->modified_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.modified_date)', date('Y-m-d', strtotime($this->modified_date)));
 		if(Yii::app()->getRequest()->getParam('modified'))
 			$criteria->compare('t.modified_id',Yii::app()->getRequest()->getParam('modified'));
 		else
-			$criteria->compare('t.modified_id',$this->modified_id);
+			$criteria->compare('t.modified_id', $this->modified_id);
 		
-		$criteria->compare('title.'.$language,strtolower($this->title_i),true);
-		$criteria->compare('description.'.$language,strtolower($this->description_i),true);
-		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
-		$criteria->compare('modified.displayname',strtolower($this->modified_search),true);
-		$criteria->compare('view.albums',$this->album_search);
+		$criteria->compare('title.'.$language, strtolower($this->title_i), true);
+		$criteria->compare('description.'.$language, strtolower($this->description_i), true);
+		$criteria->compare('creation.displayname', strtolower($this->creation_search), true);
+		$criteria->compare('modified.displayname', strtolower($this->modified_search), true);
+		$criteria->compare('view.albums', $this->album_search);
 
-		if(!isset($_GET['AlbumCategory_sort']))
+		if(!Yii::app()->getRequest()->getParam('AlbumCategory_sort'))
 			$criteria->order = 't.cat_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -358,7 +358,7 @@ class AlbumCategory extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'album_search',
-				'value' => 'CHtml::link($data->view->albums ? $data->view->albums : 0, Yii::app()->controller->createUrl("o/admin/manage",array("category"=>$data->cat_id)))',
+				'value' => 'CHtml::link($data->view->albums ? $data->view->albums : 0, Yii::app()->controller->createUrl("o/admin/manage", array("category"=>$data->cat_id)))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -379,7 +379,7 @@ class AlbumCategory extends CActiveRecord
 			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->cat_id)), $data->publish, 1)',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish", array("id"=>$data->cat_id)), $data->publish, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -400,7 +400,7 @@ class AlbumCategory extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

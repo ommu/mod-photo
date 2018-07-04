@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 3 September 2016, 20:18 WIB
  * @link https://github.com/ommu/mod-photo
  *
@@ -119,12 +119,12 @@ class ViewAlbumPhotoTag extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('t.tag_id',$this->tag_id);
-		$criteria->compare('t.album_id',$this->album_id);
-		$criteria->compare('t.media_id',$this->media_id);
-		$criteria->compare('t.photos',$this->photos);
+		$criteria->compare('t.tag_id', $this->tag_id);
+		$criteria->compare('t.album_id', $this->album_id);
+		$criteria->compare('t.media_id', $this->media_id);
+		$criteria->compare('t.photos', $this->photos);
 
-		if(!isset($_GET['ViewAlbumPhotoTag_sort']))
+		if(!Yii::app()->getRequest()->getParam('ViewAlbumPhotoTag_sort'))
 			$criteria->order = 't.tag_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -185,7 +185,7 @@ class ViewAlbumPhotoTag extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

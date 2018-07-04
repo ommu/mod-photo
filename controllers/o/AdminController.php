@@ -23,7 +23,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  *----------------------------------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ class AdminController extends Controller
 		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_manage',array(
+		$this->render('admin_manage', array(
 			'model'=>$model,
 			'columns' => $columns,
 		));
@@ -149,7 +149,7 @@ class AdminController extends Controller
 	public function actionAdd() 
 	{
 		$model=new Albums;
-		$setting = AlbumSetting::model()->findByPk(1,array(
+		$setting = AlbumSetting::model()->findByPk(1, array(
 			'select' => 'meta_keyword, headline, photo_file_type',
 		));
 		$photo_file_type = unserialize($setting->photo_file_type);
@@ -171,7 +171,7 @@ class AdminController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'Create Album');
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_add',array(
+		$this->render('admin_add', array(
 			'model'=>$model,
 			'setting'=>$setting,
 			'photo_file_type'=>$photo_file_type,
@@ -187,7 +187,7 @@ class AdminController extends Controller
 	{
 		$model=$this->loadModel($id);
 
-		$setting = AlbumSetting::model()->findByPk(1,array(
+		$setting = AlbumSetting::model()->findByPk(1, array(
 			'select' => 'meta_keyword, headline, photo_limit, photo_file_type',
 		));
 		$photo_file_type = unserialize($setting->photo_file_type);
@@ -234,7 +234,7 @@ class AdminController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'Update Album: {album_title}', array('{album_title}'=>$model->title));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_edit',array(
+		$this->render('admin_edit', array(
 			'model'=>$model,
 			'setting'=>$setting,
 			'photo_file_type'=>$photo_file_type,
@@ -353,7 +353,7 @@ class AdminController extends Controller
 			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
-			$this->render('admin_publish',array(
+			$this->render('admin_publish', array(
 				'title'=>$title,
 				'model'=>$model,
 			));
@@ -404,7 +404,7 @@ class AdminController extends Controller
 	 */
 	public function actionGetcover($id) 
 	{
-		$setting = AlbumSetting::model()->findByPk(1,array(
+		$setting = AlbumSetting::model()->findByPk(1, array(
 			'select' => 'photo_limit',
 		));
 		$photo_limit = $setting->photo_limit;
@@ -432,7 +432,7 @@ class AdminController extends Controller
 	 */
 	public function actionInsertcover($id) 
 	{
-		$setting = AlbumSetting::model()->findByPk(1,array(
+		$setting = AlbumSetting::model()->findByPk(1, array(
 			'select' => 'photo_limit',
 		));
 		$photo_limit = $setting->photo_limit;

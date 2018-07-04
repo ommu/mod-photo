@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 1 September 2016, 10:24 WIB
  * @link https://github.com/ommu/mod-photo
  *
@@ -116,12 +116,12 @@ class ViewAlbumPhoto extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('t.media_id',$this->media_id);
-		$criteria->compare('t.caption',$this->caption);
-		$criteria->compare('t.tag',$this->tag);
-		$criteria->compare('t.tags',$this->tags);
+		$criteria->compare('t.media_id', $this->media_id);
+		$criteria->compare('t.caption', $this->caption);
+		$criteria->compare('t.tag', $this->tag);
+		$criteria->compare('t.tags', $this->tags);
 
-		if(!isset($_GET['ViewAlbumPhoto_sort']))
+		if(!Yii::app()->getRequest()->getParam('ViewAlbumPhoto_sort'))
 			$criteria->order = 't.media_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -182,7 +182,7 @@ class ViewAlbumPhoto extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

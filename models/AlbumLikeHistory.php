@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2017 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2017 Ommu Platform (www.ommu.co)
  * @created date 4 May 2017, 16:57 WIB
  * @link https://github.com/ommu/mod-photo
  *
@@ -141,28 +141,28 @@ class AlbumLikeHistory extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.id', $this->id);
 		if(Yii::app()->getRequest()->getParam('type') == 'subscribe')
-			$criteria->compare('t.publish',1);
+			$criteria->compare('t.publish', 1);
 		elseif(Yii::app()->getRequest()->getParam('type') == 'unsubscribe')
-			$criteria->compare('t.publish',0);
+			$criteria->compare('t.publish', 0);
 		else {
-			$criteria->addInCondition('t.publish',array(0,1));
-			$criteria->compare('t.publish',$this->publish);
+			$criteria->addInCondition('t.publish', array(0,1));
+			$criteria->compare('t.publish', $this->publish);
 		}
 		if(Yii::app()->getRequest()->getParam('like'))
-			$criteria->compare('t.like_id',Yii::app()->getRequest()->getParam('like'));
+			$criteria->compare('t.like_id', Yii::app()->getRequest()->getParam('like'));
 		else
-			$criteria->compare('t.like_id',$this->like_id);
-		if($this->likes_date != null && !in_array($this->likes_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.likes_date)',date('Y-m-d', strtotime($this->likes_date)));
-		$criteria->compare('t.likes_ip',strtolower($this->likes_ip),true);
+			$criteria->compare('t.like_id', $this->like_id);
+		if($this->likes_date != null && !in_array($this->likes_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.likes_date)', date('Y-m-d', strtotime($this->likes_date)));
+		$criteria->compare('t.likes_ip', strtolower($this->likes_ip), true);
 
-		$criteria->compare('like_album.cat_id',$this->category_search);
-		$criteria->compare('like_album.title',strtolower($this->album_search),true);
-		$criteria->compare('like_user.displayname',strtolower($this->user_search),true);
+		$criteria->compare('like_album.cat_id', $this->category_search);
+		$criteria->compare('like_album.title', strtolower($this->album_search), true);
+		$criteria->compare('like_user.displayname', strtolower($this->user_search), true);
 
-		if(!isset($_GET['AlbumLikeDetail_sort']))
+		if(!Yii::app()->getRequest()->getParam('AlbumLikeDetail_sort'))
 			$criteria->order = 't.id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -282,7 +282,7 @@ class AlbumLikeHistory extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

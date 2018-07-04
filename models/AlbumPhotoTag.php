@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2016 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2016 Ommu Platform (www.ommu.co)
  * @created date 1 September 2016, 11:56 WIB
  * @link https://github.com/ommu/mod-photo
  *
@@ -152,29 +152,29 @@ class AlbumPhotoTag extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.id', $this->id);
 		if(Yii::app()->getRequest()->getParam('media'))
 			$criteria->compare('t.media_id',Yii::app()->getRequest()->getParam('media'));
 		else
-			$criteria->compare('t.media_id',$this->media_id);
+			$criteria->compare('t.media_id', $this->media_id);
 		if(Yii::app()->getRequest()->getParam('tag'))
 			$criteria->compare('t.tag_id',Yii::app()->getRequest()->getParam('tag'));
 		else
-			$criteria->compare('t.tag_id',$this->tag_id);
-		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.creation_date)',date('Y-m-d', strtotime($this->creation_date)));
+			$criteria->compare('t.tag_id', $this->tag_id);
+		if($this->creation_date != null && !in_array($this->creation_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.creation_date)', date('Y-m-d', strtotime($this->creation_date)));
 		if(Yii::app()->getRequest()->getParam('creation'))
 			$criteria->compare('t.creation_id',Yii::app()->getRequest()->getParam('creation'));
 		else
-			$criteria->compare('t.creation_id',$this->creation_id);
+			$criteria->compare('t.creation_id', $this->creation_id);
 		
-		$criteria->compare('photo_album.cat_id',$this->category_search);
-		$criteria->compare('photo_album.title',strtolower($this->album_search),true);
-		$criteria->compare('photo.media',strtolower($this->photo_search),true);
-		$criteria->compare('tag.body',strtolower($this->tag_search),true);
-		$criteria->compare('creation.displayname',strtolower($this->creation_search),true);
+		$criteria->compare('photo_album.cat_id', $this->category_search);
+		$criteria->compare('photo_album.title', strtolower($this->album_search), true);
+		$criteria->compare('photo.media', strtolower($this->photo_search), true);
+		$criteria->compare('tag.body', strtolower($this->tag_search), true);
+		$criteria->compare('creation.displayname', strtolower($this->creation_search), true);
 
-		if(!isset($_GET['AlbumPhotoTag_sort']))
+		if(!Yii::app()->getRequest()->getParam('AlbumPhotoTag_sort'))
 			$criteria->order = 't.id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -297,7 +297,7 @@ class AlbumPhotoTag extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

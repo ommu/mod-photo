@@ -21,7 +21,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  *----------------------------------------------------------------------------------------------------------
@@ -133,7 +133,7 @@ class PhotoController extends Controller
 		$this->pageTitle = $pageTitle;
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_manage',array(
+		$this->render('admin_manage', array(
 			'model'=>$model,
 			'columns' => $columns,
 		));
@@ -146,7 +146,7 @@ class PhotoController extends Controller
 	 */
 	public function actionEdit($id) 
 	{
-		$setting = AlbumSetting::model()->findByPk(1,array(
+		$setting = AlbumSetting::model()->findByPk(1, array(
 			'select' => 'meta_keyword, headline, photo_limit, photo_file_type',
 		));
 		$photo_file_type = unserialize($setting->photo_file_type);
@@ -170,7 +170,7 @@ class PhotoController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'Update Photo: {photo_media} from album {album_title}', array('{photo_media}'=>$model->media, '{album_title}'=>$model->album->title));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_edit',array(
+		$this->render('admin_edit', array(
 			'model'=>$model,
 			'photo_file_type'=>$photo_file_type,
 		));
@@ -187,7 +187,7 @@ class PhotoController extends Controller
 		$this->pageTitle = Yii::t('phrase', 'View Photo: {photo_media} from album {album_title}', array('{photo_media}'=>$model->media, '{album_title}'=>$model->album->title));
 		$this->pageDescription = '';
 		$this->pageMeta = '';
-		$this->render('admin_view',array(
+		$this->render('admin_view', array(
 			'model'=>$model,
 		));
 	}
@@ -317,7 +317,7 @@ class PhotoController extends Controller
 			$this->pageTitle = $pageTitle;
 			$this->pageDescription = '';
 			$this->pageMeta = '';
-			$this->render('admin_publish',array(
+			$this->render('admin_publish', array(
 				'title'=>$title,
 				'model'=>$model,
 			));

@@ -7,7 +7,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  */
@@ -59,7 +59,7 @@
 				<div class="form-group row">
 					<?php echo $form->labelEx($model,'title', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
 					<div class="col-lg-8 col-md-9 col-sm-12">
-						<?php echo $form->textField($model,'title',array('maxlength'=>128, 'class'=>'span-8')); ?>
+						<?php echo $form->textField($model,'title', array('maxlength'=>128, 'class'=>'span-8')); ?>
 						<?php echo $form->error($model,'title'); ?>
 					</div>
 				</div>
@@ -68,7 +68,7 @@
 				<div class="form-group row">
 					<label class="col-form-label col-lg-4 col-md-3 col-sm-12"><?php echo $model->getAttributeLabel('media_i');?></label>
 					<div class="col-lg-8 col-md-9 col-sm-12">
-						<?php echo $form->fileField($model,'media_i',array('maxlength'=>64)); ?>
+						<?php echo $form->fileField($model,'media_i', array('maxlength'=>64)); ?>
 						<?php echo $form->error($model,'media_i'); ?>
 						<div class="small-px slient">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></div>
 					</div>
@@ -80,10 +80,10 @@
 					<div class="col-lg-8 col-md-9 col-sm-12">
 						<?php 
 						if($model->isNewRecord) {
-							echo $form->textArea($model,'keyword_i',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
+							echo $form->textArea($model,'keyword_i', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
 							
 						} else {
-							//echo $form->textField($model,'keyword_i',array('maxlength'=>32,'class'=>'span-6'));
+							//echo $form->textField($model,'keyword_i', array('maxlength'=>32,'class'=>'span-6'));
 							$url = Yii::app()->controller->createUrl('o/tag/add', array('type'=>'album'));
 							$album = $model->album_id;
 							$tagId = 'Albums_keyword_i';
@@ -128,7 +128,7 @@
 								$tags = $model->tags;
 								if(!empty($tags)) {
 									foreach($tags as $key => $val) {?>
-									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/tag/delete',array('id'=>$val->id,'type'=>'album'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
+									<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/tag/delete', array('id'=>$val->id,'type'=>'album'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 								<?php }
 								}
 							}?>
@@ -186,7 +186,7 @@
 			<?php echo $form->labelEx($model,'quote', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
 			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php 
-				//echo $form->textArea($model,'quote',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
+				//echo $form->textArea($model,'quote', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
 				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
 					'model'=>$model,
 					'attribute'=>quote,
@@ -212,7 +212,7 @@
 			<?php echo $form->labelEx($model,'body', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
 			<div class="col-lg-8 col-md-9 col-sm-12">
 				<?php 
-				//echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
+				//echo $form->textArea($model,'body', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
 				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
 					'model'=>$model,
 					'attribute'=>body,

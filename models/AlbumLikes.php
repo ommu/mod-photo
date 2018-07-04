@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  * This is the template for generating the model class of a specified table.
@@ -150,40 +150,40 @@ class AlbumLikes extends CActiveRecord
 			),
 		);
 
-		$criteria->compare('t.like_id',$this->like_id);
+		$criteria->compare('t.like_id', $this->like_id);
 		if(Yii::app()->getRequest()->getParam('type') == 'publish')
-			$criteria->compare('t.publish',1);
+			$criteria->compare('t.publish', 1);
 		elseif(Yii::app()->getRequest()->getParam('type') == 'unpublish')
-			$criteria->compare('t.publish',0);
+			$criteria->compare('t.publish', 0);
 		elseif(Yii::app()->getRequest()->getParam('type') == 'trash')
-			$criteria->compare('t.publish',2);
+			$criteria->compare('t.publish', 2);
 		else {
-			$criteria->addInCondition('t.publish',array(0,1));
-			$criteria->compare('t.publish',$this->publish);
+			$criteria->addInCondition('t.publish', array(0,1));
+			$criteria->compare('t.publish', $this->publish);
 		}
 		if(Yii::app()->getRequest()->getParam('album'))
 			$criteria->compare('t.album_id',Yii::app()->getRequest()->getParam('album'));
 		else
-			$criteria->compare('t.album_id',$this->album_id);
+			$criteria->compare('t.album_id', $this->album_id);
 		if(Yii::app()->getRequest()->getParam('user'))
 			$criteria->compare('t.user_id',Yii::app()->getRequest()->getParam('user'));
 		else
-			$criteria->compare('t.user_id',$this->user_id);
-		if($this->likes_date != null && !in_array($this->likes_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.likes_date)',date('Y-m-d', strtotime($this->likes_date)));
-		$criteria->compare('t.likes_ip',$this->likes_ip,true);
-		if($this->updated_date != null && !in_array($this->updated_date, array('0000-00-00 00:00:00', '0000-00-00')))
-			$criteria->compare('date(t.updated_date)',date('Y-m-d', strtotime($this->updated_date)));
+			$criteria->compare('t.user_id', $this->user_id);
+		if($this->likes_date != null && !in_array($this->likes_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.likes_date)', date('Y-m-d', strtotime($this->likes_date)));
+		$criteria->compare('t.likes_ip', $this->likes_ip,true);
+		if($this->updated_date != null && !in_array($this->updated_date, array('0000-00-00 00:00:00','1970-01-01 00:00:00','0002-12-02 07:07:12','-0001-11-30 00:00:00')))
+			$criteria->compare('date(t.updated_date)', date('Y-m-d', strtotime($this->updated_date)));
 		
-		$criteria->compare('album.cat_id',$this->category_search);
-		$criteria->compare('album.title',strtolower($this->album_search),true);
+		$criteria->compare('album.cat_id', $this->category_search);
+		$criteria->compare('album.title', strtolower($this->album_search), true);
 		if(Yii::app()->getRequest()->getParam('album') && Yii::app()->getRequest()->getParam('publish'))
 			$criteria->compare('album.publish',Yii::app()->getRequest()->getParam('publish'));
-		$criteria->compare('user.displayname',strtolower($this->user_search),true);
-		$criteria->compare('view.likes',$this->like_search);
-		$criteria->compare('view.unlikes',$this->unlike_search);
+		$criteria->compare('user.displayname', strtolower($this->user_search), true);
+		$criteria->compare('view.likes', $this->like_search);
+		$criteria->compare('view.unlikes', $this->unlike_search);
 
-		if(!isset($_GET['AlbumLikes_sort']))
+		if(!Yii::app()->getRequest()->getParam('AlbumLikes_sort'))
 			$criteria->order = 't.like_id DESC';
 
 		return new CActiveDataProvider($this, array(
@@ -261,7 +261,7 @@ class AlbumLikes extends CActiveRecord
 			}
 			$this->defaultColumns[] = array(
 				'name' => 'like_search',
-				'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("history/like/manage",array(\'like\'=>$data->like_id,\'type\'=>\'subscribe\')))',
+				'value' => 'CHtml::link($data->view->likes ? $data->view->likes : 0, Yii::app()->controller->createUrl("history/like/manage", array(\'like\'=>$data->like_id,\'type\'=>\'subscribe\')))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -269,7 +269,7 @@ class AlbumLikes extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'unlike_search',
-				'value' => 'CHtml::link($data->view->unlikes ? $data->view->unlikes : 0, Yii::app()->controller->createUrl("history/like/manage",array(\'like\'=>$data->like_id,\'type\'=>\'unsubscribe\')))',
+				'value' => 'CHtml::link($data->view->unlikes ? $data->view->unlikes : 0, Yii::app()->controller->createUrl("history/like/manage", array(\'like\'=>$data->like_id,\'type\'=>\'unsubscribe\')))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -316,7 +316,7 @@ class AlbumLikes extends CActiveRecord
 			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish",array("id"=>$data->like_id)), $data->publish, 1)',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish", array("id"=>$data->like_id)), $data->publish, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -337,7 +337,7 @@ class AlbumLikes extends CActiveRecord
 	public static function getInfo($id, $column=null)
 	{
 		if($column != null) {
-			$model = self::model()->findByPk($id,array(
+			$model = self::model()->findByPk($id, array(
 				'select' => $column,
 			));
 			if(count(explode(',', $column)) == 1)

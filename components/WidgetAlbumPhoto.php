@@ -4,7 +4,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  */
@@ -40,7 +40,7 @@ class WidgetAlbumPhoto extends CWidget
 		$criteria->order = 'creation_date DESC';
 		$model = AlbumPhoto::model()->findAll($criteria);
 
-		$this->render('album_photo',array(
+		$this->render('album_photo', array(
 			'model' => $model,
 			'module'=>$module,
 			'controller'=>$controller,

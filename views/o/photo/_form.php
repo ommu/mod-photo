@@ -7,7 +7,7 @@
  *
  * @author Putra Sudaryanto <putra@sudaryanto.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2014 Ommu Platform (opensource.ommu.co)
+ * @copyright Copyright (c) 2014 Ommu Platform (www.ommu.co)
  * @link https://github.com/ommu/mod-photo
  *
  */
@@ -53,7 +53,7 @@
 	<div class="form-group row">
 		<?php echo $form->labelEx($model,'caption', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
 		<div class="col-lg-8 col-md-9 col-sm-12">
-			<?php echo $form->textArea($model,'caption',array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
+			<?php echo $form->textArea($model,'caption', array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
 			<?php echo $form->error($model,'caption'); ?>
 		</div>
 	</div>
@@ -64,7 +64,7 @@
 		<div class="col-lg-8 col-md-9 col-sm-12">
 			<?php 
 			if(!$model->isNewRecord) {
-				//echo $form->textField($model,'keyword_i',array('maxlength'=>32,'class'=>'span-6'));
+				//echo $form->textField($model,'keyword_i', array('maxlength'=>32,'class'=>'span-6'));
 				$url = Yii::app()->controller->createUrl('o/phototag/add', array('type'=>'photo'));
 				$photo = $model->media_id;
 				$tagId = 'AlbumPhoto_keyword_i';
@@ -101,7 +101,7 @@
 					$tags = $model->tags;
 					if(!empty($tags)) {
 						foreach($tags as $key => $val) {?>
-						<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/phototag/delete',array('id'=>$val->id,'type'=>'photo'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
+						<div><?php echo $val->tag->body;?><a href="<?php echo Yii::app()->controller->createUrl('o/phototag/delete', array('id'=>$val->id,'type'=>'photo'));?>" title="<?php echo Yii::t('phrase', 'Delete');?>"><?php echo Yii::t('phrase', 'Delete');?></a></div>
 					<?php }
 					}
 				}?>
