@@ -37,6 +37,8 @@
  */
 class AlbumPhoto extends CActiveRecord
 {
+	use UtilityTrait;
+
 	public $defaultColumns = array();
 	public $keyword_i;
 	public $old_media_i;
@@ -471,7 +473,7 @@ class AlbumPhoto extends CActiveRecord
 				$this->media = CUploadedFile::getInstance($this, 'media');
 				if($this->media != null) {
 					if($this->media instanceOf CUploadedFile) {
-						$fileName = time().'_'.Utility::getUrlTitle($this->album->title).'.'.strtolower($this->media->extensionName);
+						$fileName = time().'_'.$this->urlTitle($this->album->title).'.'.strtolower($this->media->extensionName);
 						if($this->media->saveAs($album_path.'/'.$fileName)) {
 							if(!$this->isNewRecord) {
 								if($this->old_media_i != '' && file_exists($album_path.'/'.$this->old_media_i))

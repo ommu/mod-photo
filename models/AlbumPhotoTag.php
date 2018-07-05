@@ -33,6 +33,8 @@
  */
 class AlbumPhotoTag extends CActiveRecord
 {
+	use UtilityTrait;
+
 	public $defaultColumns = array();
 	public $tag_i;
 	
@@ -317,12 +319,13 @@ class AlbumPhotoTag extends CActiveRecord
 	protected function beforeSave() {
 		if(parent::beforeSave()) {
 			if($this->isNewRecord) {
+				$tag_i = $this->urlTitle($this->tag_i);
 				if($this->tag_id == 0) {
 					$tag = OmmuTags::model()->find(array(
 						'select' => 'tag_id, body',
 						'condition' => 'body = :body',
 						'params' => array(
-							':body' => Utility::getUrlTitle(strtolower(trim($this->tag_i))),
+							':body' => $tag_i,
 						),
 					));
 					if($tag != null)

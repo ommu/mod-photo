@@ -40,6 +40,8 @@
  */
 class Albums extends CActiveRecord
 {
+	use UtilityTrait;
+
 	public $defaultColumns = array();
 	public $media_i;
 	public $keyword_i;
@@ -502,7 +504,7 @@ class Albums extends CActiveRecord
 			$doc->addField(Zend_Search_Lucene_Field::Text('media', CHtml::encode($image), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::Text('title', CHtml::encode($item->title), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::Text('body', CHtml::encode(Utility::hardDecode(Utility::softDecode($item->body))), 'utf-8'));
-			$doc->addField(Zend_Search_Lucene_Field::Text('url', CHtml::encode(Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->createUrl('album/site/view', array('id'=>$item->album_id,'slug'=>Utility::getUrlTitle($item->title)))), 'utf-8'));
+			$doc->addField(Zend_Search_Lucene_Field::Text('url', CHtml::encode(Utility::getProtocol().'://'.Yii::app()->request->serverName.Yii::app()->createUrl('album/site/view', array('id'=>$item->album_id,'slug'=>$this->urlTitle($item->title)))), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::UnIndexed('date', CHtml::encode(Utility::dateFormat($item->creation_date, true).' WIB'), 'utf-8'));
 			$doc->addField(Zend_Search_Lucene_Field::UnIndexed('creation', CHtml::encode($item->creation->displayname), 'utf-8'));
 			$index->addDocument($doc);		
@@ -570,7 +572,7 @@ class Albums extends CActiveRecord
 			$this->media_i = CUploadedFile::getInstance($this, 'media_i');
 			if($this->media_i != null) {
 				if($this->media_i instanceOf CUploadedFile) {
-					$fileName = time().'_'.Utility::getUrlTitle($this->title).'.'.strtolower($this->media_i->extensionName);
+					$fileName = time().'_'.$this->urlTitle($this->title).'.'.strtolower($this->media_i->extensionName);
 					if($this->media_i->saveAs($album_path.'/'.$fileName)) {
 						$images = new AlbumPhoto;
 						$images->album_id = $this->album_id;

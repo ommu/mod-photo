@@ -16,7 +16,7 @@ if($model != null) {?>
 	<ul class="photo clearfix">
 	<?php foreach($model as $key => $val) {
 		$image = Yii::app()->request->baseUrl.'/public/album/'.$val->album_id.'/'.$val->media;
-		echo '<li><a href="'.Yii::app()->createUrl('album/site/view', array('id'=>$val->album_id, 'photo'=>$val->media_id, 'slug'=>Utility::getUrlTitle($val->album->title))).'" title=""><img src="'.Utility::getTimThumb($image,74,74,1).'" alt=""></a></li>';
+		echo '<li><a href="'.Yii::app()->createUrl('album/site/view', array('id'=>$val->album_id, 'photo'=>$val->media_id, 'slug'=>$this->urlTitle($val->album->title))).'" title=""><img src="'.Utility::getTimThumb($image,74,74,1).'" alt=""></a></li>';
 	}?>
 	</ul>
 </div>

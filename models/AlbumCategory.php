@@ -38,6 +38,8 @@
  */
 class AlbumCategory extends CActiveRecord
 {
+	use UtilityTrait;
+
 	public $defaultColumns = array();
 	public $title_i;
 	public $description_i;
@@ -482,7 +484,7 @@ class AlbumCategory extends CActiveRecord
 	protected function beforeSave() 
 	{
 		$currentModule = strtolower(Yii::app()->controller->module->id.'/'.Yii::app()->controller->id);
-		$location = Utility::getUrlTitle($currentModule);
+		$location = $this->urlTitle($currentModule);
 		
 		if(parent::beforeSave()) {
 			if($this->isNewRecord || (!$this->isNewRecord && $this->name == 0)) {
@@ -492,7 +494,7 @@ class AlbumCategory extends CActiveRecord
 				if($title->save())
 					$this->name = $title->phrase_id;
 				
-				$this->slug = Utility::getUrlTitle($this->title_i);	
+				$this->slug = $this->urlTitle($this->title_i);	
 				
 			} else {
 				$title = OmmuSystemPhrase::model()->findByPk($this->name);

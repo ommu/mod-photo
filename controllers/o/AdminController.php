@@ -454,7 +454,7 @@ class AdminController extends Controller
 				$photo_limit = $model->category->photo_limit;
 			
 			$uploadPhoto = CUploadedFile::getInstanceByName('namaFile');
-			$fileName = time().'_'.Utility::getUrlTitle($model->title).'.'.strtolower($uploadPhoto->extensionName);
+			$fileName = time().'_'.$this->urlTitle($model->title).'.'.strtolower($uploadPhoto->extensionName);
 			if($uploadPhoto->saveAs($album_path.'/'.$fileName)) {
 				$photo = new AlbumPhoto;
 				$photo->album_id = $model->album_id;
