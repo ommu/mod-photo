@@ -38,6 +38,7 @@
 class AlbumPhoto extends CActiveRecord
 {
 	use UtilityTrait;
+	use GridViewTrait;
 
 	public $defaultColumns = array();
 	public $keyword_i;
@@ -323,10 +324,7 @@ class AlbumPhoto extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
-				'filter'=>array(
-					1=>Yii::t('phrase', 'Yes'),
-					0=>Yii::t('phrase', 'No'),
-				),
+				'filter'=>$this->filterYesNo(),
 				'type' => 'raw',
 			);
 			$this->defaultColumns[] = array(
@@ -335,10 +333,7 @@ class AlbumPhoto extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
-				'filter'=>array(
-					1=>Yii::t('phrase', 'Yes'),
-					0=>Yii::t('phrase', 'No'),
-				),
+				'filter'=>$this->filterYesNo(),
 				'type' => 'raw',
 			);
 			$this->defaultColumns[] = array(
@@ -347,10 +342,7 @@ class AlbumPhoto extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
-				'filter'=>array(
-					1=>Yii::t('phrase', 'Yes'),
-					0=>Yii::t('phrase', 'No'),
-				),
+				'filter'=>$this->filterYesNo(),
 				'type' => 'raw',
 			);
 			if(!Yii::app()->getRequest()->getParam('type')) {
@@ -360,10 +352,7 @@ class AlbumPhoto extends CActiveRecord
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
-					'filter'=>array(
-						1=>Yii::t('phrase', 'Yes'),
-						0=>Yii::t('phrase', 'No'),
-					),
+					'filter'=>$this->filterYesNo(),
 					'type' => 'raw',
 				);
 			}
