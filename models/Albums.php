@@ -403,7 +403,7 @@ class Albums extends CActiveRecord
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
-					'filter'=>$this->filterYesNo(),
+					'filter' => $this->filterYesNo(),
 					'type' => 'raw',
 				);
 			}
@@ -414,7 +414,7 @@ class Albums extends CActiveRecord
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
-					'filter'=>$this->filterYesNo(),
+					'filter' => $this->filterYesNo(),
 					'type' => 'raw',
 				);
 			}

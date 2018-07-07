@@ -373,7 +373,7 @@ class AlbumCategory extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
-				'filter'=>$this->filterYesNo(),
+				'filter' => $this->filterYesNo(),
 				'type' => 'raw',
 			);
 			if(!Yii::app()->getRequest()->getParam('type')) {
@@ -383,7 +383,7 @@ class AlbumCategory extends CActiveRecord
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
-					'filter'=>$this->filterYesNo(),
+					'filter' => $this->filterYesNo(),
 					'type' => 'raw',
 				);
 			}
