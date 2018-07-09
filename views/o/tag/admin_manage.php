@@ -93,13 +93,14 @@
 				'template' => '{delete}',
 			));
 
-			$this->widget('application.libraries.core.components.system.OGridView', array(
+			$this->widget('application.libraries.yii-traits.system.OGridView', array(
 				'id'=>'album-tag-grid',
 				'dataProvider'=>$model->search(),
 				'filter'=>$model,
 				'columns'=>$columnData,
 				'template'=>Yii::app()->params['grid-view']['gridTemplate'],
 				'pager'=>array('header'=>''),
+				'afterAjaxUpdate'=>'reinstallDatePicker',
 			));
 		?>
 		<?php //end.Grid Item ?>
