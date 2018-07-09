@@ -32,6 +32,8 @@
  */
 class AlbumViewHistory extends CActiveRecord
 {
+	use GridViewTrait;
+
 	public $defaultColumns = array();
 	
 	// Variable Search
@@ -228,30 +230,7 @@ class AlbumViewHistory extends CActiveRecord
 				'htmlOptions' => array(
 					//'class' => 'center',
 				),
-				'filter' => 'native-datepicker',
-				/*
-				'filter' => Yii::app()->controller->widget('application.libraries.core.components.system.CJuiDatePicker', array(
-					'model'=>$this,
-					'attribute'=>'view_date',
-					'language' => 'en',
-					'i18nScriptFile' => 'jquery-ui-i18n.min.js',
-					//'mode'=>'datetime',
-					'htmlOptions' => array(
-						'id' => 'view_date_filter',
-						'on_datepicker' => 'on',
-						'placeholder' => Yii::t('phrase', 'filter'),
-					),
-					'options'=>array(
-						'showOn' => 'focus',
-						'dateFormat' => 'yy-mm-dd',
-						'showOtherMonths' => true,
-						'selectOtherMonths' => true,
-						'changeMonth' => true,
-						'changeYear' => true,
-						'showButtonPanel' => true,
-					),
-				), true),
-				*/
+				'filter' => $this->filterDatepicker($this, 'view_date'),
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'view_ip',
