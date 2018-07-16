@@ -230,7 +230,7 @@ class AlbumLikeHistory extends CActiveRecord
 			}
 			$this->defaultColumns[] = array(
 				'name' => 'likes_date',
-				'value' => 'Utility::dateFormat($data->likes_date, true)',
+				'value' => 'Yii::app()->dateFormatter->formatDateTime($data->likes_date, \'medium\', false)',
 				'htmlOptions' => array(
 					//'class' => 'center',
 				),

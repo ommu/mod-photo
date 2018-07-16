@@ -226,7 +226,7 @@ class AlbumViewHistory extends CActiveRecord
 			}
 			$this->defaultColumns[] = array(
 				'name' => 'view_date',
-				'value' => 'Utility::dateFormat($data->view_date, true)',
+				'value' => 'Yii::app()->dateFormatter->formatDateTime($data->view_date, \'medium\', false)',
 				'htmlOptions' => array(
 					//'class' => 'center',
 				),
