@@ -112,7 +112,7 @@ class TagController extends Controller
 		}
 		
 		$model=new AlbumTag('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['AlbumTag'])) {
 			$model->attributes=$_GET['AlbumTag'];
 		}

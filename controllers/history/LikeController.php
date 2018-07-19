@@ -113,7 +113,7 @@ class LikeController extends Controller
 		}
 		
 		$model=new AlbumLikeHistory('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['AlbumLikeHistory'])) {
 			$model->attributes=$_GET['AlbumLikeHistory'];
 		}

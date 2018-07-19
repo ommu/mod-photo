@@ -114,7 +114,7 @@ class LikeController extends Controller
 		}
 		
 		$model=new AlbumLikes('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['AlbumLikes'])) {
 			$model->attributes=$_GET['AlbumLikes'];
 		}

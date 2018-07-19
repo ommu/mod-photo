@@ -118,7 +118,7 @@ class AdminController extends Controller
 		}
 		
 		$model=new Albums('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['Albums'])) {
 			$model->attributes=$_GET['Albums'];
 		}

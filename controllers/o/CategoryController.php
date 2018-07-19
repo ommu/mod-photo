@@ -111,7 +111,7 @@ class CategoryController extends Controller
 	public function actionManage() 
 	{
 		$model=new AlbumCategory('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['AlbumCategory'])) {
 			$model->attributes=$_GET['AlbumCategory'];
 		}

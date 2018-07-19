@@ -113,7 +113,7 @@ class ViewController extends Controller
 		}
 		
 		$model=new AlbumViewHistory('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['AlbumViewHistory'])) {
 			$model->attributes=$_GET['AlbumViewHistory'];
 		}

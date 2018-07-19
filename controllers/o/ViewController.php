@@ -114,7 +114,7 @@ class ViewController extends Controller
 		}
 		
 		$model=new AlbumViews('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['AlbumViews'])) {
 			$model->attributes=$_GET['AlbumViews'];
 		}

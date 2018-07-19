@@ -115,7 +115,7 @@ class PhotoController extends Controller
 		}
 		
 		$model=new AlbumPhoto('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes();	// clear any default values
 		if(isset($_GET['AlbumPhoto'])) {
 			$model->attributes=$_GET['AlbumPhoto'];
 		}
