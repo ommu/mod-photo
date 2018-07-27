@@ -135,16 +135,16 @@ class AlbumTag extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'album' => array(
-				'alias'=>'album',
-				'select'=>'publish, cat_id, title'
+				'alias' => 'album',
+				'select' => 'publish, cat_id, title'
 			),
 			'tag' => array(
-				'alias'=>'tag',
-				'select'=>'body'
+				'alias' => 'tag',
+				'select' => 'body'
 			),
 			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname'
+				'alias' => 'creation',
+				'select' => 'displayname'
 			),
 		);
 
@@ -223,7 +223,7 @@ class AlbumTag extends CActiveRecord
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => 'Phrase::trans($data->album->category->name)',
-					'filter'=> AlbumCategory::getCategory(),
+					'filter' => AlbumCategory::getCategory(),
 					'type' => 'raw',
 				);
 				$this->defaultColumns[] = array(

@@ -182,15 +182,15 @@ class Albums extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'view' => array(
-				'alias'=>'view',
+				'alias' => 'view',
 			),
 			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname'
+				'alias' => 'creation',
+				'select' => 'displayname'
 			),
 			'modified' => array(
-				'alias'=>'modified',
-				'select'=>'displayname'
+				'alias' => 'modified',
+				'select' => 'displayname'
 			),
 		);
 
@@ -313,7 +313,7 @@ class Albums extends CActiveRecord
 				$this->defaultColumns[] = array(
 					'name' => 'cat_id',
 					'value' => 'Phrase::trans($data->category->name)',
-					'filter'=> AlbumCategory::getCategory(),
+					'filter' => AlbumCategory::getCategory(),
 					'type' => 'raw',
 				);
 			}

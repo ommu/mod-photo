@@ -179,23 +179,23 @@ class AlbumCategory extends CActiveRecord
 		
 		$criteria->with = array(
 			'view' => array(
-				'alias'=>'view',
+				'alias' => 'view',
 			),
 			'title' => array(
-				'alias'=>'title',
+				'alias' => 'title',
 				'select'=>$language,
 			),
 			'description' => array(
-				'alias'=>'description',
+				'alias' => 'description',
 				'select'=>$language,
 			),
 			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname'
+				'alias' => 'creation',
+				'select' => 'displayname'
 			),
 			'modified' => array(
-				'alias'=>'modified',
-				'select'=>'displayname'
+				'alias' => 'modified',
+				'select' => 'displayname'
 			),
 		);
 
@@ -330,7 +330,7 @@ class AlbumCategory extends CActiveRecord
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
-				'filter'=>array(
+				'filter' =>array(
 					1=>Yii::t('phrase', 'Default'),
 					0=>Yii::t('phrase', 'Custom'),
 				),

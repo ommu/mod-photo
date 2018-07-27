@@ -131,15 +131,15 @@ class AlbumLikeHistory extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'like' => array(
-				'alias'=>'like',
+				'alias' => 'like',
 			),
 			'like.album' => array(
-				'alias'=>'like_album',
-				'select'=>'cat_id, title'
+				'alias' => 'like_album',
+				'select' => 'cat_id, title'
 			),
 			'like.user' => array(
-				'alias'=>'like_user',
-				'select'=>'displayname'
+				'alias' => 'like_user',
+				'select' => 'displayname'
 			),
 		);
 
@@ -216,7 +216,7 @@ class AlbumLikeHistory extends CActiveRecord
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => 'Phrase::trans($data->like->album->category->name)',
-					'filter'=> AlbumCategory::getCategory(),
+					'filter' => AlbumCategory::getCategory(),
 					'type' => 'raw',
 				);
 				$this->defaultColumns[] = array(

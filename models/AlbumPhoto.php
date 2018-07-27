@@ -158,19 +158,19 @@ class AlbumPhoto extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'view' => array(
-				'alias'=>'view',
+				'alias' => 'view',
 			),
 			'album' => array(
-				'alias'=>'album',
-				'select'=>'publish, cat_id, title'
+				'alias' => 'album',
+				'select' => 'publish, cat_id, title'
 			),
 			'creation' => array(
-				'alias'=>'creation',
-				'select'=>'displayname'
+				'alias' => 'creation',
+				'select' => 'displayname'
 			),
 			'modified' => array(
-				'alias'=>'modified',
-				'select'=>'displayname'
+				'alias' => 'modified',
+				'select' => 'displayname'
 			),
 		);
 
@@ -271,7 +271,7 @@ class AlbumPhoto extends CActiveRecord
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => 'Phrase::trans($data->album->category->name)',
-					'filter'=> AlbumCategory::getCategory(),
+					'filter' => AlbumCategory::getCategory(),
 					'type' => 'raw',
 				);
 				$this->defaultColumns[] = array(

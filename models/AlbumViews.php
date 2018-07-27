@@ -135,12 +135,12 @@ class AlbumViews extends CActiveRecord
 		// Custom Search
 		$criteria->with = array(
 			'album' => array(
-				'alias'=>'album',
-				'select'=>'publish, cat_id, title'
+				'alias' => 'album',
+				'select' => 'publish, cat_id, title'
 			),
 			'user' => array(
-				'alias'=>'user',
-				'select'=>'displayname',
+				'alias' => 'user',
+				'select' => 'displayname',
 			),
 		);
 
@@ -239,7 +239,7 @@ class AlbumViews extends CActiveRecord
 				$this->defaultColumns[] = array(
 					'name' => 'category_search',
 					'value' => 'Phrase::trans($data->album->category->name)',
-					'filter'=> AlbumCategory::getCategory(),
+					'filter' => AlbumCategory::getCategory(),
 					'type' => 'raw',
 				);
 				$this->defaultColumns[] = array(
