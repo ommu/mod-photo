@@ -29,8 +29,8 @@
 	
 	<?php if(!$model->isNewRecord) {?>
 	<div class="form-group row">
-		<?php echo $form->labelEx($model,'old_media_i', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-		<div class="col-lg-8 col-md-9 col-sm-12">
+		<?php echo $form->labelEx($model,'old_media_i', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-6 col-md-9 col-sm-12">
 			<?php 
 			if(!$model->getErrors())
 				$model->old_media_i = $model->media;
@@ -42,8 +42,8 @@
 	<?php }?>
 
 	<div class="form-group row">
-		<?php echo $form->labelEx($model,'media', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-		<div class="col-lg-8 col-md-9 col-sm-12">
+		<?php echo $form->labelEx($model,'media', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-6 col-md-9 col-sm-12">
 			<?php echo $form->fileField($model,'media'); ?>
 			<?php echo $form->error($model,'media'); ?>
 			<div class="small-px slient">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></div>
@@ -51,8 +51,8 @@
 	</div>
 
 	<div class="form-group row">
-		<?php echo $form->labelEx($model,'caption', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-		<div class="col-lg-8 col-md-9 col-sm-12">
+		<?php echo $form->labelEx($model,'caption', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-6 col-md-9 col-sm-12">
 			<?php echo $form->textArea($model,'caption', array('rows'=>6, 'cols'=>50, 'class'=>'span-7 smaller')); ?>
 			<?php echo $form->error($model,'caption'); ?>
 		</div>
@@ -60,8 +60,8 @@
 	
 	<?php if(!$model->isNewRecord) {?>
 	<div class="form-group row">
-		<?php echo $form->labelEx($model,'keyword_i', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-		<div class="col-lg-8 col-md-9 col-sm-12">
+		<?php echo $form->labelEx($model,'keyword_i', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-6 col-md-9 col-sm-12">
 			<?php 
 			if(!$model->isNewRecord) {
 				//echo $form->textField($model,'keyword_i', array('maxlength'=>32,'class'=>'span-6'));
@@ -111,8 +111,8 @@
 	<?php }?>
 	
 	<div class="form-group row publish">
-		<?php echo $form->labelEx($model,'cover', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-		<div class="col-lg-8 col-md-9 col-sm-12">
+		<?php echo $form->labelEx($model,'cover', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-6 col-md-9 col-sm-12">
 			<?php echo $form->checkBox($model,'cover'); ?>
 			<?php echo $form->labelEx($model, 'cover'); ?>
 			<?php echo $form->error($model,'cover'); ?>
@@ -120,8 +120,8 @@
 	</div>
 
 	<div class="form-group row publish">
-		<?php echo $form->labelEx($model,'publish', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-		<div class="col-lg-8 col-md-9 col-sm-12">
+		<?php echo $form->labelEx($model,'publish', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+		<div class="col-lg-6 col-md-9 col-sm-12">
 			<?php echo $form->checkBox($model,'publish'); ?>
 			<?php echo $form->labelEx($model, 'publish'); ?>
 			<?php echo $form->error($model,'publish'); ?>
@@ -129,8 +129,8 @@
 	</div>
 
 	<div class="submit clearfix">
-		<label class="col-form-label col-lg-4 col-md-3 col-sm-12">&nbsp;</label>
-		<div class="col-lg-8 col-md-9 col-sm-12">
+		<label class="col-form-label col-lg-3 col-md-3 col-sm-12">&nbsp;</label>
+		<div class="col-lg-6 col-md-9 col-sm-12">
 			<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save'), array('onclick' => 'setEnableSave()')); ?>
 		</div>
 	</div>

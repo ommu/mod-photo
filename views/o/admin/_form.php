@@ -43,8 +43,8 @@
 			<div class="col-lg-8 col-md-12">
 
 				<div class="form-group row">
-					<?php echo $form->labelEx($model,'cat_id', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-					<div class="col-lg-8 col-md-9 col-sm-12">
+					<?php echo $form->labelEx($model,'cat_id', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-6 col-md-9 col-sm-12">
 						<?php
 						$category = AlbumCategory::getCategory();
 
@@ -57,8 +57,8 @@
 				</div>
 
 				<div class="form-group row">
-					<?php echo $form->labelEx($model,'title', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-					<div class="col-lg-8 col-md-9 col-sm-12">
+					<?php echo $form->labelEx($model,'title', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-6 col-md-9 col-sm-12">
 						<?php echo $form->textField($model,'title', array('maxlength'=>128, 'class'=>'span-8')); ?>
 						<?php echo $form->error($model,'title'); ?>
 					</div>
@@ -66,8 +66,8 @@
 
 				<?php if($model->isNewRecord) {?>
 				<div class="form-group row">
-					<label class="col-form-label col-lg-4 col-md-3 col-sm-12"><?php echo $model->getAttributeLabel('media_i');?></label>
-					<div class="col-lg-8 col-md-9 col-sm-12">
+					<label class="col-form-label col-lg-3 col-md-3 col-sm-12"><?php echo $model->getAttributeLabel('media_i');?></label>
+					<div class="col-lg-6 col-md-9 col-sm-12">
 						<?php echo $form->fileField($model,'media_i', array('maxlength'=>64)); ?>
 						<?php echo $form->error($model,'media_i'); ?>
 						<div class="small-px slient">extensions are allowed: <?php echo Utility::formatFileType($photo_file_type, false);?></div>
@@ -76,8 +76,8 @@
 				<?php }?>
 		
 				<div class="form-group row">
-					<?php echo $form->labelEx($model,'keyword_i', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-					<div class="col-lg-8 col-md-9 col-sm-12">
+					<?php echo $form->labelEx($model,'keyword_i', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+					<div class="col-lg-6 col-md-9 col-sm-12">
 						<?php 
 						if($model->isNewRecord) {
 							echo $form->textArea($model,'keyword_i', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 smaller'));
@@ -183,8 +183,8 @@
 	<fieldset>
 
 		<div class="form-group row">
-			<?php echo $form->labelEx($model,'quote', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-			<div class="col-lg-8 col-md-9 col-sm-12">
+			<?php echo $form->labelEx($model,'quote', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-6 col-md-9 col-sm-12">
 				<?php 
 				//echo $form->textArea($model,'quote', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
 				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
@@ -209,8 +209,8 @@
 		</div>
 
 		<div class="form-group row">
-			<?php echo $form->labelEx($model,'body', array('class'=>'col-form-label col-lg-4 col-md-3 col-sm-12')); ?>
-			<div class="col-lg-8 col-md-9 col-sm-12">
+			<?php echo $form->labelEx($model,'body', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
+			<div class="col-lg-6 col-md-9 col-sm-12">
 				<?php 
 				//echo $form->textArea($model,'body', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
 				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
@@ -237,8 +237,8 @@
 		</div>
 
 		<div class="submit clearfix">
-			<label class="col-form-label col-lg-4 col-md-3 col-sm-12">&nbsp;</label>
-			<div class="col-lg-8 col-md-9 col-sm-12">
+			<label class="col-form-label col-lg-3 col-md-3 col-sm-12">&nbsp;</label>
+			<div class="col-lg-6 col-md-9 col-sm-12">
 				<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('phrase', 'Create') : Yii::t('phrase', 'Save'), array('onclick' => 'setEnableSave()')); ?>
 			</div>
 		</div>
