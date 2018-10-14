@@ -15,14 +15,13 @@
 
 	$this->breadcrumbs=array(
 		'Album Categories'=>array('manage'),
-		'Publish',
+		Yii::t('phrase', 'Publish'),
 	);
 ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'album-category-form',
 	'enableAjaxValidation'=>true,
-	//'htmlOptions' => array('enctype' => 'multipart/form-data')
 )); ?>
 
 	<div class="dialog-content">

@@ -38,7 +38,6 @@ EOP;
 <?php $form=$this->beginWidget('application.libraries.yii-traits.system.OActiveForm', array(
 	'id'=>'album-setting-form',
 	'enableAjaxValidation'=>true,
-	//'htmlOptions' => array('enctype' => 'multipart/form-data')
 )); ?>
 
 	<?php //begin.Messages ?>
@@ -55,8 +54,7 @@ EOP;
 				<span><?php echo Yii::t('phrase', 'Enter the your license key that is provided to you when you purchased this plugin. If you do not know your license key, please contact support team.');?></span>
 			</label>
 			<div class="col-lg-6 col-md-9 col-sm-12">
-				<?php 
-				if($model->isNewRecord || (!$model->isNewRecord && $model->license == '')) {
+				<?php if($model->isNewRecord || (!$model->isNewRecord && $model->license == '')) {
 					$model->license = $this->licenseCode();
 					echo $form->textField($model,'license', array('maxlength'=>32,'class'=>'span-4'));
 				} else
@@ -70,8 +68,7 @@ EOP;
 			<?php echo $form->labelEx($model,'permission', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
 			<div class="col-lg-6 col-md-9 col-sm-12">
 				<div class="small-px slient"><?php echo Yii::t('phrase', 'Select whether or not you want to let the public (visitors that are not logged-in) to view the following sections of your social network. In some cases (such as Profiles, Blogs, and Albums), if you have given them the option, your users will be able to make their pages private even though you have made them publically viewable here. For more permissions settings, please visit the General Settings page.');?></div>
-				<?php 
-				if($model->isNewRecord && !$model->getErrors())
+				<?php if($model->isNewRecord && !$model->getErrors())
 					$model->permission = 1;
 				echo $form->radioButtonList($model, 'permission', array(
 					1 => Yii::t('phrase', 'Yes, the public can view album unless they are made private.'),
@@ -119,8 +116,7 @@ EOP;
 		<div class="form-group row">
 			<?php echo $form->labelEx($model,'headline', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
 			<div class="col-lg-6 col-md-9 col-sm-12">
-				<?php 
-				if($model->isNewRecord && !$model->getErrors())
+				<?php if($model->isNewRecord && !$model->getErrors())
 					$model->headline = 1;
 				echo $form->dropDownLIst($model,'headline', array(
 					'1' => Yii::t('phrase', 'Enable'),
@@ -134,8 +130,7 @@ EOP;
 			<div class="form-group row">
 				<?php echo $form->labelEx($model,'headline_limit', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
 				<div class="col-lg-6 col-md-9 col-sm-12">
-					<?php 
-					if($model->isNewRecord && !$model->getErrors())
+					<?php if($model->isNewRecord && !$model->getErrors())
 						$model->headline_limit = 0;
 					echo $form->textField($model,'headline_limit', array('maxlength'=>3, 'class'=>'span-2')); ?>
 					<?php echo $form->error($model,'headline_limit'); ?>
@@ -171,8 +166,7 @@ EOP;
 			<label class="col-form-label col-lg-3 col-md-3 col-sm-12"><?php echo Yii::t('phrase', 'Photo Setting');?> <span class="required">*</span></label>
 			<div class="col-lg-6 col-md-9 col-sm-12">
 				<p><?php echo $model->getAttributeLabel('photo_resize');?></p>
-				<?php 
-				if($model->isNewRecord && !$model->getErrors())
+				<?php if($model->isNewRecord && !$model->getErrors())
 					$model->photo_resize = 0;
 				echo $form->radioButtonList($model, 'photo_resize', array(
 					0 => Yii::t('phrase', 'No, not resize photo after upload.'),

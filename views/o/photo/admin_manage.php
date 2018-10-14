@@ -13,7 +13,7 @@
 
 	$this->breadcrumbs=array(
 		'Album Photos'=>array('manage'),
-		'Manage',
+		Yii::t('phrase', 'Manage'),
 	);
 	$this->menu=array(
 		array(
@@ -44,6 +44,7 @@
 <div class="grid-form">
 <?php $this->renderPartial('_option_form', array(
 	'model'=>$model,
+	'gridColumns'=>$this->activeDefaultColumns($columns),
 )); ?>
 </div>
 <?php //end.Grid Option ?>

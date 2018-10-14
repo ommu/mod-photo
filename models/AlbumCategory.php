@@ -326,7 +326,7 @@ class AlbumCategory extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'default_setting',
-				'value' => '$data->default_setting == 1 ? Yii::t("phrase", "Default") : Yii::t("phrase", "Custom")',					
+				'value' => '$data->default_setting == 1 ? Yii::t("phrase", "Default") : Yii::t("phrase", "Custom")',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -338,7 +338,7 @@ class AlbumCategory extends CActiveRecord
 			);
 			$this->defaultColumns[] = array(
 				'name' => 'album_search',
-				'value' => 'CHtml::link($data->view->albums ? $data->view->albums : 0, Yii::app()->controller->createUrl("o/admin/manage", array("category"=>$data->cat_id)))',
+				'value' => 'CHtml::link($data->view->albums ? $data->view->albums : 0, Yii::app()->controller->createUrl(\'o/admin/manage\', array("category"=>$data->cat_id)))',
 				'htmlOptions' => array(
 					'class' => 'center',
 				),
@@ -356,7 +356,7 @@ class AlbumCategory extends CActiveRecord
 			if(!Yii::app()->getRequest()->getParam('type')) {
 				$this->defaultColumns[] = array(
 					'name' => 'publish',
-					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl("publish", array("id"=>$data->cat_id)), $data->publish, 1)',
+					'value' => 'Utility::getPublish(Yii::app()->controller->createUrl(\'publish\', array(\'id\'=>$data->cat_id)), $data->publish, 1)',
 					'htmlOptions' => array(
 						'class' => 'center',
 					),
@@ -491,7 +491,7 @@ class AlbumCategory extends CActiveRecord
 				// category set to default
 				if ($this->default == 1) {
 					self::model()->updateAll(array(
-						'default' => 0,	
+						'default' => 0,
 					));
 					$this->default = 1;
 				}

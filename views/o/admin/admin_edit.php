@@ -15,7 +15,7 @@
 	$this->breadcrumbs=array(
 		'Albums'=>array('manage'),
 		$model->title=>array('view','id'=>$model->album_id),
-		'Update',
+		Yii::t('phrase', 'Update'),
 	);
 	
 	$photos = $model->photos;

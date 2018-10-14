@@ -15,14 +15,13 @@
 
 	$this->breadcrumbs=array(
 		'Album Views'=>array('manage'),
-		'Delete',
+		Yii::t('phrase', 'Delete'),
 	);
 ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'album-views-form',
 	'enableAjaxValidation'=>true,
-	//'htmlOptions' => array('enctype' => 'multipart/form-data')
 )); ?>
 
 	<div class="dialog-content">

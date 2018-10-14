@@ -21,7 +21,6 @@
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'album-photo-form',
 	'enableAjaxValidation'=>true,
-	//'htmlOptions' => array('enctype' => 'multipart/form-data')
 )); ?>
 
 	<div class="dialog-content">

@@ -14,14 +14,13 @@
 
 	$this->breadcrumbs=array(
 		'Album Tags'=>array('manage'),
-		'Delete',
+		Yii::t('phrase', 'Delete'),
 	);
 ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'album-tag-form',
 	'enableAjaxValidation'=>true,
-	//'htmlOptions' => array('enctype' => 'multipart/form-data')
 )); ?>
 
 	<div class="dialog-content">

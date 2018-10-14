@@ -15,7 +15,7 @@
 	$this->breadcrumbs=array(
 		'Album Settings'=>array('manage'),
 		$model->id=>array('view','id'=>$model->id),
-		'Update',
+		Yii::t('phrase', 'Update'),
 	);
 ?>
 

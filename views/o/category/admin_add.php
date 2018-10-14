@@ -15,7 +15,7 @@
 
 	$this->breadcrumbs=array(
 		'Album Categories'=>array('manage'),
-		'Create',
+		Yii::t('phrase', 'Create'),
 	);
 ?>
 

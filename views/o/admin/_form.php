@@ -185,14 +185,10 @@
 		<div class="form-group row">
 			<?php echo $form->labelEx($model,'quote', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
 			<div class="col-lg-6 col-md-9 col-sm-12">
-				<?php 
-				//echo $form->textArea($model,'quote', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
-				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
+				<?php $this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
 					'model'=>$model,
 					'attribute'=>quote,
-					// Redactor options
 					'options'=>array(
-						//'lang'=>'fi',
 						'buttons'=>array(
 							'html', '|', 
 							'bold', 'italic', 'deleted', '|',
@@ -211,14 +207,10 @@
 		<div class="form-group row">
 			<?php echo $form->labelEx($model,'body', array('class'=>'col-form-label col-lg-3 col-md-3 col-sm-12')); ?>
 			<div class="col-lg-6 col-md-9 col-sm-12">
-				<?php 
-				//echo $form->textArea($model,'body', array('rows'=>6, 'cols'=>50, 'class'=>'span-10 small'));
-				$this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
+				<?php $this->widget('yiiext.imperavi-redactor-widget.ImperaviRedactorWidget', array(
 					'model'=>$model,
 					'attribute'=>body,
-					// Redactor options
 					'options'=>array(
-						//'lang'=>'fi',
 						'buttons'=>array(
 							'html', 'formatting', '|', 
 							'bold', 'italic', 'deleted', '|',
