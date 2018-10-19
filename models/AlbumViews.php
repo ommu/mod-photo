@@ -250,7 +250,7 @@ class AlbumViews extends CActiveRecord
 			if(!Yii::app()->getRequest()->getParam('user')) {
 				$this->defaultColumns[] = array(
 					'name' => 'user_search',
-					'value' => '$data->user->displayname ? $data->user->displayname : "-"',
+					'value' => '$data->user->displayname ? $data->user->displayname : \'-\'',
 				);
 			}
 			$this->defaultColumns[] = array(

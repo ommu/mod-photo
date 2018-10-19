@@ -225,7 +225,7 @@ class AlbumLikeHistory extends CActiveRecord
 				);
 				$this->defaultColumns[] = array(
 					'name' => 'user_search',
-					'value' => '$data->like->user->displayname ? $data->like->user->displayname : "-"',
+					'value' => '$data->like->user->displayname ? $data->like->user->displayname : \'-\'',
 				);
 			}
 			$this->defaultColumns[] = array(
