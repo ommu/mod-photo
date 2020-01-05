@@ -49,7 +49,7 @@ class Photos extends \app\components\ActiveRecord
 	use \ommu\traits\UtilityTrait;
 	use \ommu\traits\FileTrait;
 
-	public $gridForbiddenColumn = [];
+	public $gridForbiddenColumn = ['title', 'caption', 'creationDisplayname', 'modified_date', 'modifiedDisplayname', 'updated_date'];
 
 	public $old_photo;
 	public $albumTitle;
@@ -72,10 +72,10 @@ class Photos extends \app\components\ActiveRecord
 	public function rules()
 	{
 		return [
-			[['album_id', 'member_id', 'user_id', 'title', 'caption'], 'required'],
+			[['member_id', 'user_id'], 'required'],
 			[['publish', 'album_id', 'member_id', 'user_id', 'creation_id', 'modified_id'], 'integer'],
-			[['photo', 'title', 'caption'], 'string'],
-			[['photo'], 'safe'],
+			[['title', 'caption'], 'string'],
+			[['album_id', 'photo', 'title', 'caption'], 'safe'],
 			[['album_id'], 'exist', 'skipOnError' => true, 'targetClass' => PhotoAlbum::className(), 'targetAttribute' => ['album_id' => 'id']],
 		];
 	}
@@ -175,14 +175,6 @@ class Photos extends \app\components\ActiveRecord
 			'class' => 'yii\grid\SerialColumn',
 			'contentOptions' => ['class'=>'center'],
 		];
-		$this->templateColumns['albumTitle'] = [
-			'attribute' => 'albumTitle',
-			'value' => function($model, $key, $index, $column) {
-				return isset($model->album) ? $model->album->title : '-';
-				// return $model->albumTitle;
-			},
-			'visible' => !Yii::$app->request->get('album') ? true : false,
-		];
 		$this->templateColumns['memberDisplayname'] = [
 			'attribute' => 'memberDisplayname',
 			'value' => function($model, $key, $index, $column) {
@@ -198,6 +190,14 @@ class Photos extends \app\components\ActiveRecord
 				// return $model->userDisplayname;
 			},
 			'visible' => !Yii::$app->request->get('user') ? true : false,
+		];
+		$this->templateColumns['albumTitle'] = [
+			'attribute' => 'albumTitle',
+			'value' => function($model, $key, $index, $column) {
+				return isset($model->album) ? $model->album->title : '-';
+				// return $model->albumTitle;
+			},
+			'visible' => !Yii::$app->request->get('album') ? true : false,
 		];
 		$this->templateColumns['photo'] = [
 			'attribute' => 'photo',

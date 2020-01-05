@@ -44,7 +44,7 @@ class PhotoAlbum extends \app\components\ActiveRecord
 {
 	use \ommu\traits\UtilityTrait;
 
-	public $gridForbiddenColumn = [];
+	public $gridForbiddenColumn = ['caption', 'creationDisplayname', 'modified_date', 'modifiedDisplayname', 'updated_date'];
 
 	public $memberDisplayname;
 	public $userDisplayname;
@@ -65,9 +65,10 @@ class PhotoAlbum extends \app\components\ActiveRecord
 	public function rules()
 	{
 		return [
-			[['member_id', 'user_id', 'title', 'caption'], 'required'],
+			[['member_id', 'user_id', 'title'], 'required'],
 			[['publish', 'member_id', 'user_id', 'creation_id', 'modified_id'], 'integer'],
 			[['title', 'caption'], 'string'],
+			[['caption'], 'safe'],
 		];
 	}
 
