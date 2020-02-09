@@ -307,10 +307,10 @@ class PhotoAlbum extends \app\components\ActiveRecord
 	public function beforeValidate()
 	{
 		if(parent::beforeValidate()) {
-			if($this->user_id == null)
-				$this->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
-
 			if($this->isNewRecord) {
+				if($this->user_id == null)
+					$this->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
+	
 				if($this->creation_id == null)
 					$this->creation_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
 			} else {

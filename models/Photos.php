@@ -333,10 +333,10 @@ class Photos extends \app\components\ActiveRecord
 					$this->addError('photo', Yii::t('app', '{attribute} cannot be blank.', ['attribute'=>$this->getAttributeLabel('photo')]));
 			} */
 
-			if($this->user_id == null)
-				$this->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
-
 			if($this->isNewRecord) {
+				if($this->user_id == null)
+					$this->user_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
+	
 				if($this->creation_id == null)
 					$this->creation_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
 			} else {

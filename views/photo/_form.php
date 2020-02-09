@@ -51,7 +51,7 @@ use app\components\widgets\ActiveForm;
 	->label($model->getAttributeLabel('user_id')); ?>
 
 <?php $uploadPath = join('/', [$model::getUploadPath(false), $model->member_id]);
-$photo = !$model->isNewRecord && $model->old_photo != '' ? Html::img(Url::to(join('/', ['@webpublic', $uploadPath, $model->old_photo])), ['alt'=>$model->old_photo, 'class'=>'mb-3']) : '';
+$photo = !$model->isNewRecord && $model->old_photo != '' ? Html::img(Url::to(join('/', ['@webpublic', $uploadPath, $model->old_photo])), ['alt'=>$model->old_photo, 'class'=>'d-block border border-width-3 mb-3']).$model->old_photo.'<hr/>' : '';
 echo $form->field($model, 'photo', ['template' => '{label}{beginWrapper}<div>'.$photo.'</div>{input}{error}{hint}{endWrapper}'])
 	->fileInput()
 	->label($model->getAttributeLabel('photo')); ?>
