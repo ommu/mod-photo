@@ -5,11 +5,11 @@
  * This is the ActiveQuery class for [[\app\modules\album\models\Photos]].
  * @see \app\modules\album\models\Photos
  * 
- * @author Putra Sudaryanto <putra@ommu.co>
+ * @author Putra Sudaryanto <putra@ommu.id>
  * @contact (+62)856-299-4114
- * @copyright Copyright (c) 2020 Ommu Platform (www.ommu.co)
+ * @copyright Copyright (c) 2020 OMMU (www.ommu.id)
  * @created date 6 January 2020, 01:24 WIB
- * @link https://www.ommu.co
+ * @link https://github.com/ommu/mod-photo
  *
  */
 
