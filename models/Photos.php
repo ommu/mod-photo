@@ -348,49 +348,24 @@ class Photos extends \app\components\ActiveRecord
 	public function beforeSave($insert)
 	{
 		if(parent::beforeSave($insert)) {
-			if(!$insert) {
-				$uploadPath = join('/', [self::getUploadPath(), $this->member_id]);
-				$verwijderenPath = join('/', [self::getUploadPath(), 'verwijderen']);
-				$this->createUploadDirectory(self::getUploadPath(), $this->member_id);
+            $uploadPath = join('/', [self::getUploadPath(), $this->member_id]);
+            $verwijderenPath = join('/', [self::getUploadPath(), 'verwijderen']);
+            $this->createUploadDirectory(self::getUploadPath(), $this->member_id);
 
-				// $this->photo = UploadedFile::getInstance($this, 'photo');
-				if($this->photo instanceof UploadedFile && !$this->photo->getHasError()) {
-					$fileName = join('-', [time(), UuidHelper::uuid()]).'.'.strtolower($this->photo->getExtension()); 
-					if($this->photo->saveAs(join('/', [$uploadPath, $fileName]))) {
-						if($this->old_photo != '' && file_exists(join('/', [$uploadPath, $this->old_photo])))
-							rename(join('/', [$uploadPath, $this->old_photo]), join('/', [$verwijderenPath, $this->id.'-'.time().'_change_'.$this->old_photo]));
-						$this->photo = $fileName;
-					}
-				} else {
-					if($this->photo == '')
-						$this->photo = $this->old_photo;
-				}
-
-			}
+            // $this->photo = UploadedFile::getInstance($this, 'photo');
+            if($this->photo instanceof UploadedFile && !$this->photo->getHasError()) {
+                $fileName = join('-', [time(), UuidHelper::uuid()]).'.'.strtolower($this->photo->getExtension()); 
+                if($this->photo->saveAs(join('/', [$uploadPath, $fileName]))) {
+                    if(!$insert && $this->old_photo != '' && file_exists(join('/', [$uploadPath, $this->old_photo])))
+                        rename(join('/', [$uploadPath, $this->old_photo]), join('/', [$verwijderenPath, $this->id.'-'.time().'_change_'.$this->old_photo]));
+                    $this->photo = $fileName;
+                }
+            } else {
+                if(!$insert && $this->photo == '')
+                    $this->photo = $this->old_photo;
+            }
 		}
 		return true;
-	}
-
-	/**
-	 * After save attributes
-	 */
-	public function afterSave($insert, $changedAttributes)
-	{
-		parent::afterSave($insert, $changedAttributes);
-
-		$uploadPath = join('/', [self::getUploadPath(), $this->member_id]);
-		$verwijderenPath = join('/', [self::getUploadPath(), 'verwijderen']);
-		$this->createUploadDirectory(self::getUploadPath(), $this->member_id);
-
-		if($insert) {
-			// $this->photo = UploadedFile::getInstance($this, 'photo');
-			if($this->photo instanceof UploadedFile && !$this->photo->getHasError()) {
-				$fileName = join('-', [time(), UuidHelper::uuid()]).'.'.strtolower($this->photo->getExtension()); 
-				if($this->photo->saveAs(join('/', [$uploadPath, $fileName])))
-					self::updateAll(['photo' => $fileName], ['id' => $this->id]);
-			}
-
-		}
 	}
 
 	/**
