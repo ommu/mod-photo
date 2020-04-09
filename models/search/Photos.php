@@ -28,7 +28,7 @@ class Photos extends PhotosModel
 	{
 		return [
 			[['id', 'publish', 'album_id', 'member_id', 'user_id', 'creation_id', 'modified_id'], 'integer'],
-			[['photo', 'title', 'caption', 'creation_date', 'modified_date', 'updated_date', 'albumTitle', 'memberDisplayname', 'userDisplayname', 'creationDisplayname', 'modifiedDisplayname'], 'safe'],
+			[['photo', 'title', 'caption', 'creation_date', 'modified_date', 'updated_date', 'albumTitle', 'memberDisplayname', 'creationDisplayname', 'modifiedDisplayname'], 'safe'],
 		];
 	}
 
@@ -74,9 +74,7 @@ class Photos extends PhotosModel
 		if((isset($params['sort']) && in_array($params['sort'], ['albumTitle', '-albumTitle'])) || (isset($params['albumTitle']) && $params['albumTitle'] != ''))
 			$query = $query->joinWith(['album album']);
 		if((isset($params['sort']) && in_array($params['sort'], ['memberDisplayname', '-memberDisplayname'])) || (isset($params['memberDisplayname']) && $params['memberDisplayname'] != ''))
-			$query = $query->joinWith(['member member']);
-		if((isset($params['sort']) && in_array($params['sort'], ['userDisplayname', '-userDisplayname'])) || (isset($params['userDisplayname']) && $params['userDisplayname'] != ''))
-			$query = $query->joinWith(['user user']);
+			$query = $query->joinWith(['member member', 'user user']);
 		if((isset($params['sort']) && in_array($params['sort'], ['creationDisplayname', '-creationDisplayname'])) || (isset($params['creationDisplayname']) && $params['creationDisplayname'] != ''))
 			$query = $query->joinWith(['creation creation']);
 		if((isset($params['sort']) && in_array($params['sort'], ['modifiedDisplayname', '-modifiedDisplayname'])) || (isset($params['modifiedDisplayname']) && $params['modifiedDisplayname'] != ''))
@@ -101,10 +99,6 @@ class Photos extends PhotosModel
 		$attributes['memberDisplayname'] = [
 			'asc' => ['member.displayname' => SORT_ASC],
 			'desc' => ['member.displayname' => SORT_DESC],
-		];
-		$attributes['userDisplayname'] = [
-			'asc' => ['user.displayname' => SORT_ASC],
-			'desc' => ['user.displayname' => SORT_DESC],
 		];
 		$attributes['creationDisplayname'] = [
 			'asc' => ['creation.displayname' => SORT_ASC],
@@ -151,12 +145,17 @@ class Photos extends PhotosModel
 				$query->andFilterWhere(['t.publish' => $this->publish]);
 		}
 
+        if (isset($params['memberDisplayname']) && $params['memberDisplayname'] != '') {
+            $query->andWhere(['or', 
+                ['like', 'member.displayname', $this->memberDisplayname],
+                ['like', 'user.displayname', $this->memberDisplayname]
+            ]);
+        }
+
 		$query->andFilterWhere(['like', 't.photo', $this->photo])
 			->andFilterWhere(['like', 't.title', $this->title])
 			->andFilterWhere(['like', 't.caption', $this->caption])
 			->andFilterWhere(['like', 'album.title', $this->albumTitle])
-			->andFilterWhere(['like', 'member.displayname', $this->memberDisplayname])
-			->andFilterWhere(['like', 'user.displayname', $this->userDisplayname])
 			->andFilterWhere(['like', 'creation.displayname', $this->creationDisplayname])
 			->andFilterWhere(['like', 'modified.displayname', $this->modifiedDisplayname]);
 

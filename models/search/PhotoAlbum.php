@@ -28,7 +28,7 @@ class PhotoAlbum extends PhotoAlbumModel
 	{
 		return [
 			[['id', 'publish', 'member_id', 'user_id', 'creation_id', 'modified_id'], 'integer'],
-			[['title', 'caption', 'creation_date', 'modified_date', 'updated_date', 'memberDisplayname', 'userDisplayname', 'creationDisplayname', 'modifiedDisplayname'], 'safe'],
+			[['title', 'caption', 'creation_date', 'modified_date', 'updated_date', 'memberDisplayname', 'creationDisplayname', 'modifiedDisplayname'], 'safe'],
 		];
 	}
 
@@ -71,9 +71,7 @@ class PhotoAlbum extends PhotoAlbumModel
 			// 'modified modified'
 		]);
 		if((isset($params['sort']) && in_array($params['sort'], ['memberDisplayname', '-memberDisplayname'])) || (isset($params['memberDisplayname']) && $params['memberDisplayname'] != ''))
-			$query = $query->joinWith(['member member']);
-		if((isset($params['sort']) && in_array($params['sort'], ['userDisplayname', '-userDisplayname'])) || (isset($params['userDisplayname']) && $params['userDisplayname'] != ''))
-			$query = $query->joinWith(['user user']);
+			$query = $query->joinWith(['member member', 'user user']);
 		if((isset($params['sort']) && in_array($params['sort'], ['creationDisplayname', '-creationDisplayname'])) || (isset($params['creationDisplayname']) && $params['creationDisplayname'] != ''))
 			$query = $query->joinWith(['creation creation']);
 		if((isset($params['sort']) && in_array($params['sort'], ['modifiedDisplayname', '-modifiedDisplayname'])) || (isset($params['modifiedDisplayname']) && $params['modifiedDisplayname'] != ''))
@@ -94,10 +92,6 @@ class PhotoAlbum extends PhotoAlbumModel
 		$attributes['memberDisplayname'] = [
 			'asc' => ['member.displayname' => SORT_ASC],
 			'desc' => ['member.displayname' => SORT_DESC],
-		];
-		$attributes['userDisplayname'] = [
-			'asc' => ['user.displayname' => SORT_ASC],
-			'desc' => ['user.displayname' => SORT_DESC],
 		];
 		$attributes['creationDisplayname'] = [
 			'asc' => ['creation.displayname' => SORT_ASC],
@@ -143,10 +137,15 @@ class PhotoAlbum extends PhotoAlbumModel
 				$query->andFilterWhere(['t.publish' => $this->publish]);
 		}
 
+        if (isset($params['memberDisplayname']) && $params['memberDisplayname'] != '') {
+            $query->andWhere(['or', 
+                ['like', 'member.displayname', $this->memberDisplayname],
+                ['like', 'user.displayname', $this->memberDisplayname]
+            ]);
+        }
+
 		$query->andFilterWhere(['like', 't.title', $this->title])
 			->andFilterWhere(['like', 't.caption', $this->caption])
-			->andFilterWhere(['like', 'member.displayname', $this->memberDisplayname])
-			->andFilterWhere(['like', 'user.displayname', $this->userDisplayname])
 			->andFilterWhere(['like', 'creation.displayname', $this->creationDisplayname])
 			->andFilterWhere(['like', 'modified.displayname', $this->modifiedDisplayname]);
 

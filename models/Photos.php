@@ -54,7 +54,6 @@ class Photos extends \app\components\ActiveRecord
 	public $old_photo;
 	public $albumTitle;
 	public $memberDisplayname;
-	public $userDisplayname;
 	public $creationDisplayname;
 	public $modifiedDisplayname;
 
@@ -102,7 +101,6 @@ class Photos extends \app\components\ActiveRecord
 			'old_photo' => Yii::t('app', 'Old Photo'),
 			'albumTitle' => Yii::t('app', 'Album'),
 			'memberDisplayname' => Yii::t('app', 'Member'),
-			'userDisplayname' => Yii::t('app', 'User'),
 			'creationDisplayname' => Yii::t('app', 'Creation'),
 			'modifiedDisplayname' => Yii::t('app', 'Modified'),
 		];
@@ -178,18 +176,16 @@ class Photos extends \app\components\ActiveRecord
 		$this->templateColumns['memberDisplayname'] = [
 			'attribute' => 'memberDisplayname',
 			'value' => function($model, $key, $index, $column) {
-				return isset($model->member) ? $model->member->displayname : '-';
+                $memberDisplayname = isset($model->member) ? $model->member->displayname : '-';
+                $userDisplayname = isset($model->user) ? $model->user->displayname : '-';
+                if ($userDisplayname != '-' && $memberDisplayname != $userDisplayname) {
+                    return $memberDisplayname.'<br/>'.$userDisplayname;
+                }
+                return $memberDisplayname;
 				// return $model->memberDisplayname;
 			},
+            'format' => 'html',
 			'visible' => !Yii::$app->request->get('member') ? true : false,
-		];
-		$this->templateColumns['userDisplayname'] = [
-			'attribute' => 'userDisplayname',
-			'value' => function($model, $key, $index, $column) {
-				return isset($model->user) ? $model->user->displayname : '-';
-				// return $model->userDisplayname;
-			},
-			'visible' => !Yii::$app->request->get('user') ? true : false,
 		];
 		$this->templateColumns['albumTitle'] = [
 			'attribute' => 'albumTitle',
@@ -308,7 +304,6 @@ class Photos extends \app\components\ActiveRecord
 		$this->old_photo = $this->photo;
 		// $this->albumTitle = isset($this->album) ? $this->album->title : '-';
 		// $this->memberDisplayname = isset($this->member) ? $this->member->displayname : '-';
-		// $this->userDisplayname = isset($this->user) ? $this->user->displayname : '-';
 		// $this->creationDisplayname = isset($this->creation) ? $this->creation->displayname : '-';
 		// $this->modifiedDisplayname = isset($this->modified) ? $this->modified->displayname : '-';
 	}

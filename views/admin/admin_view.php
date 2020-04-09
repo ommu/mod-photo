@@ -44,13 +44,15 @@ $attributes = [
 	],
 	[
 		'attribute' => 'memberDisplayname',
-		'value' => isset($model->member) ? $model->member->displayname : '-',
-		'visible' => !$small,
-	],
-	[
-		'attribute' => 'userDisplayname',
-		'value' => isset($model->user) ? $model->user->displayname : '-',
-		'visible' => !$small,
+        'value' => function ($model) {
+            $memberDisplayname = isset($model->member) ? $model->member->displayname : '-';
+            $userDisplayname = isset($model->user) ? $model->user->displayname : '-';
+            if ($userDisplayname != '-' && $memberDisplayname != $userDisplayname) {
+                return $memberDisplayname.'<br/>'.$userDisplayname;
+            }
+            return $memberDisplayname;
+        },
+        'format' => 'html',
 	],
 	[
 		'attribute' => 'title',

@@ -30,8 +30,6 @@ use yii\widgets\ActiveForm;
 
 		<?php echo $form->field($model, 'memberDisplayname');?>
 
-		<?php echo $form->field($model, 'userDisplayname');?>
-
 		<?php echo $form->field($model, 'title');?>
 
 		<?php echo $form->field($model, 'caption');?>
