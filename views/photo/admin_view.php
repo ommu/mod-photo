@@ -2,8 +2,8 @@
 /**
  * Photos (photos)
  * @var $this app\components\View
- * @var $this app\modules\album\controllers\PhotoController
- * @var $model app\modules\album\models\Photos
+ * @var $this ommu\album\controllers\PhotoController
+ * @var $model ommu\album\models\Photos
  *
  * @author Putra Sudaryanto <putra@ommu.id>
  * @contact (+62)856-299-4114

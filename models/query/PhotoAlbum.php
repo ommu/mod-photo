@@ -2,8 +2,8 @@
 /**
  * PhotoAlbum
  *
- * This is the ActiveQuery class for [[\app\modules\album\models\PhotoAlbum]].
- * @see \app\modules\album\models\PhotoAlbum
+ * This is the ActiveQuery class for [[\ommu\album\models\PhotoAlbum]].
+ * @see \ommu\album\models\PhotoAlbum
  * 
  * @author Putra Sudaryanto <putra@ommu.id>
  * @contact (+62)856-299-4114
@@ -13,7 +13,7 @@
  *
  */
 
-namespace app\modules\album\models\query;
+namespace ommu\album\models\query;
 
 class PhotoAlbum extends \yii\db\ActiveQuery
 {
@@ -50,7 +50,7 @@ class PhotoAlbum extends \yii\db\ActiveQuery
 
 	/**
 	 * {@inheritdoc}
-	 * @return \app\modules\album\models\PhotoAlbum[]|array
+	 * @return \ommu\album\models\PhotoAlbum[]|array
 	 */
 	public function all($db = null)
 	{
@@ -59,7 +59,7 @@ class PhotoAlbum extends \yii\db\ActiveQuery
 
 	/**
 	 * {@inheritdoc}
-	 * @return \app\modules\album\models\PhotoAlbum|array|null
+	 * @return \ommu\album\models\PhotoAlbum|array|null
 	 */
 	public function one($db = null)
 	{

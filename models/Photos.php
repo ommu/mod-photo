@@ -34,7 +34,7 @@
  *
  */
 
-namespace app\modules\album\models;
+namespace ommu\album\models;
 
 use Yii;
 use yii\helpers\Html;
@@ -148,11 +148,11 @@ class Photos extends \app\components\ActiveRecord
 
 	/**
 	 * {@inheritdoc}
-	 * @return \app\modules\album\models\query\Photos the active query used by this AR class.
+	 * @return \ommu\album\models\query\Photos the active query used by this AR class.
 	 */
 	public static function find()
 	{
-		return new \app\modules\album\models\query\Photos(get_called_class());
+		return new \ommu\album\models\query\Photos(get_called_class());
 	}
 
 	/**

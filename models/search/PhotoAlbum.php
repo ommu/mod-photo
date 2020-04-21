@@ -2,7 +2,7 @@
 /**
  * PhotoAlbum
  *
- * PhotoAlbum represents the model behind the search form about `app\modules\album\models\PhotoAlbum`.
+ * PhotoAlbum represents the model behind the search form about `ommu\album\models\PhotoAlbum`.
  *
  * @author Putra Sudaryanto <putra@ommu.id>
  * @contact (+62)856-299-4114
@@ -12,12 +12,12 @@
  *
  */
 
-namespace app\modules\album\models\search;
+namespace ommu\album\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\album\models\PhotoAlbum as PhotoAlbumModel;
+use ommu\album\models\PhotoAlbum as PhotoAlbumModel;
 
 class PhotoAlbum extends PhotoAlbumModel
 {

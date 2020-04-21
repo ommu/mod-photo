@@ -2,8 +2,8 @@
 /**
  * Photos (photos)
  * @var $this app\components\View
- * @var $this app\modules\album\controllers\PhotoController
- * @var $model app\modules\album\models\search\Photos
+ * @var $this ommu\album\controllers\PhotoController
+ * @var $model ommu\album\models\search\Photos
  * @var $form yii\widgets\ActiveForm
  *
  * @author Putra Sudaryanto <putra@ommu.id>

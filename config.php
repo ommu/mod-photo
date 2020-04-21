@@ -12,5 +12,5 @@
 
 return [
 	'id' => 'album',
-	'class' => app\modules\album\Module::className(),
+	'class' => ommu\album\Module::className(),
 ];

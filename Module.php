@@ -10,7 +10,7 @@
  *
  */
 
-namespace app\modules\album;
+namespace ommu\album;
 
 use Yii;
 
@@ -21,7 +21,7 @@ class Module extends \app\components\Module
 	/**
 	 * {@inheritdoc}
 	 */
-	public $controllerNamespace = 'app\modules\album\controllers';
+	public $controllerNamespace = 'ommu\album\controllers';
 
 	/**
 	 * {@inheritdoc}

@@ -1,8 +1,8 @@
 <?php
 /**
  * AdminController
- * @var $this app\modules\album\controllers\AdminController
- * @var $model app\modules\album\models\PhotoAlbum
+ * @var $this ommu\album\controllers\AdminController
+ * @var $model ommu\album\models\PhotoAlbum
  *
  * AdminController implements the CRUD actions for PhotoAlbum model.
  * Reference start
@@ -26,14 +26,14 @@
  *
  */
 
-namespace app\modules\album\controllers;
+namespace ommu\album\controllers;
 
 use Yii;
 use app\components\Controller;
 use mdm\admin\components\AccessControl;
 use yii\filters\VerbFilter;
-use app\modules\album\models\PhotoAlbum;
-use app\modules\album\models\search\PhotoAlbum as PhotoAlbumSearch;
+use ommu\album\models\PhotoAlbum;
+use ommu\album\models\search\PhotoAlbum as PhotoAlbumSearch;
 
 class AdminController extends Controller
 {

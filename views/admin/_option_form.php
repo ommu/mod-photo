@@ -2,8 +2,8 @@
 /**
  * Photo Albums (photo-album)
  * @var $this app\components\View
- * @var $this app\modules\album\controllers\AdminController
- * @var $model app\modules\album\models\search\PhotoAlbum
+ * @var $this ommu\album\controllers\AdminController
+ * @var $model ommu\album\models\search\PhotoAlbum
  * @var $form yii\widgets\ActiveForm
  *
  * @author Putra Sudaryanto <putra@ommu.id>

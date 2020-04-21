@@ -2,8 +2,8 @@
 /**
  * Photo Albums (photo-album)
  * @var $this app\components\View
- * @var $this app\modules\album\controllers\AdminController
- * @var $model app\modules\album\models\PhotoAlbum
+ * @var $this ommu\album\controllers\AdminController
+ * @var $model ommu\album\models\PhotoAlbum
  *
  * @author Putra Sudaryanto <putra@ommu.id>
  * @contact (+62)856-299-4114

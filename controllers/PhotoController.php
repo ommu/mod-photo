@@ -1,8 +1,8 @@
 <?php
 /**
  * PhotoController
- * @var $this app\modules\album\controllers\PhotoController
- * @var $model app\modules\album\models\Photos
+ * @var $this ommu\album\controllers\PhotoController
+ * @var $model ommu\album\models\Photos
  *
  * PhotoController implements the CRUD actions for Photos model.
  * Reference start
@@ -26,14 +26,14 @@
  *
  */
 
-namespace app\modules\album\controllers;
+namespace ommu\album\controllers;
 
 use Yii;
 use app\components\Controller;
 use mdm\admin\components\AccessControl;
 use yii\filters\VerbFilter;
-use app\modules\album\models\Photos;
-use app\modules\album\models\search\Photos as PhotosSearch;
+use ommu\album\models\Photos;
+use ommu\album\models\search\Photos as PhotosSearch;
 
 class PhotoController extends Controller
 {
@@ -84,7 +84,7 @@ class PhotoController extends Controller
 		$columns = $searchModel->getGridColumn($cols);
 
 		if(($album = Yii::$app->request->get('album')) != null)
-			$album = \app\modules\album\models\PhotoAlbum::findOne($album);
+			$album = \ommu\album\models\PhotoAlbum::findOne($album);
 
 		$this->view->title = Yii::t('app', 'Photos');
 		$this->view->description = '';
