@@ -180,7 +180,7 @@ class PhotoAlbum extends \app\components\ActiveRecord
 		$this->templateColumns['_no'] = [
 			'header' => '#',
 			'class' => 'app\components\grid\SerialColumn',
-			'contentOptions' => ['class'=>'text-center'],
+			'contentOptions' => ['class' => 'text-center'],
 		];
 		$this->templateColumns['memberDisplayname'] = [
 			'attribute' => 'memberDisplayname',
@@ -249,20 +249,20 @@ class PhotoAlbum extends \app\components\ActiveRecord
 			'attribute' => 'photos',
 			'value' => function($model, $key, $index, $column) {
 				$photos = $model->getPhotos(true);
-				return Html::a($photos, ['photo/manage', 'album'=>$model->primaryKey, 'publish'=>1], ['title'=>Yii::t('app', '{count} photos', ['count'=>$photos]), 'data-pjax'=>0]);
+				return Html::a($photos, ['photo/manage', 'album' => $model->primaryKey, 'publish' => 1], ['title' => Yii::t('app', '{count} photos', ['count' => $photos]), 'data-pjax' => 0]);
 			},
 			'filter' => false,
-			'contentOptions' => ['class'=>'text-center'],
+			'contentOptions' => ['class' => 'text-center'],
 			'format' => 'raw',
 		];
 		$this->templateColumns['publish'] = [
 			'attribute' => 'publish',
 			'value' => function($model, $key, $index, $column) {
-				$url = Url::to(['publish', 'id'=>$model->primaryKey]);
+				$url = Url::to(['publish', 'id' => $model->primaryKey]);
 				return $this->quickAction($url, $model->publish);
 			},
 			'filter' => $this->filterYesNo(),
-			'contentOptions' => ['class'=>'text-center'],
+			'contentOptions' => ['class' => 'text-center'],
 			'format' => 'raw',
 			'visible' => !Yii::$app->request->get('trash') ? true : false,
 		];

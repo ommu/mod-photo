@@ -22,8 +22,8 @@ if (!$small) {
     $this->params['breadcrumbs'][] = $model->title;
 
     $this->params['menu']['content'] = [
-        ['label' => Yii::t('app', 'Update'), 'url' => Url::to(['update', 'id'=>$model->id]), 'icon' => 'pencil', 'htmlOptions' => ['class'=>'btn btn-primary']],
-        ['label' => Yii::t('app', 'Delete'), 'url' => Url::to(['delete', 'id'=>$model->id]), 'htmlOptions' => ['data-confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'), 'data-method'=>'post', 'class'=>'btn btn-danger'], 'icon' => 'trash'],
+        ['label' => Yii::t('app', 'Update'), 'url' => Url::to(['update', 'id' => $model->id]), 'icon' => 'pencil', 'htmlOptions' => ['class' => 'btn btn-primary']],
+        ['label' => Yii::t('app', 'Delete'), 'url' => Url::to(['delete', 'id' => $model->id]), 'htmlOptions' => ['data-confirm' => Yii::t('app', 'Are you sure you want to delete this item?'), 'data-method' => 'post', 'class' => 'btn btn-danger'], 'icon' => 'trash'],
     ];
 } ?>
 
@@ -38,7 +38,7 @@ $attributes = [
 	],
 	[
 		'attribute' => 'publish',
-		'value' => $model->quickAction(Url::to(['publish', 'id'=>$model->primaryKey]), $model->publish),
+		'value' => $model->quickAction(Url::to(['publish', 'id' => $model->primaryKey]), $model->publish),
 		'format' => 'raw',
 		'visible' => !$small,
 	],
@@ -47,7 +47,7 @@ $attributes = [
 		'value' => function ($model) {
 			$albumTitle = isset($model->album) ? $model->album->title : '-';
             if ($albumTitle != '-') {
-				return Html::a($albumTitle, ['admin/view', 'id'=>$model->album_id], ['title'=>$albumTitle, 'class'=>'modal-btn']);
+				return Html::a($albumTitle, ['admin/view', 'id' => $model->album_id], ['title' => $albumTitle, 'class' => 'modal-btn']);
             }
 			return $albumTitle;
 		},
@@ -69,7 +69,7 @@ $attributes = [
 		'attribute' => 'photo',
 		'value' => function ($model) {
 			$uploadPath = join('/', [$model::getUploadPath(false), $model->member_id]);
-			return $model->photo ? Html::img(Url::to(join('/', ['@webpublic', $uploadPath, $model->photo])), ['alt'=>$model->photo, 'class'=>'d-block border border-width-3 mb-3']).$model->photo : '-';
+			return $model->photo ? Html::img(Url::to(join('/', ['@webpublic', $uploadPath, $model->photo])), ['alt' => $model->photo, 'class' => 'd-block border border-width-3 mb-4']).$model->photo : '-';
 		},
 		'format' => 'html',
 		'visible' => !$small,
@@ -111,7 +111,7 @@ $attributes = [
 	],
 	[
 		'attribute' => '',
-		'value' => Html::a(Yii::t('app', 'Update'), ['update', 'id'=>$model->primaryKey], ['title'=>Yii::t('app', 'Update'), 'class'=>'btn btn-success btn-sm']),
+		'value' => Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->primaryKey], ['title' => Yii::t('app', 'Update'), 'class' => 'btn btn-primary btn-sm']),
 		'format' => 'html',
 		'visible' => !$small && Yii::$app->request->isAjax ? true : false,
 	],
@@ -120,7 +120,7 @@ $attributes = [
 echo DetailView::widget([
 	'model' => $model,
 	'options' => [
-		'class'=>'table table-striped detail-view',
+		'class' => 'table table-striped detail-view',
 	],
 	'attributes' => $attributes,
 ]); ?>
